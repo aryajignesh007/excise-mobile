@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#283593">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Excise Inspection Manager</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Identity Services for Drive -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- SQL.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.9.0/sql-wasm.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1a237e;
+      --primary-light: #283593;
+      --primary-dark: #0d174e;
+      --accent: #ff6f00;
+      --accent-light: #ffa040;
+      --success: #2e7d32;
+      --warning: #f57f17;
+      --danger: #c62828;
+      --bg: #f5f7fa;
+      --card-bg: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #5a5a7a;
+      --border: #e0e0e0;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --nav-height: 64px;
+      --header-height: 56px;
+    }
+    html, body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100%;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    body { padding-bottom: var(--nav-height); }
+
+    /* HEADER */
+    .app-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white; padding: 12px 16px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      min-height: var(--header-height);
+    }
+    .app-header h1 {
+      font-size: 16px; font-weight: 600; flex: 1;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .app-header .subtitle {
+      font-size: 10px; opacity: 0.85; font-weight: 400;
+    }
+    .btn-icon {
+      background: rgba(255,255,255,0.15);
+      border: none; color: white; width: 36px; height: 36px;
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 16px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-icon:active { background: rgba(255,255,255,0.3); }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: var(--card-bg); border-top: 1px solid var(--border);
+      display: flex; justify-content: space-around;
+      padding: 6px 0; padding-bottom: max(6px, env(safe-area-inset-bottom));
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+      height: var(--nav-height);
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 2px; cursor: pointer; padding: 4px 8px;
+      color: var(--text-secondary); transition: color 0.2s; user-select: none;
+      border: none; background: none; font-family: inherit; font-size: 10px;
+      -webkit-tap-highlight-color: transparent; min-width: 48px;
+    }
+    .nav-item i { font-size: 18px; }
+    .nav-item.active { color: var(--primary); font-weight: 600; }
+
+    /* MAIN CONTENT */
+    .app-content {
+      padding: calc(var(--header-height) + 8px) 12px 8px;
+      max-width: 800px; margin: 0 auto;
+    }
+    .page { display: none; }
+    .page.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* CARDS */
+    .card {
+      background: var(--card-bg); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 16px; margin-bottom: 12px;
+    }
+    .card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 14px; font-weight: 600; color: var(--text);
+    }
+
+    /* STATS GRID */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-bottom: 16px;
+    }
+    .stat-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 14px 10px; text-align: center;
+    }
+    .stat-card .stat-value {
+      font-size: 24px; font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-card .stat-label {
+      font-size: 10px; color: var(--text-secondary); margin-top: 4px;
+    }
+    .stat-card .stat-icon {
+      font-size: 20px; margin-bottom: 6px; color: var(--primary-light);
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px; border: none; border-radius: var(--radius-sm);
+      font-family: inherit; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s; user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-light); }
+    .btn-accent { background: var(--accent); color: white; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-outline {
+      background: none; border: 1.5px solid var(--primary); color: var(--primary);
+    }
+    .btn-block { width: 100%; justify-content: center; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+    /* FORM ELEMENTS */
+    .form-group { margin-bottom: 14px; }
+    .form-label {
+      display: block; font-size: 12px; font-weight: 500;
+      color: var(--text-secondary); margin-bottom: 4px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); font-family: inherit;
+      font-size: 14px; background: var(--card-bg); color: var(--text);
+      transition: border-color 0.2s; -webkit-appearance: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none; border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(40,53,147,0.1);
+    }
+    .form-textarea { resize: vertical; min-height: 60px; }
+
+    /* LISTS */
+    .list-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+      cursor: pointer; transition: background 0.15s;
+    }
+    .list-item:last-child { border-bottom: none; }
+    .list-item:active { background: rgba(0,0,0,0.03); }
+    .list-item .item-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; flex-shrink: 0;
+    }
+    .list-item .item-content { flex: 1; min-width: 0; }
+    .list-item .item-title { font-size: 14px; font-weight: 500; }
+    .list-item .item-subtitle { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+    .list-item .item-action { color: var(--text-secondary); font-size: 14px; }
+    .empty-state {
+      text-align: center; padding: 40px 20px; color: var(--text-secondary);
+    }
+    .empty-state i { font-size: 48px; margin-bottom: 12px; color: var(--border); }
+
+    /* SEARCH */
+    .search-bar {
+      display: flex; gap: 8px; margin-bottom: 12px;
+    }
+    .search-bar .form-input { flex: 1; }
+
+    /* BADGE */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 600;
+    }
+    .badge-success { background: #e8f5e9; color: var(--success); }
+    .badge-warning { background: #fff3e0; color: var(--warning); }
+    .badge-danger { background: #ffebee; color: var(--danger); }
+    .badge-info { background: #e3f2fd; color: #1565c0; }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.5); display: none;
+      align-items: flex-end; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-overlay.open .modal-content { animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .modal-content {
+      background: var(--card-bg); border-radius: var(--radius) var(--radius) 0 0;
+      width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto;
+      padding: 20px; padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .modal-title { font-size: 18px; font-weight: 700; }
+    .modal-close { background: none; border: none; font-size: 24px; color: var(--text-secondary); cursor: pointer; padding: 4px; }
+
+    /* SYNC */
+    .sync-status {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px; border-radius: var(--radius-sm);
+      font-size: 13px; margin-bottom: 12px;
+    }
+    .sync-status.connected { background: #e8f5e9; color: var(--success); }
+    .sync-status.disconnected { background: #ffebee; color: var(--danger); }
+    .sync-status i { font-size: 18px; }
+
+    /* TOAST */
+    .toast-container {
+      position: fixed; top: 72px; left: 12px; right: 12px; z-index: 300;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .toast {
+      padding: 12px 16px; border-radius: var(--radius-sm); font-size: 13px;
+      box-shadow: var(--shadow-lg); animation: slideDown 0.3s ease;
+      display: flex; align-items: center; gap: 8px;
+    }
+    @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .toast-success { background: var(--success); color: white; }
+    .toast-error { background: var(--danger); color: white; }
+    .toast-info { background: var(--primary); color: white; }
+
+    /* CALENDAR */
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;
+      text-align: center;
+    }
+    .cal-header { font-size: 11px; font-weight: 600; color: var(--text-secondary); padding: 8px 0; }
+    .cal-day {
+      padding: 10px 4px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      cursor: pointer; position: relative; min-height: 36px;
+    }
+    .cal-day:hover { background: #f0f0f0; }
+    .cal-day.today { background: var(--primary); color: white; font-weight: 700; }
+    .cal-day.other-month { color: #ccc; }
+    .cal-day.has-inspections::after {
+      content: ''; position: absolute; bottom: 4px; left: 50%;
+      transform: translateX(-50%); width: 6px; height: 6px;
+      border-radius: 50%; background: var(--accent);
+    }
+    .cal-day.today.has-inspections::after { background: white; }
+    .cal-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    .cal-nav h3 { font-size: 16px; font-weight: 600; }
+
+    /* MULTI-SELECT */
+    .multi-select {
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      padding: 8px; max-height: 200px; overflow-y: auto;
+    }
+    .multi-select-item {
+      display: flex; align-items: center; gap: 8px; padding: 6px 4px;
+      cursor: pointer; border-radius: 4px;
+    }
+    .multi-select-item:hover { background: #f5f5f5; }
+    .multi-select-item input { accent-color: var(--primary); }
+    .multi-select-item label { font-size: 13px; cursor: pointer; flex: 1; }
+
+    /* TABS */
+    .tabs {
+      display: flex; gap: 4px; margin-bottom: 12px;
+      background: #f0f0f0; border-radius: var(--radius-sm); padding: 3px;
+    }
+    .tab {
+      flex: 1; text-align: center; padding: 8px; font-size: 12px; font-weight: 500;
+      border-radius: 6px; cursor: pointer; transition: all 0.2s;
+      border: none; background: none; font-family: inherit; color: var(--text-secondary);
+    }
+    .tab.active { background: var(--card-bg); color: var(--primary); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+
+    /* RESPONSIVE FIXES */
+    @media (min-width: 600px) {
+      .app-content { padding-left: 20px; padding-right: 20px; }
+      .stats-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* LOADING */
+    .spinner {
+      width: 20px; height: 20px; border: 2px solid var(--border);
+      border-top-color: var(--primary); border-radius: 50%;
+      animation: spin 0.6s linear infinite; display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* LICENSE TYPE CHIPS */
+    .chip-grid {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .chip {
+      padding: 6px 12px; border-radius: 20px; font-size: 11px;
+      background: #e8eaf6; color: var(--primary); font-weight: 500;
+      border: 1px solid #c5cae9;
+    }
+
+    /* DIARY ENTRY */
+    .diary-entry {
+      padding: 12px; border-left: 3px solid var(--primary);
+      margin-bottom: 10px; background: #fafafa; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .diary-entry .diary-date { font-size: 11px; color: var(--text-secondary); }
+    .diary-entry .diary-text { font-size: 13px; margin-top: 4px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- HEADER -->
+<header class="app-header">
+  <button class="btn-icon" onclick="toggleSidebar()" aria-label="Menu">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div>
+    <h1 id="pageTitle">આબકારી નિરીક્ષણ | Excise Manager</h1>
+    <div class="subtitle">Superintendent, Prohibition & Excise - Surat</div>
+  </div>
+  <button class="btn-icon" onclick="navigate('sync')" aria-label="Sync">
+    <i class="fas fa-sync-alt"></i>
+  </button>
+</header>
+
+<!-- MAIN CONTENT -->
+<div class="app-content" id="appContent">
+
+  <!-- PAGE: DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div class="stats-grid" id="dashStats">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-building"></i></div>
+        <div class="stat-value" id="statTotal">0</div>
+        <div class="stat-label">કુલ લાઇસન્સી<br>Total Licensees</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-clipboard-check"></i></div>
+        <div class="stat-value" id="statMonth">0</div>
+        <div class="stat-label">આ મહિનાના નિરીક્ષણ<br>This Month</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+        <div class="stat-value" id="statPending">0</div>
+        <div class="stat-label">બાકી નિરીક્ષણ<br>Pending</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">⚡ ઝડપી કાર્યવાહી | Quick Actions</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="btn btn-primary" onclick="navigate('inspection')"><i class="fas fa-plus-circle"></i> નવું નિરીક્ષણ<br><small>New Inspection</small></button>
+        <button class="btn btn-accent" onclick="navigate('licensee')"><i class="fas fa-user-plus"></i> નવું લાઇસન્સી<br><small>New Licensee</small></button>
+        <button class="btn btn-outline" onclick="navigate('history')"><i class="fas fa-history"></i> નિરીક્ષણ ઇતિહાસ<br><small>History</small></button>
+        <button class="btn btn-outline" onclick="navigate('calendar')"><i class="fas fa-calendar"></i> કેલેન્ડર<br><small>Calendar</small></button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📋 તાજેતરના નિરીક્ષણ | Recent Inspections</span>
+      </div>
+      <div id="recentInspections"><div class="empty-state">કોઈ નિરીક્ષણ નથી<br>No inspections yet</div></div>
+    </div>
+  </div>
+
+  <!-- PAGE: LICENSEES -->
+  <div class="page" id="page-licensee">
+    <div class="search-bar">
+      <input type="text" class="form-input" id="licenseeSearch" placeholder="🔍 શોધો... Search by name/place..." oninput="renderLicensees()">
+      <button class="btn btn-primary" onclick="showLicenseeForm()"><i class="fas fa-plus"></i></button>
+    </div>
+    <div id="licenseeList"></div>
+  </div>
+
+  <!-- PAGE: LICENSE TYPES -->
+  <div class="page" id="page-licensetypes">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🏷️ લાઇસન્સ પ્રકાર | License Types (55)</span>
+      </div>
+      <div class="chip-grid" id="licenseTypeChips"></div>
+    </div>
+  </div>
+
+  <!-- PAGE: INSPECTIONS -->
+  <div class="page" id="page-inspection">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📝 નવું નિરીક્ષણ | New Inspection</span>
+      </div>
+      <form id="inspectionForm" onsubmit="saveInspection(event)">
+        <div class="form-group">
+          <label class="form-label">📅 તારીખ / Date *</label>
+          <input type="date" class="form-input" id="inspDate" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">👥 લાઇસન્સીઓ / Licensees</label>
+          <div class="multi-select" id="inspLicensees"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🏷️ લાઇસન્સ પ્રકાર / License Type</label>
+          <select class="form-select" id="inspLicenseType">
+            <option value="">-- પસંદ કરો / Select --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📍 સ્થળ / Place</label>
+          <input type="text" class="form-input" id="inspPlace" placeholder="સ્થળ દાખલ કરો / Enter place">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📋 નિમણૂક / Remarks</label>
+          <textarea class="form-textarea" id="inspRemarks" placeholder="નોંધ / Notes..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📊 સ્થિતિ / Status</label>
+          <select class="form-select" id="inspStatus">
+            <option value="completed">✅ પૂર્ણ / Completed</option>
+            <option value="pending">⏳ બાકી / Pending</option>
+            <option value="rescheduled">🔄 ફરીથી નક્કી / Rescheduled</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="inspSubmitBtn">
+          <i class="fas fa-save"></i> સાચવો / Save Inspection
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- PAGE: HISTORY -->
+  <div class="page" id="page-history">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📊 નિરીક્ષણ ઇતિહાસ | Inspection History</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">મહિનો / Month &amp; Year</label>
+        <input type="month" class="form-input" id="historyMonth" onchange="renderHistory()">
+      </div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- PAGE: CALENDAR -->
+  <div class="page" id="page-calendar">
+    <div class="card">
+      <div class="cal-nav">
+        <button class="btn btn-icon" onclick="changeMonth(-1)" style="background:none;color:var(--primary);border:1px solid var(--border);width:36px;height:36px;border-radius:50%;"><i class="fas fa-chevron-left"></i></button>
+        <h3 id="calTitle">Month</h3>
+        <button class="btn btn-icon" onclick="changeMonth(1)" style="background:none;color:var(--primary);border:1px solid var(--border);width:36px;height:36px;border-radius:50%;"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div style="margin-top:12px;">
+        <div class="card-title" style="font-size:13px;margin-bottom:8px;">📋 આ દિવસના નિરીક્ષણ / Day Inspections</div>
+        <div id="calInspections"><div class="empty-state">એક દિવસ પસંદ કરો<br>Select a day</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: DIARY -->
+  <div class="page" id="page-diary">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📓 ડાયરી | Diary</span>
+        <button class="btn btn-sm btn-primary" onclick="showDiaryEntryForm()"><i class="fas fa-plus"></i> ઉમેરો / Add</button>
+      </div>
+      <div id="diaryList"></div>
+    </div>
+  </div>
+
+  <!-- PAGE: SYNC -->
+  <div class="page" id="page-sync">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">☁️ Google Drive સમન્વયન | Sync</span>
+      </div>
+      <div id="syncStatus" class="sync-status disconnected">
+        <i class="fas fa-times-circle"></i>
+        <span>જોડાયેલ નથી / Not Connected</span>
+      </div>
+      <div id="syncUserInfo" style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;display:none;">👤 <span id="syncUserEmail"></span></div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">
+        🕐 છેલ્લું સમન્વયન / Last Sync: <span id="lastSyncTime">—</span>
+      </div>
+      <div id="g_id_onload"
+           data-client_id="927842948067-ui99grbtv4v0me7sd9rnubsbo9gd1umq.apps.googleusercontent.com"
+           data-context="signin"
+           data-ux_mode="popup"
+           data-login_uri=""
+           data-auto_prompt="false"
+           data-callback="handleCredentialResponse"
+           data-itp_support="true">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with" data-size="large" data-width="300"></div>
+        <button class="btn btn-primary btn-block" onclick="uploadToDrive()" disabled id="syncUploadBtn">
+          <i class="fas fa-upload"></i> Drive પર અપલોડ / Upload to Drive
+        </button>
+        <button class="btn btn-accent btn-block" onclick="downloadFromDrive()" disabled id="syncDownloadBtn">
+          <i class="fas fa-download"></i> Drive થી ડાઉનલોડ / Download from Drive
+        </button>
+        <button class="btn btn-outline btn-block" onclick="exportLocalBackup()">
+          <i class="fas fa-file-export"></i> સ્થાનિક બેકઅપ / Local Backup
+        </button>
+        <button class="btn btn-outline btn-block" onclick="document.getElementById('importFile').click()">
+          <i class="fas fa-file-import"></i> સ્થાનિક બેકઅપથી પુનઃસ્થાપિત / Restore Backup
+        </button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importLocalBackup(event)">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+    <i class="fas fa-home"></i><span>હોમ<br>Home</span>
+  </button>
+  <button class="nav-item" data-page="licensee" onclick="navigate('licensee')">
+    <i class="fas fa-users"></i><span>લાઇસન્સી<br>Licensees</span>
+  </button>
+  <button class="nav-item" data-page="licensetypes" onclick="navigate('licensetypes')">
+    <i class="fas fa-tags"></i><span>લાઇસન્સ<br>Licenses</span>
+  </button>
+  <button class="nav-item" data-page="inspection" onclick="navigate('inspection')">
+    <i class="fas fa-clipboard"></i><span>નિરીક્ષણ<br>Inspect</span>
+  </button>
+  <button class="nav-item" data-page="calendar" onclick="navigate('calendar')">
+    <i class="fas fa-calendar"></i><span>કેલેન્ડર<br>Calendar</span>
+  </button>
+</nav>
+
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-content" id="modalContent">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Modal</span>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ============ DATABASE ============
+const DB_NAME = 'ExciseDB';
+const DB_VERSION = 5;
+let db = null;
+let gisToken = null;
+let gisUser = null;
+
+const LicenseTypes = [
+  'FL-1', 'FL-2', 'FL-3A', 'FL-3B', 'FL-4', 'FL-5', 'FL-6', 'FL-7', 'FL-8', 'FL-9', 'FL-10',
+  'FL-11', 'FL-12', 'FL-13', 'FL-14', 'FL-15', 'FL-16', 'FL-17', 'FL-18', 'FL-19', 'FL-20',
+  'BL-1', 'BL-2', 'BL-3', 'BL-4', 'BL-5', 'BL-6', 'BL-7', 'BL-8', 'BL-9', 'BL-10',
+  'CL-1', 'CL-2', 'CL-3', 'CL-4', 'CL-5', 'CL-6', 'CL-7', 'CL-8', 'CL-9', 'CL-10',
+  'DL-1', 'DL-2', 'DL-3', 'DL-4', 'DL-5', 'DL-6', 'DL-7', 'DL-8', 'DL-9', 'DL-10',
+  'EL-1', 'EL-2', 'EL-3', 'EL-4', 'EL-5'
+];
+
+const LicenseTypeNames = {
+  'FL-1': 'દારૂની દુકાન / Liquor Shop',
+  'FL-2': 'હોટેલ બાર / Hotel Bar',
+  'FL-3A': 'રેસ્ટોરન્ટ બાર / Restaurant Bar',
+  'FL-3B': 'ક્લબ / Club',
+  'FL-4': 'વાઇન શોપ / Wine Shop',
+  'FL-5': 'બિયર શોપ / Beer Shop',
+  'FL-6': 'બોટલ્સ શોપ / Bottle Shop',
+  'FL-7': 'વેરહાઉસ / Warehouse',
+  'FL-8': 'બ્રુઅરી / Brewery',
+  'FL-9': 'ડિસ્ટિલરી / Distillery',
+  'FL-10': 'બોટલિંગ પ્લાન્ટ / Bottling Plant',
+  'FL-11': 'સ્ટોરેજ / Storage',
+  'FL-12': 'વ્હોલસેલ / Wholesale',
+  'FL-13': 'રિટેલ / Retail',
+  'FL-14': 'બાર / Bar',
+  'FL-15': 'કાન્ટીન / Canteen',
+  'FL-16': 'એરપોર્ટ શોપ / Airport Shop',
+  'FL-17': 'ડ્યુટી ફ્રી / Duty Free',
+  'FL-18': 'ટૂરિસ્ટ બાર / Tourist Bar',
+  'FL-19': 'રિસોર્ટ / Resort',
+  'FL-20': 'તમામ હેતુ / All Purpose',
+  'BL-1': 'બિયર A / Beer A',
+  'BL-2': 'બિયર B / Beer B',
+  'BL-3': 'બિયર C / Beer C',
+  'BL-4': 'વાઇન A / Wine A',
+  'BL-5': 'વાઇન B / Wine B',
+  'BL-6': 'વાઇન C / Wine C',
+  'BL-7': 'વોડકા / Vodka',
+  'BL-8': 'વ્હિસ્કી / Whisky',
+  'BL-9': 'રમ / Rum',
+  'BL-10': 'જિન / Gin',
+  'CL-1': 'કન્ટ્રી A / Country A',
+  'CL-2': 'કન્ટ્રી B / Country B',
+  'CL-3': 'કન્ટ્રી C / Country C',
+  'CL-4': 'કન્ટ્રી D / Country D',
+  'CL-5': 'કન્ટ્રી E / Country E',
+  'CL-6': 'કન્ટ્રી F / Country F',
+  'CL-7': 'કન્ટ્રી G / Country G',
+  'CL-8': 'કન્ટ્રી H / Country H',
+  'CL-9': 'કન્ટ્રી I / Country I',
+  'CL-10': 'કન્ટ્રી J / Country J',
+  'DL-1': 'ડીલર A / Dealer A',
+  'DL-2': 'ડીલર B / Dealer B',
+  'DL-3': 'ડીલર C / Dealer C',
+  'DL-4': 'ડીલર D / Dealer D',
+  'DL-5': 'ડીલર E / Dealer E',
+  'DL-6': 'ડીલર F / Dealer F',
+  'DL-7': 'ડીલર G / Dealer G',
+  'DL-8': 'ડીલર H / Dealer H',
+  'DL-9': 'ડીલર I / Dealer I',
+  'DL-10': 'ડીલર J / Dealer J',
+  'EL-1': 'ઇમ્પોર્ટ A / Import A',
+  'EL-2': 'ઇમ્પોર્ટ B / Import B',
+  'EL-3': 'ઇમ્પોર્ટ C / Import C',
+  'EL-4': 'ઇમ્પોર્ટ D / Import D',
+  'EL-5': 'ઇમ્પોર્ટ E / Import E'
+};
+
+const Diaries = [
+  { date: '2026-06-01', text: 'જિલ્લા કલેક્ટર સાથે બેઠક - આબકારી નિયમો અંગે ચર્ચા / Meeting with District Collector regarding excise rules.' },
+  { date: '2026-06-05', text: 'ફ્લાઈંગ સ્ક્વોડ રેડ - FL-1 લાઇસન્સી પર દરોડો / Flying Squad raid on FL-1 licensee.' },
+  { date: '2026-06-10', text: 'માસિક રિપોર્ટ તૈયાર / Monthly report preparation.' },
+  { date: '2026-06-15', text: 'લાઇસન્સ નવીકરણ અરજીઓની સમીક્ષા / Review of license renewal applications.' },
+  { date: '2026-06-20', text: 'વરિષ્ઠ અધિકારીઓની મુલાકાત / Senior officers visit.' },
+  { date: '2026-06-25', text: 'નવા લાઇસન્સ ફાળવણી બેઠક / New license allocation meeting.' },
+  { date: '2026-07-01', text: 'માસિક શરૂઆત - નિરીક્ષણ આયોજન / Month start - inspection planning.' },
+  { date: '2026-07-03', text: 'BL-2 લાઇસન્સી પર અચાનક તપાસ / Surprise inspection on BL-2 licensee.' },
+  { date: '2026-07-05', text: 'કોર્ટ કેસોની તૈયારી / Court case preparation.' }
+];
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('licensees')) {
+        d.createObjectStore('licensees', { keyPath: 'id', autoIncrement: true });
+      }
+      if (!d.objectStoreNames.contains('inspections')) {
+        d.createObjectStore('inspections', { keyPath: 'id', autoIncrement: true });
+      }
+      if (!d.objectStoreNames.contains('diaries')) {
+        d.createObjectStore('diaries', { keyPath: 'id', autoIncrement: true });
+      }
+      if (!d.objectStoreNames.contains('settings')) {
+        d.createObjectStore('settings', { keyPath: 'key' });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function dbAdd(store, data) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).add(data);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function dbPut(store, data) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).put(data);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function dbGet(store, id) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).get(id);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function dbGetAll(store) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).getAll();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function dbDelete(store, id) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).delete(id);
+    req.onsuccess = () => resolve();
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+function dbClear(store) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).clear();
+    req.onsuccess = () => resolve();
+    req.onerror = e => reject(e.target.error);
+  });
+}
+
+async function getSetting(key, def = null) {
+  try {
+    const v = await dbGet('settings', key);
+    return v ? v.value : def;
+  } catch { return def; }
+}
+
+async function setSetting(key, value) {
+  await dbPut('settings', { key, value });
+}
+
+// ============ TOAST ============
+function showToast(msg, type = 'info') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  t.innerHTML = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+// ============ NAVIGATION ============
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById(`page-${page}`);
+  if (pg) pg.classList.add('active');
+  const nav = document.querySelector(`.nav-item[data-page="${page}"]`);
+  if (nav) nav.classList.add('active');
+  // Update header title
+  const titles = {
+    dashboard: 'ડેશબોર્ડ | Dashboard',
+    licensee: 'લાઇસન્સીઓ | Licensees',
+    licensetypes: 'લાઇસન્સ પ્રકાર | License Types',
+    inspection: 'નવું નિરીક્ષણ | New Inspection',
+    history: 'નિરીક્ષણ ઇતિહાસ | History',
+    calendar: 'કેલેન્ડર | Calendar',
+    diary: 'ડાયરી | Diary',
+    sync: 'સમન્વયન | Sync'
+  };
+  document.getElementById('pageTitle').textContent = titles[page] || 'Excise Manager';
+
+  // Refresh page data
+  if (page === 'dashboard') refreshDashboard();
+  if (page === 'licensee') renderLicensees();
+  if (page === 'licensetypes') renderLicenseTypes();
+  if (page === 'inspection') initInspectionForm();
+  if (page === 'history') renderHistory();
+  if (page === 'calendar') renderCalendar();
+  if (page === 'diary') renderDiary();
+  if (page === 'sync') updateSyncUI();
+}
+
+// ============ MODAL ============
+function openModal(title, bodyHtml) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = bodyHtml;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+
+// ============ DASHBOARD ============
+async function refreshDashboard() {
+  try {
+    const licensees = await dbGetAll('licensees') || [];
+    const inspections = await dbGetAll('inspections') || [];
+    const now = new Date();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    
+    const monthInspections = inspections.filter(i => {
+      const d = new Date(i.date);
+      return d.getMonth() + 1 === parseInt(month) && d.getFullYear() === year;
+    });
+    
+    const pending = inspections.filter(i => i.status === 'pending').length;
+    
+    document.getElementById('statTotal').textContent = licensees.length;
+    document.getElementById('statMonth').textContent = monthInspections.length;
+    document.getElementById('statPending').textContent = pending;
+
+    // Recent inspections
+    const recent = inspections.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+    const container = document.getElementById('recentInspections');
+    if (recent.length === 0) {
+      container.innerHTML = '<div class="empty-state">કોઈ નિરીક્ષણ નથી<br>No inspections yet</div>';
+    } else {
+      container.innerHTML = recent.map(i => {
+        const lics = (i.licenseeNames || []).join(', ');
+        return `<div class="list-item">
+          <div class="item-icon" style="background:${i.status==='completed'?'var(--success)':i.status==='pending'?'var(--warning)':'var(--accent)'}">
+            <i class="fas fa-${i.status==='completed'?'check':i.status==='pending'?'clock':'redo'}"></i>
+          </div>
+          <div class="item-content">
+            <div class="item-title">${lics || 'N/A'}</div>
+            <div class="item-subtitle">${i.date || ''} ${i.place ? '• '+i.place : ''}</div>
+          </div>
+          <span class="badge badge-${i.status==='completed'?'success':i.status==='pending'?'warning':'info'}">${i.status||'N/A'}</span>
+        </div>`;
+      }).join('');
+    }
+  } catch(e) { console.error('Dashboard error:', e); }
+}
+
+// ============ LICENSEES ============
+async function renderLicensees() {
+  try {
+    const licensees = await dbGetAll('licensees') || [];
+    const q = (document.getElementById('licenseeSearch').value || '').toLowerCase();
+    const filtered = q ? licenseees.filter(l => 
+      (l.name||'').toLowerCase().includes(q) || (l.place||'').toLowerCase().includes(q) || (l.licenseType||'').toLowerCase().includes(q)
+    ) : licensees;
+    
+    const container = document.getElementById('licenseeList');
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><br>કોઈ લાઇસન્સી નથી<br>No licensees found</div>';
+      return;
+    }
+    container.innerHTML = filtered.map(l => {
+      const initial = (l.name||'L')[0].toUpperCase();
+      return `<div class="list-item" onclick="editLicensee(${l.id})">
+        <div class="item-icon">${initial}</div>
+        <div class="item-content">
+          <div class="item-title">${l.name||'Unknown'}</div>
+          <div class="item-subtitle">${l.licenseType||''} ${l.place ? '• '+l.place : ''}</div>
+        </div>
+        <div class="item-action"><i class="fas fa-chevron-right"></i></div>
+      </div>`;
+    }).join('');
+  } catch(e) { console.error('Licensee render error:', e); }
+}
+
+function showLicenseeForm(data) {
+  d = data || {};
+  const title = d.id ? 'લાઇસન્સી સંપાદિત કરો / Edit Licensee' : 'નવું લાઇસન્સી / New Licensee';
+  const types = LicenseTypes.map(t => `<option value="${t}" ${d.licenseType===t?'selected':''}>${t} - ${LicenseTypeNames[t]||t}</option>`).join('');
+  const html = `<form onsubmit="saveLicensee(event, ${d.id||'null'})">
+    <div class="form-group">
+      <label class="form-label">નામ / Name *</label>
+      <input type="text" class="form-input" id="licName" value="${d.name||''}" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">સંસ્થા / Establishment Name</label>
+      <input type="text" class="form-input" id="licEstablishment" value="${d.establishment||''}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">લાઇસન્સ પ્રકાર / License Type</label>
+      <select class="form-select" id="licType">${types}</select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">સરનામું / Address</label>
+      <textarea class="form-textarea" id="licAddress">${d.address||''}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">સ્થળ / Place</label>
+      <input type="text" class="form-input" id="licPlace" value="${d.place||''}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">મોબાઇલ / Mobile</label>
+      <input type="tel" class="form-input" id="licMobile" value="${d.mobile||''}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">ઇમેઇલ / Email</label>
+      <input type="email" class="form-input" id="licEmail" value="${d.email||''}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">નોંધ / Notes</label>
+      <textarea class="form-textarea" id="licNotes">${d.notes||''}</textarea>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button type="submit" class="btn btn-primary" style="flex:1;"><i class="fas fa-save"></i> સાચવો / Save</button>
+      ${d.id ? `<button type="button" class="btn btn-danger" onclick="deleteLicensee(${d.id})" style="flex:1;"><i class="fas fa-trash"></i> કાઢી નાખો / Delete</button>` : ''}
+    </div>
+  </form>`;
+  openModal(title, html);
+}
+
+async function saveLicensee(e, id) {
+  e.preventDefault();
+  const data = {
+    name: document.getElementById('licName').value.trim(),
+    establishment: document.getElementById('licEstablishment').value.trim(),
+    licenseType: document.getElementById('licType').value,
+    address: document.getElementById('licAddress').value.trim(),
+    place: document.getElementById('licPlace').value.trim(),
+    mobile: document.getElementById('licMobile').value.trim(),
+    email: document.getElementById('licEmail').value.trim(),
+    notes: document.getElementById('licNotes').value.trim(),
+    updatedAt: new Date().toISOString()
+  };
+  if (!data.name) { showToast('કૃપા કરીને નામ દાખલ કરો / Please enter name', 'error'); return; }
+  try {
+    if (id) {
+      data.id = id;
+      const existing = await dbGet('licensees', id);
+      if (existing) data.createdAt = existing.createdAt;
+      await dbPut('licensees', data);
+      showToast('✅ લાઇસન્સી અપડેટ / Licensee updated!', 'success');
+    } else {
+      data.createdAt = new Date().toISOString();
+      await dbAdd('licensees', data);
+      showToast('✅ લાઇસન્સી ઉમેરાયો / Licensee added!', 'success');
+    }
+    closeModal();
+    renderLicensees();
+    refreshDashboard();
+  } catch(e) { showToast('❌ ભૂલ / Error: '+e.message, 'error'); }
+}
+
+async function editLicensee(id) {
+  try {
+    const d = await dbGet('licensees', id);
+    if (d) showLicenseeForm(d);
+    else showToast('❌ લાઇસન્સી મળ્યો નથી / Licensee not found', 'error');
+  } catch(e) { showToast('❌ ભૂલ / Error: '+e.message, 'error'); }
+}
+
+async function deleteLicensee(id) {
+  if (!confirm('શું તમે ખરેખર આ લાઇસન્સી કાઢી નાખવા માંગો છો? / Delete this licensee?')) return;
+  try {
+    await dbDelete('licensees', id);
+    showToast('🗑️ લાઇસન્સી કાઢી નાખ્યો / Licensee deleted!', 'success');
+    closeModal();
+    renderLicensees();
+    refreshDashboard();
+  } catch(e) { showToast('❌ ભૂલ / Error: '+e.message, 'error'); }
+}
+
+// ============ LICENSE TYPES ============
+function renderLicenseTypes() {
+  const container = document.getElementById('licenseTypeChips');
+  container.innerHTML = LicenseTypes.map(t => 
+    `<span class="chip"><strong>${t}</strong> ${LicenseTypeNames[t]||''}</span>`
+  ).join('');
+}
+
+// ============ INSPECTIONS ============
+async function initInspectionForm() {
+  // Set today's date
+  document.getElementById('inspDate').value = new Date().toISOString().split('T')[0];
+  
+  // Fill license types
+  const sel = document.getElementById('inspLicenseType');
+  sel.innerHTML = '<option value="">-- પસંદ કરો / Select --</option>' +
+    LicenseTypes.map(t => `<option value="${t}">${t} - ${LicenseTypeNames[t]||t}</option>`).join('');
+  
+  // Fill multi-select licensees
+  await renderInspLicenseeSelect();
+}
+
+async function renderInspLicenseeSelect() {
+  try {
+    const licensees = await dbGetAll('licensees') || [];
+    const container = document.getElementById('inspLicensees');
+    container.innerHTML = licensees.map(l => 
+      `<div class="multi-select-item">
+        <input type="checkbox" value="${l.id}" id="inspL_${l.id}">
+        <label for="inspL_${l.id}">${l.name} ${l.place ? '— '+l.place : ''}</label>
+      </div>`
+    ).join('');
+    if (licensees.length === 0) {
+      container.innerHTML = '<div style="padding:10px;color:var(--text-secondary);font-size:12px;">કોઈ લાઇસન્સી નથી. પહેલા લાઇસન્સી ઉમેરો. / No licensees. Add licensees first.</div>';
+    }
+  } catch(e) { console.error('Insp licensee select error:', e); }
+}
+
+async function saveInspection(e) {
+  e.preventDefault();
+  const date = document.getElementById('inspDate').value;
+  if (!date) { showToast('❌ તારીખ જરૂરી છે / Date required', 'error'); return; }
+  
+  const selectedLics = [];
+  document.querySelectorAll('#inspLicensees input[type="checkbox"]:checked').forEach(cb => {
+    selectedLics.push(parseInt(cb.value));
+  });
+  
+  if (selectedLics.length === 0) { showToast('❓ ઓછામાં ઓછું એક લાઇસન્સી પસંદ કરો / Select at least one licensee', 'error'); return; }
+
+  // Resolve names
+  const licensees = await dbGetAll('licensees') || [];
+  const licenseeNames = selectedLics.map(id => {
+    const l = licensees.find(l => l.id === id);
+    return l ? l.name : 'Unknown';
+  });
+
+  const data = {
+    date,
+    licenseeIds: selectedLics,
+    licenseeNames,
+    licenseType: document.getElementById('inspLicenseType').value,
+    place: document.getElementById('inspPlace').value.trim(),
+    remarks: document.getElementById('inspRemarks').value.trim(),
+    status: document.getElementById('inspStatus').value,
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    await dbAdd('inspections', data);
+    showToast('✅ નિરીક્ષણ સાચવાયું / Inspection saved!', 'success');
+    document.getElementById('inspectionForm').reset();
+    document.getElementById('inspDate').value = new Date().toISOString().split('T')[0];
+    refreshDashboard();
+  } catch(e) { showToast('❌ ભૂલ / Error: '+e.message, 'error'); }
+}
+
+// ============ HISTORY ============
+async function renderHistory() {
+  const monthVal = document.getElementById('historyMonth').value;
+  const container = document.getElementById('historyList');
+  
+  try {
+    const inspections = await dbGetAll('inspections') || [];
+    
+    if (monthVal) {
+      const [year, month] = monthVal.split('-').map(Number);
+      const filtered = inspections.filter(i => {
+        const d = new Date(i.date);
+        return d.getFullYear() === year && d.getMonth() + 1 === month;
+      }).sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="empty-state">આ મહિને કોઈ નિરીક્ષણ નથી<br>No inspections this month</div>';
+      } else {
+        container.innerHTML = filtered.map(i => {
+          const lics = (i.licenseeNames||[]).join(', ');
+          return `<div class="list-item">
+            <div class="item-icon" style="background:${i.status==='completed'?'var(--success)':i.status==='pending'?'var(--warning)':'var(--accent)'}">
+              <i class="fas fa-${i.status==='completed'?'check':i.status==='pending'?'clock':'redo'}"></i>
+            </div>
+            <div class="item-content">
+              <div class="item-title">${lics || 'N/A'}</div>
+              <div class="item-subtitle">${i.date} ${i.place ? '• '+i.place : ''} ${i.licenseType ? '• '+i.licenseType : ''}</div>
+              ${i.remarks ? `<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${i.remarks.substring(0,80)}${i.remarks.length>80?'...':''}</div>` : ''}
+            </div>
+            <span class="badge badge-${i.status==='completed'?'success':i.status==='pending'?'warning':'info'}">${i.status||'N/A'}</span>
+          </div>`;
+        }).join('');
+      }
+    } else {
+      container.innerHTML = '<div class="empty-state">કૃપા કરીને મહિનો પસંદ કરો<br>Please select a month</div>';
+    }
+  } catch(e) { console.error('History error:', e); }
+}
+
+// ============ CALENDAR ============
+let currentCalDate = new Date();
+
+function renderCalendar() {
+  const year = currentCalDate.getFullYear();
+  const month = currentCalDate.getMonth();
+  
+  document.getElementById('calTitle').textContent = 
+    new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrev = new Date(year, month, 0).getDate();
+  
+  let html = '';
+  const dayNames = ['રવિ', 'સોમ', 'મંગળ', 'બુધ', 'ગુરુ', 'શુક્ર', 'શનિ'];
+  dayNames.forEach(d => { html += `<div class="cal-header">${d}</div>`; });
+  
+  // Previous month days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    html += `<div class="cal-day other-month">${daysInPrev - i}</div>`;
+  }
+  
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  
+  // We need to get inspections for this month for markers
+  dbGetAll('inspections').then(inspections => {
+    const inspDates = new Set((inspections||[]).map(i => i.date));
+    
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const isToday = dateStr === todayStr;
+      const hasInsp = inspDates.has(dateStr);
+      html += `<div class="cal-day ${isToday?'today':''} ${hasInsp?'has-inspections':''}" onclick="selectCalDay('${dateStr}')">${d}</div>`;
+    }
+    
+    // Next month
+    const totalCells = firstDay + daysInMonth;
+    const remaining = (7 - (totalCells % 7)) % 7;
+    for (let d = 1; d <= remaining; d++) {
+      html += `<div class="cal-day other-month">${d}</div>`;
+    }
+    
+    document.getElementById('calGrid').innerHTML = html;
+  }).catch(() => {
+    document.getElementById('calGrid').innerHTML = html;
+  });
+}
+
+function changeMonth(delta) {
+  currentCalDate.setMonth(currentCalDate.getMonth() + delta);
+  renderCalendar();
+}
+
+async function selectCalDay(dateStr) {
+  const container = document.getElementById('calInspections');
+  try {
+    const inspections = await dbGetAll('inspections') || [];
+    const dayInsp = inspections.filter(i => i.date === dateStr);
+    if (dayInsp.length === 0) {
+      container.innerHTML = `<div class="empty-state">${dateStr} - કોઈ નિરીક્ષણ નથી<br>No inspections on this day</div>`;
+    } else {
+      container.innerHTML = `<div style="font-size:12px;font-weight:600;margin-bottom:8px;">📅 ${dateStr} - ${dayInsp.length} નિરીક્ષણ / Inspections</div>` +
+        dayInsp.map(i => {
+          const lics = (i.licenseeNames||[]).join(', ');
+          return `<div class="diary-entry" style="border-left-color:${i.status==='completed'?'var(--success)':i.status==='pending'?'var(--warning)':'var(--accent)'}">
+            <div style="font-size:13px;font-weight:500;">${lics || 'N/A'}</div>
+            <div style="font-size:11px;color:var(--text-secondary);">${i.place||''} ${i.licenseType?'• '+i.licenseType:''}</div>
+            ${i.remarks ? `<div style="font-size:12px;margin-top:4px;">${i.remarks}</div>` : ''}
+            <span class="badge badge-${i.status==='completed'?'success':i.status==='pending'?'warning':'info'}" style="margin-top:4px;">${i.status||'N/A'}</span>
+          </div>`;
+        }).join('');
+    }
+  } catch(e) { container.innerHTML = '<div class="empty-state">Error loading inspections</div>'; }
+}
+
+// ============ DIARY ============
+async function renderDiary() {
+  try {
+    let diaries = await dbGetAll('diaries') || [];
+    if (diaries.length === 0) {
+      // Seed default diaries
+      for (const d of Diaries) {
+        await dbAdd('diaries', d);
+      }
+      diaries = await dbGetAll('diaries') || [];
+    }
+    diaries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    const container = document.getElementById('diaryList');
+    if (diaries.length === 0) {
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-book"></i><br>કોઈ ડાયરી એન્ટ્રી નથી<br>No diary entries</div>';
+    } else {
+      container.innerHTML = diaries.map(d => `
+        <div class="diary-entry">
+          <div class="diary-date">📅 ${d.date}</div>
+          <div class="diary-text">${d.text}</div>
+          <div style="margin-top:6px;display:flex;gap:6px;">
+            <button class="btn btn-sm btn-outline" onclick="editDiaryEntry(${d.id})"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-danger" onclick="deleteDiaryEntry(${d.id})"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch(e) { console.error('Diary render error:', e); }
+}
+
+function showDiaryEntryForm(data) {
+  data = data || {};
+  const title = data.id ? 'ડાયરી સંપાદિત કરો / Edit Diary' : 'નવી ડાયરી / New Diary Entry';
+  const html = `<form onsubmit="saveDiaryEntry(event, ${data.id||'null'})">
+    <div class="form-group">
+      <label class="form-label">📅 તારીખ / Date *</label>
+      <input type="date" class="form-input" id="diaryDate" value="${data.date||new Date().toISOString().split('T')[0]}" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">📝 લખાણ / Text *</label>
+      <textarea class="form-textarea" id="diaryText" rows="4" required>${data.text||''}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save"></i> સાચવો / Save</button>
+  </form>`;
+  openModal(title, html);
+}
+
+async function saveDiaryEntry(e, id) {
+  e.preventDefault();
+  const data = {
+    date: document.getElementById('diaryDate').value,
+    text: document.getElementById('diaryText').value.trim()
+  };
+  if (!data.date || !data.text) { showToast('તારીખ અને લખાણ જરૂરી છે / Date and text required', 'error'); return; }
+  try {
+    if (id) {
+      data.id = id;
+      await dbPut('diaries', data);
+      showToast('✅ ડાયરી અપડેટ / Diary updated!', 'success');
+    } else {
+      await dbAdd('diaries', data);
+      showToast('✅ ડાયરી ઉમેરાઈ / Diary added!', 'success');
+    }
+    closeModal();
+    renderDiary();
+  } catch(e) { showToast('❌ ભૂલ / Error: '+e.message, 'error'); }
+}
+
+async function editDiaryEntry(id) {
+  try {
+    const d = await dbGet('diaries', id);
+    if (d) showDiaryEntryForm(d);
+  } catch(e) { showToast('❌ ભૂલ / Error', 'error'); }
+}
+
+async function deleteDiaryEntry(id) {
+  if (!confirm('શું તમે ખરેખર આ એન્ટ્રી કાઢી નાખવા માંગો છો? / Delete this entry?')) return;
+  try {
+    await dbDelete('diaries', id);
+    showToast('🗑️ ડાયરી એન્ટ્રી કાઢી નાખી / Entry deleted!', 'success');
+    renderDiary();
+  } catch(e) { showToast('❌ ભૂલ / Error', 'error'); }
+}
+
+// ============ GOOGLE DRIVE SYNC ============
+// GIS Callback
+function handleCredentialResponse(response) {
+  // Exchange credential for access token using token client
+  const client = google.accounts.oauth2.initTokenClient({
+    client_id: '927842948067-ui99grbtv4v0me7sd9rnubsbo9gd1umq.apps.googleusercontent.com',
+    scope: 'https://www.googleapis.com/auth/drive.file',
+    callback: (tokenResponse) => {
+      if (tokenResponse.access_token) {
+        gisToken = tokenResponse.access_token;
+        // Decode ID token to get user info
+        try {
+          const payload = JSON.parse(atob(response.credential.split('.')[1]));
+          gisUser = payload;
+          document.getElementById('syncUserEmail').textContent = payload.email || 'Unknown';
+          document.getElementById('syncUserInfo').style.display = 'block';
+        } catch(e) { console.error('User info parse error:', e); }
+        updateSyncUI();
+        showToast('✅ Google Drive જોડાયેલ / Connected!', 'success');
+      } else {
+        showToast('❌ પ્રમાણીકરણ નિષ્ફળ / Auth failed', 'error');
+      }
+    },
+    error_callback: (err) => {
+      showToast('❌ પ્રમાણીકરણ ભૂલ / Auth error', 'error');
+      console.error('GIS error:', err);
+    }
+  });
+  client.requestAccessToken();
+}
+
+function updateSyncUI() {
+  const statusEl = document.getElementById('syncStatus');
+  const uploadBtn = document.getElementById('syncUploadBtn');
+  const downloadBtn = document.getElementById('syncDownloadBtn');
+  
+  if (gisToken) {
+    statusEl.className = 'sync-status connected';
+    statusEl.innerHTML = '<i class="fas fa-check-circle"></i><span>✅ જોડાયેલ / Connected - Drive સમન્વયન માટે તૈયાર / Ready to sync</span>';
+    uploadBtn.disabled = false;
+    downloadBtn.disabled = false;
+  } else {
+    statusEl.className = 'sync-status disconnected';
+    statusEl.innerHTML = '<i class="fas fa-times-circle"></i><span>❌ જોડાયેલ નથી / Not Connected - કૃપા કરીને Google સાથે સાઇન ઇન કરો / Please sign in with Google</span>';
+    uploadBtn.disabled = true;
+    downloadBtn.disabled = true;
+  }
+  
+  // Update last sync
+  getSetting('lastSyncTime').then(t => {
+    document.getElementById('lastSyncTime').textContent = t || '—';
+  });
+}
+
+async function uploadToDrive() {
+  if (!gisToken) { showToast('❌ પહેલા Google સાથે જોડાઓ / Connect to Google first', 'error'); return; }
+  
+  const uploadBtn = document.getElementById('syncUploadBtn');
+  uploadBtn.disabled = true;
+  uploadBtn.innerHTML = '<span class="spinner"></span> અપલોડ થઈ રહ્યું... / Uploading...';
+  
+  try {
+    // Export all data
+    const licensees = await dbGetAll('licensees') || [];
+    const inspections = await dbGetAll('inspections') || [];
+    const diaries = await dbGetAll('diaries') || [];
+    const settings = await dbGetAll('settings') || [];
+    
+    const dbExport = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      data: { licensees, inspections, diaries, settings }
+    };
+    
+    const jsonStr = JSON.stringify(dbExport, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    
+    // Check if file exists
+    const fileId = await findDriveFile('Excise-DB-Sync.json');
+    
+    if (fileId) {
+      // Update existing file
+      const result = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${gisToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: jsonStr
+      });
+      if (!result.ok) throw new Error('Upload failed: ' + (await result.text()));
+    } else {
+      // Create new file
+      const metadata = {
+        name: 'Excise-DB-Sync.json',
+        mimeType: 'application/json'
+      };
+      
+      // Create multipart upload
+      const form = new FormData();
+      form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+      form.append('file', blob, 'Excise-DB-Sync.json');
+      
+      const result = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${gisToken}` },
+        body: form
+      });
+      if (!result.ok) throw new Error('Upload failed: ' + (await result.text()));
+    }
+    
+    const now = new Date().toLocaleString();
+    await setSetting('lastSyncTime', now);
+    document.getElementById('lastSyncTime').textContent = now;
+    showToast('✅ Drive પર અપલોડ થયું / Uploaded to Drive!', 'success');
+  } catch(e) {
+    showToast('❌ અપલોડ ભૂલ / Upload error: '+e.message, 'error');
+    console.error('Upload error:', e);
+  } finally {
+    uploadBtn.disabled = false;
+    uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Drive પર અપલોડ / Upload to Drive';
+  }
+}
+
+async function downloadFromDrive() {
+  if (!gisToken) { showToast('❌ પહેલા Google સાથે જોડાઓ / Connect to Google first', 'error'); return; }
+  
+  const downloadBtn = document.getElementById('syncDownloadBtn');
+  downloadBtn.disabled = true;
+  downloadBtn.innerHTML = '<span class="spinner"></span> ડાઉનલોડ થઈ રહ્યું... / Downloading...';
+  
+  try {
+    const fileId = await findDriveFile('Excise-DB-Sync.json');
+    if (!fileId) {
+      showToast('❌ Drive પર કોઈ સમન્વયન ફાઇલ નથી / No sync file found on Drive', 'error');
+      downloadBtn.disabled = false;
+      downloadBtn.innerHTML = '<i class="fas fa-download"></i> Drive થી ડાઉનલોડ / Download from Drive';
+      return;
+    }
+    
+    const result = await fetch(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`, {
+      headers: { 'Authorization': `Bearer ${gisToken}` }
+    });
+    
+    if (!result.ok) throw new Error('Download failed: ' + (await result.text()));
+    
+    const dbExport = await result.json();
+    
+    // Validate
+    if (!dbExport.data) throw new Error('Invalid sync file format');
+    
+    // Populate IndexedDB
+    if (dbExport.data.licensees) {
+      await dbClear('licensees');
+      for (const l of dbExport.data.licensees) {
+        await dbAdd('licensees', l);
+      }
+    }
+    if (dbExport.data.inspections) {
+      await dbClear('inspections');
+      for (const i of dbExport.data.inspections) {
+        await dbAdd('inspections', i);
+      }
+    }
+    if (dbExport.data.diaries) {
+      await dbClear('diaries');
+      for (const d of dbExport.data.diaries) {
+        await dbAdd('diaries', d);
+      }
+    }
+    if (dbExport.data.settings) {
+      await dbClear('settings');
+      for (const s of dbExport.data.settings) {
+        await dbAdd('settings', s);
+      }
+    }
+    
+    const now = new Date().toLocaleString();
+    await setSetting('lastSyncTime', now);
+    document.getElementById('lastSyncTime').textContent = now;
+    
+    showToast('✅ Drive થી ડાઉનલોડ થયું! / Downloaded from Drive!', 'success');
+    refreshDashboard();
+  } catch(e) {
+    showToast('❌ ડાઉનલોડ ભૂલ / Download error: '+e.message, 'error');
+    console.error('Download error:', e);
+  } finally {
+    downloadBtn.disabled = false;
+    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Drive થી ડાઉનલોડ / Download from Drive';
+  }
+}
+
+async function findDriveFile(name) {
+  try {
+    const result = await fetch(`https://www.googleapis.com/drive/v3/files?q=name='${encodeURIComponent(name)}'&trashed=false&fields=files(id,name)`, {
+      headers: { 'Authorization': `Bearer ${gisToken}` }
+    });
+    const data = await result.json();
+    if (data.files && data.files.length > 0) return data.files[0].id;
+    return null;
+  } catch(e) {
+    console.error('Find file error:', e);
+    return null;
+  }
+}
+
+// ============ LOCAL BACKUP ============
+async function exportLocalBackup() {
+  try {
+    const licensees = await dbGetAll('licensees') || [];
+    const inspections = await dbGetAll('inspections') || [];
+    const diaries = await dbGetAll('diaries') || [];
+    const settings = await dbGetAll('settings') || [];
+    
+    const dbExport = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      data: { licensees, inspections, diaries, settings }
+    };
+    
+    const blob = new Blob([JSON.stringify(dbExport, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Excise-Backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('✅ બેકઅપ ડાઉનલોડ થયું / Backup downloaded!', 'success');
+  } catch(e) {
+    showToast('❌ બેકઅપ ભૂલ / Backup error: '+e.message, 'error');
+  }
+}
+
+async function importLocalBackup(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  try {
+    const text = await file.text();
+    const dbExport = JSON.parse(text);
+    
+    if (!dbExport.data) throw new Error('Invalid backup file');
+    
+    if (!confirm('શું તમે ખરેખર બેકઅપથી પુનઃસ્થાપિત કરવા માંગો છો? વર્તમાન ડેટા બદલાઈ જશે. / Restore from backup? Current data will be replaced.')) return;
+    
+    if (dbExport.data.licensees) {
+      await dbClear('licensees');
+      for (const l of dbExport.data.licensees) await dbAdd('licensees', l);
+    }
+    if (dbExport.data.inspections) {
+      await dbClear('inspections');
+      for (const i of dbExport.data.inspections) await dbAdd('inspections', i);
+    }
+    if (dbExport.data.diaries) {
+      await dbClear('diaries');
+      for (const d of dbExport.data.diaries) await dbAdd('diaries', d);
+    }
+    if (dbExport.data.settings) {
+      await dbClear('settings');
+      for (const s of dbExport.data.settings) await dbAdd('settings', s);
+    }
+    
+    showToast('✅ બેકઅપ પુનઃસ્થાપિત / Backup restored!', 'success');
+    refreshDashboard();
+  } catch(e) {
+    showToast('❌ પુનઃસ્થાપના ભૂલ / Restore error: '+e.message, 'error');
+  }
+  event.target.value = '';
+}
+
+// ============ SIDEBAR (quick nav) ============
+function toggleSidebar() {
+  openModal('📋 નેવિગેશન / Navigation', `
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button class="btn btn-primary btn-block" onclick="closeModal();navigate('dashboard')"><i class="fas fa-home"></i> ડેશબોર્ડ / Dashboard</button>
+      <button class="btn btn-primary btn-block" onclick="closeModal();navigate('licensee')"><i class="fas fa-users"></i> લાઇસન્સીઓ / Licensees</button>
+      <button class="btn btn-primary btn-block" onclick="closeModal();navigate('licensetypes')"><i class="fas fa-tags"></i> લાઇસન્સ પ્રકાર / License Types</button>
+      <button class="btn btn-primary btn-block" onclick="closeModal();navigate('inspection')"><i class="fas fa-clipboard"></i> નવું નિરીક્ષણ / New Inspection</button>
+      <button class="btn btn-primary btn-block" onclick="closeModal();navigate('history')"><i class="fas fa-history"></i> નિરીક્ષણ ઇતિહાસ / History</button>
+      <button class="btn btn-primary btn-block" onclick="closeModal();navigate('calendar')"><i class="fas fa-calendar"></i> કેલેન્ડર / Calendar</button>
+      <button class="btn btn-primary btn-block" onclick="closeModal();navigate('diary')"><i class="fas fa-book"></i> ડાયરી / Diary</button>
+      <button class="btn btn-primary btn-block" onclick="closeModal();navigate('sync')"><i class="fas fa-cloud"></i> સમન્વયન / Sync</button>
+    </div>
+  `);
+}
+
+// ============ REGISTER SERVICE WORKER ============
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      console.log('SW registered:', reg.scope);
+    }).catch(err => {
+      console.error('SW registration failed:', err);
+    });
+  });
+}
+
+// ============ INIT ============
+(async function init() {
+  try {
+    await openDB();
+    console.log('DB opened successfully');
+    
+    // Generate icons
+    generateIcons();
+    
+    // Initialize default data
+    const hasData = await getSetting('initialized');
+    if (!hasData) {
+      // Seed diaries
+      for (const d of Diaries) {
+        await dbAdd('diaries', d);
+      }
+      await setSetting('initialized', 'true');
+    }
+    
+    // Show dashboard
+    await refreshDashboard();
+    renderLicenseTypes();
+    initInspectionForm();
+    updateSyncUI();
+    
+    console.log('App initialized successfully');
+  } catch(e) {
+    console.error('Init error:', e);
+    showToast('❌ એપ શરૂ થવામાં ભૂલ / App init error: '+e.message, 'error');
+  }
+})();
+
+// Generate SVG icons for PWA
+function generateIcons() {
+  // We generate placeholder inline icons - real icons would be proper PNG files
+  // For now, we use emoji favicon which works on most browsers
+}
+</script>
+</body>
+</html>

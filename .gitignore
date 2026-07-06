@@ -1,0 +1,7 @@
+# Ignore OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore node_modules if any
+node_modules/
