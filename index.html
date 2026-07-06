@@ -334,6 +334,16 @@
       background: #e8eaf6; color: var(--primary); font-weight: 500;
       border: 1px solid #c5cae9;
     }
+    .category-section {
+      margin-bottom: 12px;
+    }
+    .category-title {
+      font-size: 13px; color: var(--primary); padding: 4px 0 6px 0;
+      border-bottom: 1px solid var(--border); margin-bottom: 6px;
+    }
+    .category-chips {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
 
     /* DIARY ENTRY */
     .diary-entry {
@@ -417,7 +427,7 @@
   <div class="page" id="page-licensetypes">
     <div class="card">
       <div class="card-header">
-        <span class="card-title">🏷️ લાઇસન્સ પ્રકાર | License Types (55)</span>
+        <span class="card-title">🏷️ લાઇસન્સ પ્રકાર | License Types (<span id="licenseTypeCount">55</span>)</span>
       </div>
       <div class="chip-grid" id="licenseTypeChips"></div>
     </div>
@@ -585,78 +595,125 @@
 <script>
 // ============ DATABASE ============
 const DB_NAME = 'ExciseDB';
-const DB_VERSION = 5;
+const DB_VERSION = 6;
 let db = null;
 let gisToken = null;
 let gisUser = null;
 
-const LicenseTypes = [
-  'FL-1', 'FL-2', 'FL-3A', 'FL-3B', 'FL-4', 'FL-5', 'FL-6', 'FL-7', 'FL-8', 'FL-9', 'FL-10',
-  'FL-11', 'FL-12', 'FL-13', 'FL-14', 'FL-15', 'FL-16', 'FL-17', 'FL-18', 'FL-19', 'FL-20',
-  'BL-1', 'BL-2', 'BL-3', 'BL-4', 'BL-5', 'BL-6', 'BL-7', 'BL-8', 'BL-9', 'BL-10',
-  'CL-1', 'CL-2', 'CL-3', 'CL-4', 'CL-5', 'CL-6', 'CL-7', 'CL-8', 'CL-9', 'CL-10',
-  'DL-1', 'DL-2', 'DL-3', 'DL-4', 'DL-5', 'DL-6', 'DL-7', 'DL-8', 'DL-9', 'DL-10',
-  'EL-1', 'EL-2', 'EL-3', 'EL-4', 'EL-5'
+// ============ LICENSE TYPES (Dynamic from DB) ============
+// Default fallback license types used only when DB has no synced data
+const DEFAULT_LICENSE_TYPES = [
+  { code: 'FL-1', name: 'દારૂની દુકાન / Liquor Shop', category: 'FL' },
+  { code: 'FL-2', name: 'હોટેલ બાર / Hotel Bar', category: 'FL' },
+  { code: 'FL-3A', name: 'રેસ્ટોરન્ટ બાર / Restaurant Bar', category: 'FL' },
+  { code: 'FL-3B', name: 'ક્લબ / Club', category: 'FL' },
+  { code: 'FL-4', name: 'વાઇન શોપ / Wine Shop', category: 'FL' },
+  { code: 'FL-5', name: 'બિયર શોપ / Beer Shop', category: 'FL' },
+  { code: 'FL-6', name: 'બોટલ્સ શોપ / Bottle Shop', category: 'FL' },
+  { code: 'FL-7', name: 'વેરહાઉસ / Warehouse', category: 'FL' },
+  { code: 'FL-8', name: 'બ્રુઅરી / Brewery', category: 'FL' },
+  { code: 'FL-9', name: 'ડિસ્ટિલરી / Distillery', category: 'FL' },
+  { code: 'FL-10', name: 'બોટલિંગ પ્લાન્ટ / Bottling Plant', category: 'FL' },
+  { code: 'FL-11', name: 'સ્ટોરેજ / Storage', category: 'FL' },
+  { code: 'FL-12', name: 'વ્હોલસેલ / Wholesale', category: 'FL' },
+  { code: 'FL-13', name: 'રિટેલ / Retail', category: 'FL' },
+  { code: 'FL-14', name: 'બાર / Bar', category: 'FL' },
+  { code: 'FL-15', name: 'કાન્ટીન / Canteen', category: 'FL' },
+  { code: 'FL-16', name: 'એરપોર્ટ શોપ / Airport Shop', category: 'FL' },
+  { code: 'FL-17', name: 'ડ્યુટી ફ્રી / Duty Free', category: 'FL' },
+  { code: 'FL-18', name: 'ટૂરિસ્ટ બાર / Tourist Bar', category: 'FL' },
+  { code: 'FL-19', name: 'રિસોર્ટ / Resort', category: 'FL' },
+  { code: 'FL-20', name: 'તમામ હેતુ / All Purpose', category: 'FL' },
+  { code: 'BL-1', name: 'બિયર A / Beer A', category: 'BL' },
+  { code: 'BL-2', name: 'બિયર B / Beer B', category: 'BL' },
+  { code: 'BL-3', name: 'બિયર C / Beer C', category: 'BL' },
+  { code: 'BL-4', name: 'વાઇન A / Wine A', category: 'BL' },
+  { code: 'BL-5', name: 'વાઇન B / Wine B', category: 'BL' },
+  { code: 'BL-6', name: 'વાઇન C / Wine C', category: 'BL' },
+  { code: 'BL-7', name: 'વોડકા / Vodka', category: 'BL' },
+  { code: 'BL-8', name: 'વ્હિસ્કી / Whisky', category: 'BL' },
+  { code: 'BL-9', name: 'રમ / Rum', category: 'BL' },
+  { code: 'BL-10', name: 'જિન / Gin', category: 'BL' },
+  { code: 'CL-1', name: 'કન્ટ્રી A / Country A', category: 'CL' },
+  { code: 'CL-2', name: 'કન્ટ્રી B / Country B', category: 'CL' },
+  { code: 'CL-3', name: 'કન્ટ્રી C / Country C', category: 'CL' },
+  { code: 'CL-4', name: 'કન્ટ્રી D / Country D', category: 'CL' },
+  { code: 'CL-5', name: 'કન્ટ્રી E / Country E', category: 'CL' },
+  { code: 'CL-6', name: 'કન્ટ્રી F / Country F', category: 'CL' },
+  { code: 'CL-7', name: 'કન્ટ્રી G / Country G', category: 'CL' },
+  { code: 'CL-8', name: 'કન્ટ્રી H / Country H', category: 'CL' },
+  { code: 'CL-9', name: 'કન્ટ્રી I / Country I', category: 'CL' },
+  { code: 'CL-10', name: 'કન્ટ્રી J / Country J', category: 'CL' },
+  { code: 'DL-1', name: 'ડીલર A / Dealer A', category: 'DL' },
+  { code: 'DL-2', name: 'ડીલર B / Dealer B', category: 'DL' },
+  { code: 'DL-3', name: 'ડીલર C / Dealer C', category: 'DL' },
+  { code: 'DL-4', name: 'ડીલર D / Dealer D', category: 'DL' },
+  { code: 'DL-5', name: 'ડીલર E / Dealer E', category: 'DL' },
+  { code: 'DL-6', name: 'ડીલર F / Dealer F', category: 'DL' },
+  { code: 'DL-7', name: 'ડીલર G / Dealer G', category: 'DL' },
+  { code: 'DL-8', name: 'ડીલર H / Dealer H', category: 'DL' },
+  { code: 'DL-9', name: 'ડીલર I / Dealer I', category: 'DL' },
+  { code: 'DL-10', name: 'ડીલર J / Dealer J', category: 'DL' },
+  { code: 'EL-1', name: 'ઇમ્પોર્ટ A / Import A', category: 'EL' },
+  { code: 'EL-2', name: 'ઇમ્પોર્ટ B / Import B', category: 'EL' },
+  { code: 'EL-3', name: 'ઇમ્પોર્ટ C / Import C', category: 'EL' },
+  { code: 'EL-4', name: 'ઇમ્પોર્ટ D / Import D', category: 'EL' },
+  { code: 'EL-5', name: 'ઇમ્પોર્ટ E / Import E', category: 'EL' }
 ];
 
-const LicenseTypeNames = {
-  'FL-1': 'દારૂની દુકાન / Liquor Shop',
-  'FL-2': 'હોટેલ બાર / Hotel Bar',
-  'FL-3A': 'રેસ્ટોરન્ટ બાર / Restaurant Bar',
-  'FL-3B': 'ક્લબ / Club',
-  'FL-4': 'વાઇન શોપ / Wine Shop',
-  'FL-5': 'બિયર શોપ / Beer Shop',
-  'FL-6': 'બોટલ્સ શોપ / Bottle Shop',
-  'FL-7': 'વેરહાઉસ / Warehouse',
-  'FL-8': 'બ્રુઅરી / Brewery',
-  'FL-9': 'ડિસ્ટિલરી / Distillery',
-  'FL-10': 'બોટલિંગ પ્લાન્ટ / Bottling Plant',
-  'FL-11': 'સ્ટોરેજ / Storage',
-  'FL-12': 'વ્હોલસેલ / Wholesale',
-  'FL-13': 'રિટેલ / Retail',
-  'FL-14': 'બાર / Bar',
-  'FL-15': 'કાન્ટીન / Canteen',
-  'FL-16': 'એરપોર્ટ શોપ / Airport Shop',
-  'FL-17': 'ડ્યુટી ફ્રી / Duty Free',
-  'FL-18': 'ટૂરિસ્ટ બાર / Tourist Bar',
-  'FL-19': 'રિસોર્ટ / Resort',
-  'FL-20': 'તમામ હેતુ / All Purpose',
-  'BL-1': 'બિયર A / Beer A',
-  'BL-2': 'બિયર B / Beer B',
-  'BL-3': 'બિયર C / Beer C',
-  'BL-4': 'વાઇન A / Wine A',
-  'BL-5': 'વાઇન B / Wine B',
-  'BL-6': 'વાઇન C / Wine C',
-  'BL-7': 'વોડકા / Vodka',
-  'BL-8': 'વ્હિસ્કી / Whisky',
-  'BL-9': 'રમ / Rum',
-  'BL-10': 'જિન / Gin',
-  'CL-1': 'કન્ટ્રી A / Country A',
-  'CL-2': 'કન્ટ્રી B / Country B',
-  'CL-3': 'કન્ટ્રી C / Country C',
-  'CL-4': 'કન્ટ્રી D / Country D',
-  'CL-5': 'કન્ટ્રી E / Country E',
-  'CL-6': 'કન્ટ્રી F / Country F',
-  'CL-7': 'કન્ટ્રી G / Country G',
-  'CL-8': 'કન્ટ્રી H / Country H',
-  'CL-9': 'કન્ટ્રી I / Country I',
-  'CL-10': 'કન્ટ્રી J / Country J',
-  'DL-1': 'ડીલર A / Dealer A',
-  'DL-2': 'ડીલર B / Dealer B',
-  'DL-3': 'ડીલર C / Dealer C',
-  'DL-4': 'ડીલર D / Dealer D',
-  'DL-5': 'ડીલર E / Dealer E',
-  'DL-6': 'ડીલર F / Dealer F',
-  'DL-7': 'ડીલર G / Dealer G',
-  'DL-8': 'ડીલર H / Dealer H',
-  'DL-9': 'ડીલર I / Dealer I',
-  'DL-10': 'ડીલર J / Dealer J',
-  'EL-1': 'ઇમ્પોર્ટ A / Import A',
-  'EL-2': 'ઇમ્પોર્ટ B / Import B',
-  'EL-3': 'ઇમ્પોર્ટ C / Import C',
-  'EL-4': 'ઇમ્પોર્ટ D / Import D',
-  'EL-5': 'ઇમ્પોર્ટ E / Import E'
-};
+// In-memory cache for license types (loaded from DB on init)
+let _licenseTypeCache = null;
+
+// Load license types from IndexedDB, fall back to defaults
+async function loadLicenseTypes() {
+  try {
+    const types = await dbGetAll('license_types');
+    if (types && types.length > 0) {
+      // Sort by code
+      types.sort((a, b) => a.code.localeCompare(b.code));
+      _licenseTypeCache = types;
+      return types;
+    }
+  } catch(e) { console.warn('Failed to load license types from DB:', e); }
+  // Fall back to defaults
+  _licenseTypeCache = DEFAULT_LICENSE_TYPES;
+  return DEFAULT_LICENSE_TYPES;
+}
+
+// Get license type codes array (sync, uses cache)
+function getLicenseTypeCodes() {
+  return (_licenseTypeCache || DEFAULT_LICENSE_TYPES).map(t => t.code);
+}
+
+// Get license type name by code (sync, uses cache)
+function getLicenseTypeName(code) {
+  const types = _licenseTypeCache || DEFAULT_LICENSE_TYPES;
+  const found = types.find(t => t.code === code);
+  return found ? found.name : code;
+}
+
+// Get all license types from cache
+function getAllLicenseTypes() {
+  return _licenseTypeCache || DEFAULT_LICENSE_TYPES;
+}
+
+// Get unique categories from license types
+function getLicenseCategories() {
+  const types = _licenseTypeCache || DEFAULT_LICENSE_TYPES;
+  const cats = [...new Set(types.map(t => t.category).filter(Boolean))];
+  return cats.sort();
+}
+
+// Seed default license types into DB (called on first init)
+async function seedDefaultLicenseTypes() {
+  try {
+    const existing = await dbGetAll('license_types');
+    if (existing && existing.length > 0) return; // already seeded
+    for (const lt of DEFAULT_LICENSE_TYPES) {
+      await dbPut('license_types', lt);
+    }
+  } catch(e) { console.warn('Failed to seed license types:', e); }
+}
 
 const Diaries = [
   { date: '2026-06-01', text: 'જિલ્લા કલેક્ટર સાથે બેઠક - આબકારી નિયમો અંગે ચર્ચા / Meeting with District Collector regarding excise rules.' },
@@ -686,6 +743,9 @@ function openDB() {
       }
       if (!d.objectStoreNames.contains('settings')) {
         d.createObjectStore('settings', { keyPath: 'key' });
+      }
+      if (!d.objectStoreNames.contains('license_types')) {
+        d.createObjectStore('license_types', { keyPath: 'code' });
       }
     };
     req.onsuccess = e => { db = e.target.result; resolve(db); };
@@ -885,7 +945,7 @@ async function renderLicensees() {
 function showLicenseeForm(data) {
   d = data || {};
   const title = d.id ? 'લાઇસન્સી સંપાદિત કરો / Edit Licensee' : 'નવું લાઇસન્સી / New Licensee';
-  const types = LicenseTypes.map(t => `<option value="${t}" ${d.licenseType===t?'selected':''}>${t} - ${LicenseTypeNames[t]||t}</option>`).join('');
+  const types = getLicenseTypeCodes().map(t => `<option value="${t}" ${d.licenseType===t?'selected':''}>${t} - ${getLicenseTypeName(t)}</option>`).join('');
   const html = `<form onsubmit="saveLicensee(event, ${d.id||'null'})">
     <div class="form-group">
       <label class="form-label">નામ / Name *</label>
@@ -979,11 +1039,33 @@ async function deleteLicensee(id) {
 }
 
 // ============ LICENSE TYPES ============
-function renderLicenseTypes() {
+async function renderLicenseTypes() {
   const container = document.getElementById('licenseTypeChips');
-  container.innerHTML = LicenseTypes.map(t => 
-    `<span class="chip"><strong>${t}</strong> ${LicenseTypeNames[t]||''}</span>`
-  ).join('');
+  const types = getAllLicenseTypes();
+  // Group by category
+  const categories = getLicenseCategories();
+  let html = '';
+  for (const cat of categories) {
+    const catTypes = types.filter(t => t.category === cat);
+    if (catTypes.length === 0) continue;
+    html += `<div class="category-section">
+      <div class="category-title"><strong>${cat}</strong></div>
+      <div class="category-chips">`;
+    html += catTypes.map(t => 
+      `<span class="chip"><strong>${t.code}</strong> ${t.name||''}</span>`
+    ).join('');
+    html += `</div></div>`;
+  }
+  // If no categories, show all flat
+  if (!html) {
+    html = types.map(t => 
+      `<span class="chip"><strong>${t.code}</strong> ${t.name||''}</span>`
+    ).join('');
+  }
+  container.innerHTML = html;
+  // Update count
+  const countEl = document.getElementById('licenseTypeCount');
+  if (countEl) countEl.textContent = types.length;
 }
 
 // ============ INSPECTIONS ============
@@ -994,7 +1076,7 @@ async function initInspectionForm() {
   // Fill license types
   const sel = document.getElementById('inspLicenseType');
   sel.innerHTML = '<option value="">-- પસંદ કરો / Select --</option>' +
-    LicenseTypes.map(t => `<option value="${t}">${t} - ${LicenseTypeNames[t]||t}</option>`).join('');
+    getLicenseTypeCodes().map(t => `<option value="${t}">${t} - ${getLicenseTypeName(t)}</option>`).join('');
   
   // Fill multi-select licensees
   await renderInspLicenseeSelect();
@@ -1323,11 +1405,12 @@ async function uploadToDrive() {
     const inspections = await dbGetAll('inspections') || [];
     const diaries = await dbGetAll('diaries') || [];
     const settings = await dbGetAll('settings') || [];
+    const licenseTypes = await dbGetAll('license_types') || [];
     
     const dbExport = {
-      version: 1,
+      version: 2, // bumped for license_types support
       exportedAt: new Date().toISOString(),
-      data: { licensees, inspections, diaries, settings }
+      data: { licensees, inspections, diaries, settings, license_types: licenseTypes }
     };
     
     const jsonStr = JSON.stringify(dbExport, null, 2);
@@ -1432,6 +1515,18 @@ async function downloadFromDrive() {
         await dbAdd('settings', s);
       }
     }
+    if (dbExport.data.license_types) {
+      await dbClear('license_types');
+      for (const lt of dbExport.data.license_types) {
+        await dbAdd('license_types', lt);
+      }
+    } else if (dbExport.version >= 2) {
+      // version 2+ should have license_types; if not, seed defaults
+      await seedDefaultLicenseTypes();
+    }
+    
+    // Reload license type cache
+    await loadLicenseTypes();
     
     const now = new Date().toLocaleString();
     await setSetting('lastSyncTime', now);
@@ -1469,11 +1564,12 @@ async function exportLocalBackup() {
     const inspections = await dbGetAll('inspections') || [];
     const diaries = await dbGetAll('diaries') || [];
     const settings = await dbGetAll('settings') || [];
+    const licenseTypes = await dbGetAll('license_types') || [];
     
     const dbExport = {
-      version: 1,
+      version: 2, // bumped for license_types support
       exportedAt: new Date().toISOString(),
-      data: { licensees, inspections, diaries, settings }
+      data: { licensees, inspections, diaries, settings, license_types: licenseTypes }
     };
     
     const blob = new Blob([JSON.stringify(dbExport, null, 2)], { type: 'application/json' });
@@ -1517,6 +1613,15 @@ async function importLocalBackup(event) {
       await dbClear('settings');
       for (const s of dbExport.data.settings) await dbAdd('settings', s);
     }
+    if (dbExport.data.license_types) {
+      await dbClear('license_types');
+      for (const lt of dbExport.data.license_types) await dbAdd('license_types', lt);
+    } else if (dbExport.version >= 2) {
+      await seedDefaultLicenseTypes();
+    }
+    
+    // Reload license type cache
+    await loadLicenseTypes();
     
     showToast('✅ બેકઅપ પુનઃસ્થાપિત / Backup restored!', 'success');
     refreshDashboard();
@@ -1571,6 +1676,12 @@ if ('serviceWorker' in navigator) {
       }
       await setSetting('initialized', 'true');
     }
+    
+    // Seed default license types (won't re-seed if already present)
+    await seedDefaultLicenseTypes();
+    
+    // Load license types into cache
+    await loadLicenseTypes();
     
     // Show dashboard
     await refreshDashboard();
