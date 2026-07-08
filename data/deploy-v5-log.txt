@@ -1,0 +1,48 @@
+Excise Desktop App - Version 5 Deployment Log
+=============================================
+Deployment Date: 2026-07-07 15:30 IST
+Deployed by: Subagent for Jignesh S Tanna
+
+Status: ✅ SUCCESS
+
+Build Summary:
+- Source: excise-tool/ (main.js, renderer/index.html, src/*)
+- Dist: dist/win-unpacked
+- ZIP: Excise-Desktop-v5.zip (uploaded to Drive)
+
+Features Verified (V5):
+1. ✅ Bulk Import List Refresh - afterBulkImport() properly awaits loadLicensees()
+2. ✅ Distance Calculator - Timeout guard (12s), checks for dynamic insp-location field
+3. ✅ Vehicle Number Dropdown - datalist from vehicle_master, gear icon for Vehicle Manager modal
+4. ✅ Inspection Template Per License Type - Template Manager with upload/preview/delete, fields load dynamically
+5. ✅ init.js insert() - last_insert_rowid queried BEFORE saveDatabase()
+
+IPC Handlers Verified in main.js:
+- get-vehicles, add-vehicle, delete-vehicle
+- upload-inspection-template, get-inspection-template, get-all-templates, delete-template
+- calculate-distance
+- get-licensees, save-licensee, delete-licensee, get-licensee-by-id
+- save-inspection, get-inspections-by-month, get-inspection-detail
+- update-inspection, delete-inspection
+- generate-diary, update-diary, delete-diary
+- get-calendar-data, add-reminder, complete-reminder, delete-reminder
+- bulk-import-preview, bulk-import-execute, bulk-import-history
+- generate-cumulative-report
+- send-whatsapp-reminder, test-whatsapp, get-whatsapp-settings, save-whatsapp-settings
+- drive-upload-sync, drive-download-sync, drive-sync-status
+- get-settings, save-settings
+
+Deployment Steps Completed:
+1. JS Syntax: ✓ Verified (new Function parse passed)
+2. main.js copied to dist
+3. renderer/index.html copied to dist
+4. src/ directory copied to dist recursively
+5. ZIP created: Excise-Desktop-v5.zip (excluded data/ folder)
+6. ZIP uploaded to Drive: File ID 1CEKgah7a1_z07ageTli7SCll7LoL1--4 (replaced existing)
+
+Drive Link: https://drive.google.com/file/d/1CEKgah7a1_z07ageTli7SCll7LoL1--4/view
+
+Notes:
+- The ZIP file is ~172 MB (compressed from dist/win-unpacked)
+- Excludes data/ folder to preserve user data separately
+- All UI is bilingual (Gujarati/English)

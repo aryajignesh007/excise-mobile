@@ -1,0 +1,179 @@
+{
+  "htmlSize": 104154,
+  "openBraces": 506,
+  "closeBraces": 506,
+  "balanced": true,
+  "difference": 0,
+  "distStatusFound": true,
+  "snippetAroundDistStatus": "ો</button>\r\n                            <span id=\"dist-status\" style=\"font-size:12px;color:#666\"></span>\r\n                        </div>\r\n                    </div>\r\n                    <div></div>\r\n ",
+  "consecutiveCloses": [
+    {
+      "index": 35731,
+      "context": ").classList.add('active');\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 36345,
+      "context": " sel.appendChild(opt);\r\n                }\r\n            }\r\n  "
+    },
+    {
+      "index": 36760,
+      "context": " sel.appendChild(opt);\r\n                }\r\n            }\r\n  "
+    },
+    {
+      "index": 39985,
+      "context": "otal-licensees').textContent = 'Error'; }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 42063,
+      "context": "         } catch(e) { console.error(e); }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 43590,
+      "context": "rt('Error: ' + e.message);\r\n            }\r\n        }\r\n      "
+    },
+    {
+      "index": 44691,
+      "context": "rt('Error: ' + e.message);\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 46095,
+      "context": "  showLicenseeTab('list');\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 47036,
+      "context": "         } catch(e) { console.error(e); }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 48457,
+      "context": "rror: ${e.message}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 49684,
+      "context": "ontent = '❌ ' + e.message;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 51150,
+      "context": "xtContent = '📍 અંતર ગણો';\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 51980,
+      "context": "         } catch(e) { console.error(e); }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 58032,
+      "context": "          } catch(e) {\r\n                }\r\n            }\r\n\r\n"
+    },
+    {
+      "index": 58926,
+      "context": "ીક્ષણ સાચવી શકાયું નથી.');\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 62244,
+      "context": "or\">❌ ${e.message}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 64614,
+      "context": "wrap.innerHTML = 'Error: ' + e.message; }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 65727,
+      "context": ">❌ ${result.error}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 66413,
+      "context": ">❌ ${result.error}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 67349,
+      "context": ">❌ ${result.error}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 68218,
+      "context": ">❌ ${result.error}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 70624,
+      "context": "||'-'}</td></tr>`;\r\n                    }\r\n                }"
+    },
+    {
+      "index": 71318,
+      "context": "rror: ${e.message}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 74878,
+      "context": "rror: ${e.message}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 76672,
+      "context": "  alert('❌ ' + e.message);\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 77289,
+      "context": "  alert('❌ ' + e.message);\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 79525,
+      "context": "or\">❌ ${e.message}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 80989,
+      "context": "L = 'Error: ' + e.message;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 81666,
+      "context": "atch(e) { alert('Error: ' + e.message); }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 82867,
+      "context": "atch(e) { alert('Error: ' + e.message); }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 83394,
+      "context": "atch(e) { alert('Error: ' + e.message); }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 87178,
+      "context": "n'}\"></span>`;\r\n                        }\r\n                 "
+    },
+    {
+      "index": 88195,
+      "context": "rror: ${e.message}</div>`;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 89726,
+      "context": "L = 'Error: ' + e.message;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 91484,
+      "context": "L = 'Error: ' + e.message;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 93447,
+      "context": "lert('❌ ' + result.error);\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 96284,
+      "context": "or\">❌ ${e.message}</div>`;\r\n            }\r\n        }\r\n      "
+    },
+    {
+      "index": 97444,
+      "context": "L = 'Error: ' + e.message;\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 99000,
+      "context": "         } catch(e) { console.error(e); }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 101486,
+      "context": " ' + e.message + '</div>';\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 102506,
+      "context": " ' + e.message + '</div>';\r\n            }\r\n        }\r\n\r\n    "
+    },
+    {
+      "index": 103704,
+      "context": "'Drive status error:', e);\r\n            }\r\n        }\r\n\r\n    "
+    }
+  ]
+}

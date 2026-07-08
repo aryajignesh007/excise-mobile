@@ -1,0 +1,43 @@
+{
+  "name": "excise-inspection-tool",
+  "version": "4.0.0",
+  "description": "Excise Inspection Management System - Superintendent, Prohibition & Excise, Surat",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "test-db": "node index.js init-db"
+  },
+  "build": {
+    "appId": "com.excise.surat.inspection",
+    "productName": "Excise Inspection Manager",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "asar": false
+  },
+  "keywords": [],
+  "author": "Jignesh S Tanna",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.7.0",
+    "docx": "^8.5.0",
+    "sql.js": "^1.11.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.0.2",
+    "electron": "^43.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}

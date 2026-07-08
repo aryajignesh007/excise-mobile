@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Excise Inspection Manager - Surat</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; }
+        .header { background: linear-gradient(135deg, #1a237e, #283593); color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 20px; font-weight: 500; }
+        .header .subtitle { font-size: 12px; opacity: 0.8; }
+        .sidebar { width: 220px; background: #fff; height: calc(100vh - 60px); float: left; border-right: 1px solid #ddd; overflow-y: auto; }
+        .sidebar a { display: block; padding: 12px 20px; color: #333; text-decoration: none; border-left: 3px solid transparent; font-size: 14px; }
+        .sidebar a:hover { background: #e8eaf6; border-left-color: #1a237e; }
+        .sidebar a.active { background: #e8eaf6; border-left-color: #1a237e; font-weight: 600; }
+        .sidebar a.sidebar-divider { border-top: 1px solid #eee; margin-top: 5px; padding-top: 10px; font-size: 11px; color: #999; text-transform: uppercase; pointer-events: none; }
+        .content { margin-left: 220px; padding: 20px; min-height: calc(100vh - 60px); }
+        .card { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card h2 { color: #1a237e; font-size: 18px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e8eaf6; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .stat-card { background: #fff; border-radius: 8px; padding: 20px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .stat-card .number { font-size: 28px; font-weight: 700; color: #1a237e; }
+        .stat-card .label { font-size: 13px; color: #666; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 13px; }
+        th { background: #f5f5f5; font-weight: 600; color: #333; }
+        tr:hover { background: #f8f9ff; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-primary { background: #1a237e; color: white; }
+        .btn-primary:hover { background: #283593; }
+        .btn-success { background: #2e7d32; color: white; }
+        .btn-success:hover { background: #388e3c; }
+        .btn-danger { background: #c62828; color: white; }
+        .btn-danger:hover { background: #d32f2f; }
+        .btn-warning { background: #e65100; color: white; }
+        .btn-warning:hover { background: #ef6c00; }
+        .btn-sm { padding: 4px 10px; font-size: 12px; }
+        .badge { padding: 3px 8px; border-radius: 12px; font-size: 11px; }
+        .badge-green { background: #e8f5e9; color: #2e7d32; }
+        .badge-red { background: #ffebee; color: #c62828; }
+        .tab-bar { display: flex; border-bottom: 2px solid #e0e0e0; margin-bottom: 15px; flex-wrap: wrap; }
+        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; background: none; font-size: 14px; color: #666; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+        .tab-btn.active { color: #1a237e; border-bottom-color: #1a237e; font-weight: 600; }
+        input, select, textarea { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; margin-bottom: 10px; }
+        textarea { min-height: 80px; resize: vertical; }
+        label { font-size: 13px; font-weight: 600; color: #333; display: block; margin-bottom: 3px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .form-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; }
+        .section-header { background: #e8eaf6; padding: 8px 12px; font-weight: 600; color: #1a237e; margin: 10px 0; border-radius: 4px; }
+        .guj-text { font-family: 'Nirmala UI', 'Shruti', sans-serif; }
+        .hide { display: none; }
+        .chip { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 11px; background: #e3f2fd; color: #1565c0; margin: 2px; }
+        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 5px; max-height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; border-radius: 4px; }
+        .checkbox-grid label { font-weight: normal; font-size: 13px; display: flex; align-items: center; gap: 5px; }
+        .checkbox-grid input[type="checkbox"] { width: auto; margin: 0; }
+        /* Calendar Styles */
+        .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .cal-nav h3 { color: #1a237e; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+        .cal-header { background: #1a237e; color: white; text-align: center; padding: 8px; font-weight: 600; font-size: 13px; }
+        .cal-day { min-height: 80px; padding: 5px; border: 1px solid #e0e0e0; text-align: center; cursor: pointer; position: relative; font-size: 12px; }
+        .cal-day:hover { background: #e8eaf6; }
+        .cal-day .day-num { font-weight: 700; font-size: 14px; }
+        .cal-day.has-inspection { background: #e8f5e9; border-color: #2e7d32; }
+        .cal-day.has-violation { background: #ffebee; border-color: #c62828; }
+        .cal-day.other-month { opacity: 0.4; }
+        .cal-day .cal-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin: 1px; }
+        .cal-day .cal-dot.green { background: #2e7d32; }
+        .cal-day .cal-dot.red { background: #c62828; }
+        .cal-day .cal-dot.blue { background: #1565c0; }
+        /* Modal */
+        .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; display:flex; align-items:center; justify-content:center; }
+        .modal-content { background:white; border-radius:8px; padding:20px; max-width:700px; width:90%; max-height:80vh; overflow-y:auto; }
+        .modal-content h3 { color:#1a237e; margin-bottom:15px; }
+        .modal-close { float:right; cursor:pointer; font-size:20px; color:#666; }
+        .modal-close:hover { color:#333; }
+        .action-bar { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
+        .loading { text-align: center; padding: 20px; color: #666; }
+        .empty-state { text-align: center; padding: 40px; color: #999; }
+        .filter-bar { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 15px; }
+        .filter-bar > div { min-width: 150px; }
+        .filter-bar input, .filter-bar select { margin-bottom: 0; }
+        .whatsapp-preview { background: #dcf8c6; border-radius: 12px; padding: 15px; white-space: pre-wrap; font-size: 13px; max-height: 300px; overflow-y: auto; }
+        .result-box { padding: 12px; border-radius: 6px; margin-top: 10px; font-size: 13px; }
+        .result-box.success { background: #e8f5e9; border: 1px solid #a5d6a7; }
+        .result-box.error { background: #ffebee; border: 1px solid #ef9a9a; }
+        .result-box.info { background: #e3f2fd; border: 1px solid #90caf9; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🏛️ Excise Inspection Manager - સુરત</h1>
+            <div class="subtitle">Superintendent, Prohibition & Excise Department</div>
+        </div>
+        <div>Jignesh S Tanna | <span id="clock"></span></div>
+    </div>
+
+    <div class="sidebar">
+        <a href="#" class="active" onclick="showPage('dashboard')">📊 ડેશબોર્ડ</a>
+        <a href="#" onclick="showPage('licensees')">📋 લાયસન્સી</a>
+        <a href="#" onclick="showPage('inspection')">🔍 નવો અહેવાલ</a>
+        <a href="#" onclick="showPage('history')">📁 જૂના અહેવાલ</a>
+        <a href="#" onclick="showPage('diary')">📅 ડાયરી જનરેટર</a>
+        <a href="#" onclick="showPage('calendar')">🗓️ કેલેન્ડર</a>
+        <a href="#" onclick="showPage('licensees');showLicenseeTab('bulk')">📥 બલ્ક ઇમ્પોર્ટ</a>
+        <a href="#" onclick="showPage('license-types')">🏷️ લાયસન્સ પ્રકારો</a>
+        <a href="#" onclick="showPage('templates')">📋 ટેમ્પલેટ મેનેજર</a>
+        <a href="#" onclick="showPage('settings')">⚙️ સેટિંગ્સ</a>
+    </div>
+
+    <div class="content">
+        <!-- ============================================================ -->
+        <!-- DASHBOARD -->
+        <!-- ============================================================ -->
+        <div id="page-dashboard">
+            <div class="card">
+                <h2>📊 ડેશબોર્ડ / Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="stat-card"><div class="number" id="stat-total-licensees">-</div><div class="label">કુલ લાયસન્સી</div></div>
+                    <div class="stat-card"><div class="number" id="stat-license-types">-</div><div class="label">લાયસન્સ પ્રકારો</div></div>
+                    <div class="stat-card"><div class="number" id="stat-this-month">-</div><div class="label">આ માસના નિરીક્ષણ</div></div>
+                    <div class="stat-card"><div class="number" id="stat-priority">-</div><div class="label">પ્રાથમિકતા લાયસન્સી</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <h2>⚡ ઝડપી ક્રિયાઓ / Quick Actions</h2>
+                <button class="btn btn-primary" onclick="showPage('inspection')">🔍 નવું નિરીક્ષણ</button>
+                <button class="btn btn-success" style="margin-left:5px" onclick="showPage('licensees')">📋 નવો લાયસન્સી</button>
+                <button class="btn btn-warning" style="margin-left:5px" onclick="showPage('diary')">📅 ડાયરી બનાવો</button>
+                <button class="btn btn-primary" style="margin-left:5px;background:#1565c0" onclick="showPage('licensees');showLicenseeTab('bulk')">📥 બલ્ક ઇમ્પોર્ટ</button>
+                <span id="dashboard-sync-indicator" style="margin-left:10px;font-size:12px;color:#888;padding:4px 8px;background:#f5f5f5;border-radius:4px">☁️ સિંક: -</span>
+            </div>
+            <div class="card">
+                <h2>📋 લાયસન્સી યાદી / Licensee List</h2>
+                <div id="dashboard-licensee-list">Loading...</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- LICENSEES PAGE -->
+        <!-- ============================================================ -->
+        <div id="page-licensees" class="hide">
+            <div class="card">
+                <h2>📋 લાયસન્સી મેનેજમેન્ટ</h2>
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="showLicenseeTab('list')">📋 યાદી</button>
+                    <button class="tab-btn" onclick="showLicenseeTab('add')">+ નવો ઉમેરો</button>
+                    <button class="tab-btn" onclick="showLicenseeTab('bulk')">📥 બલ્ક ઇમ્પોર્ટ</button>
+                    <button class="tab-btn" onclick="showLicenseeTab('mapping')">🏷️ લાયસન્સ મેપિંગ</button>
+                </div>
+                <div id="licensee-tab-list">
+                    <div class="action-bar" style="margin-bottom:10px">
+                        <button class="btn btn-primary btn-sm" onclick="loadLicensees()">🔄 તાજું કરો</button>
+                    </div>
+                    <div class="filter-bar">
+                        <div><input id="lic-filter-text" placeholder="🔍 નામ/વિસ્તાર શોધો..." oninput="filterLicensees()"></div>
+                        <div>
+                            <select id="lic-filter-nokarnama" onchange="filterLicensees()">
+                                <option value="">બધા લાયસન્સી</option>
+                                <option value="Yes">નોકરનામા ધારક</option>
+                                <option value="No">બિન-નોકરનામા</option>
+                            </select>
+                        </div>
+                        <div><button class="btn btn-sm btn-primary" onclick="filterLicensees()">🔄 ફિલ્ટર</button></div>
+                    </div>
+                    <table id="licensee-table"><thead><tr><th>ID</th><th>નામ</th><th>વિસ્તાર</th><th>સંપર્ક</th><th>નોકરનામા</th><th>📋 લાયસન્સ</th><th>પ્રાથમિકતા</th><th>ક્રિયાઓ</th></tr></thead><tbody></tbody></table>
+                </div>
+                <div id="licensee-tab-add" class="hide">
+                    <input type="hidden" id="lic-edit-id" value="">
+                    <div class="form-row">
+                        <div><label>લાયસન્સીનું નામ</label><input id="lic-name" placeholder="e.g. Acutaas Chemicals Limited"></div>
+                        <div><label>સરનામું</label><input id="lic-address" placeholder="e.g. Sachin GIDC"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>વિસ્તાર (GIDC)</label><input id="lic-area" placeholder="Sachin GIDC / Pandesara / Hazira"></div>
+                        <div><label>ફોન નંબર</label><input id="lic-phone" placeholder="Phone"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>સંપર્ક વ્યક્તિ</label><input id="lic-contact" placeholder="e.g. Milan Dobaria"></div>
+                        <div><label>નોકરનામા ધારક</label><select id="lic-nokarnama"><option value="Yes">Yes</option><option value="No">No</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>ઈમેલ</label><input id="lic-email" placeholder="email"></div>
+                        <div><label><input type="checkbox" id="lic-priority"> ⭐ પ્રાથમિકતા (Must Inspect)</label></div>
+                    </div>
+                    <div class="action-bar" style="margin-top:5px">
+                        <button class="btn btn-success" onclick="saveLicensee()" id="btn-save-licensee">💾 સાચવો</button>
+                        <button class="btn btn-danger hide" onclick="cancelEditLicensee()" id="btn-cancel-edit">રદ કરો</button>
+                    </div>
+                </div>
+                <div id="licensee-tab-bulk" class="hide">
+                    <p style="margin-bottom:15px;color:#666">Excel (.xlsx/.xls) અથવા CSV ફાઇલ અપલોડ કરો. ફાઇલમાં નીચેના columns હોવા જોઇએ: <strong>name, address, gidc_area, phone, license_type_code</strong></p>
+                    <div class="action-bar">
+                        <button class="btn btn-primary" onclick="bulkImportSelectFile()">📂 ફાઇલ પસંદ કરો</button>
+                    </div>
+                    <div id="bulk-preview-area" class="hide" style="margin-top:15px">
+                        <h3>📄 પ્રીવ્યૂ / Preview</h3>
+                        <p id="bulk-file-name"></p>
+                        <p id="bulk-row-count"></p>
+                        <div id="bulk-preview-table" style="max-height:300px;overflow:auto;margin:10px 0"></div>
+                        <button class="btn btn-success" onclick="bulkImportExecute()">✅ ઇમ્પોર્ટ શરૂ કરો</button>
+                        <div id="bulk-result"></div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:15px">
+                    <h3>📜 ઇમ્પોર્ટ હિસ્ટરી / Import History</h3>
+                    <div id="bulk-import-history">Loading...</div>
+                </div>
+                <div id="licensee-tab-mapping" class="hide">
+                    <div class="form-row">
+                        <div><label>લાયસન્સી પસંદ કરો</label>
+                            <select id="licmap-licensee" onchange="onLicenseeMappingSelect()">
+                                <option value="">-- લાયસન્સી પસંદ કરો --</option>
+                            </select>
+                        </div>
+                        <div style="display:flex;align-items:flex-end">
+                            <button class="btn btn-primary btn-sm" onclick="loadLicenseMapDropdown()">🔄 તાજું કરો</button>
+                        </div>
+                    </div>
+                    <div id="licmap-area" class="hide">
+                        <h3 style="margin:15px 0 10px 0;color:#1a237e">🏷️ લાયસન્સ પ્રકારો / License Types</h3>
+                        <p style="margin-bottom:5px;color:#666;font-size:13px">કયા લાયસન્સ પ્રકારો આ લાયસન્સીને સોંપાયેલ છે તે પસંદ કરો:</p>
+                        <div id="licmap-checkboxes" class="checkbox-grid" style="max-height:400px">
+                            <p>લોડ થઈ રહ્યું છે...</p>
+                        </div>
+                        <div class="action-bar" style="margin-top:15px">
+                            <button class="btn btn-success" onclick="saveLicenseeLicenses()">💾 મેપિંગ સાચવો</button>
+                            <button class="btn btn-primary btn-sm" onclick="selectAllLicenseTypes(true)">✅ બધા પસંદ કરો</button>
+                            <button class="btn btn-sm" onclick="selectAllLicenseTypes(false)">❌ બધા અનપસંદ કરો</button>
+                            <span id="licmap-status" style="margin-left:10px;font-size:13px;color:#666"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- INSPECTION PAGE (V4: Multi-select licensees + Cumulative Report) -->
+        <!-- ============================================================ -->
+        <div id="page-inspection" class="hide">
+            <div class="card">
+                <h2>🔍 નવું નિરીક્ષણ / New Inspection</h2>
+                <div class="form-row-3">
+                    <div><label>લાયસન્સી પસંદ કરો
+                        <button class="btn btn-sm btn-primary" onclick="loadInspectionForm()" title="Refresh licensees" style="float:right;padding:2px 8px;font-size:11px">🔄</button>
+                    </label>
+                        <div id="insp-licensee-checkboxes" class="checkbox-grid" style="max-height:200px">
+                            <p class="loading">લાયસન્સી લોડ થઈ રહ્યા છે...</p>
+                        </div>
+                    </div>
+                    <div><label>લાયસન્સ પ્રકાર</label><select id="insp-license-type" onchange="onLicenseTypeChange()"></select></div>
+                    <div><label>નિરીક્ષણ તારીખ</label><input type="date" id="insp-date"></div>
+                </div>
+                <div class="form-row-3">
+                    <div><label>સમય</label><input type="time" id="insp-time"></div>
+                    <div><label>વાહન નંબર
+                        <button class="btn btn-sm btn-primary" onclick="showVehicleManager()" title="Manage Vehicles" style="float:right;padding:2px 8px;font-size:11px">⚙️</button>
+                    </label>
+                        <input id="insp-vehicle" list="vehicle-list" placeholder="GJ-01-XX-XXXX (type or select)">
+                        <datalist id="vehicle-list"></datalist>
+                    </div>
+                    <div><label><input type="checkbox" id="insp-use-last"> 📋 પહેલાની મુલાકાતનો ઉપયોગ કરો</label></div>
+                </div>
+                <div class="form-row">
+                    <div><label>અંતર (km)</label>
+                        <div style="display:flex;gap:5px;align-items:center">
+                            <input id="insp-distance" type="number" step="0.1" min="0" placeholder="0.0" style="width:120px;margin-bottom:0">
+                            <button class="btn btn-primary btn-sm" onclick="calculateDistance()" id="btn-calc-dist" style="white-space:nowrap">📍 અંતર ગણો</button>
+                            <span id="dist-status" style="font-size:12px;color:#666"></span>
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+                <div id="insp-form-area"><p>કૃપા કરીને લાયસન્સી અને લાયસન્સ પ્રકાર પસંદ કરો.</p></div>
+                <div style="margin-top:10px">
+                    <button class="btn btn-success" onclick="saveInspections()" id="btn-save-inspections">💾 નિરીક્ષણ સાચવો</button>
+                    <button class="btn btn-primary" onclick="showCumulativeReportModal()" id="btn-cumulative-report" style="display:none;margin-left:10px">📊 ક્યુમ્યુલેટિવ રિપોર્ટ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- HISTORY PAGE (V4: View/Edit/Delete) -->
+        <!-- ============================================================ -->
+        <div id="page-history" class="hide">
+            <div class="card">
+                <h2>📁 નિરીક્ષણ હિસ્ટરી / Inspection History</h2>
+                <div class="form-row-3" style="align-items:flex-end">
+                    <div><label>માસ</label><select id="hist-month"></select></div>
+                    <div><label>વર્ષ</label><select id="hist-year"></select></div>
+                    <div><button class="btn btn-primary" onclick="loadHistory()" style="width:100%">🔍 બતાવો</button></div>
+                </div>
+                <div class="action-bar" style="margin:10px 0">
+                    <button class="btn btn-success btn-sm" onclick="exportMonthExcel()">📥 Export All to Excel</button>
+                </div>
+                <div id="history-table-wrap" style="margin-top:15px"></div>
+                <div id="history-export-result" style="margin-top:10px"></div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- DIARY PAGE (V4: List existing diaries + Edit/Delete) -->
+        <!-- ============================================================ -->
+        <div id="page-diary" class="hide">
+            <div class="card">
+                <h2>📅 માસિક ડાયરી જનરેટર / Monthly Diary Generator</h2>
+                <div class="form-row-4">
+                    <div><label>માસ</label><select id="diary-month"></select></div>
+                    <div><label>વર્ષ</label><select id="diary-year"></select></div>
+                    <div><button class="btn btn-success" onclick="generateDiary()" style="width:100%">📄 ડાયરી બનાવો</button></div>
+                    <div><button class="btn btn-primary" onclick="refreshDiaryList()" style="width:100%">🔄 યાદી તાજી કરો</button></div>
+                </div>
+                <div id="diary-result" style="margin-top:15px"></div>
+            </div>
+            <div class="card">
+                <h2>📋 સેવ કરેલ ડાયરીઓ / Saved Diaries</h2>
+                <div id="diary-list-wrap">
+                    <p>લોડ થઈ રહ્યું છે...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- CALENDAR PAGE (V4: Full calendar grid) -->
+        <!-- ============================================================ -->
+        <div id="page-calendar" class="hide">
+            <div class="card">
+                <h2>🗓️ કેલેન્ડર / Calendar</h2>
+                <div class="cal-nav">
+                    <button class="btn btn-primary btn-sm" onclick="calendarPrevMonth()">◀ પાછલો માસ</button>
+                    <h3 id="cal-month-year"></h3>
+                    <button class="btn btn-primary btn-sm" onclick="calendarNextMonth()">આગલો માસ ▶</button>
+                </div>
+                <div class="cal-grid" id="cal-grid"></div>
+                <div style="margin-top:10px;font-size:13px">
+                    <span class="badge badge-green">●</span> નિરીક્ષણ છે &nbsp;
+                    <span class="badge badge-red">●</span> ક્ષતિઓ મળી &nbsp;
+                    <span class="badge" style="background:#e3f2fd;color:#1565c0">●</span> રીમાઇન્ડર
+                </div>
+            </div>
+            <!-- Date detail popup -->
+            <div id="cal-date-detail" class="hide">
+                <div class="card">
+                    <h2 id="cal-date-title">તારીખની વિગત</h2>
+                    <div id="cal-date-data"></div>
+                    <div class="action-bar">
+                        <button class="btn btn-warning btn-sm" onclick="sendWhatsAppFromCalendar()">📱 WhatsApp રીમાઇન્ડર</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Reminders section -->
+            <div class="card">
+                <h2>⏰ રીમાઇન્ડર / Reminders</h2>
+                <div id="reminders-list">Loading...</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- LICENSE TYPES PAGE -->
+        <!-- ============================================================ -->
+        <div id="page-license-types" class="hide">
+            <div class="card">
+                <h2>🏷️ લાયસન્સ પ્રકારો / License Types</h2>
+                <div id="license-types-table-wrap"></div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- TEMPLATES PAGE (V4d: Inspection Templates per License Type) -->
+        <!-- ============================================================ -->
+        <div id="page-templates" class="hide">
+            <div class="card">
+                <h2>📋 ઇન્સ્પેક્શન ટેમ્પલેટ મેનેજર / Template Manager</h2>
+                <p style="margin-bottom:15px;color:#666;font-size:13px">
+                    Excel/CSV ફાઇલ અપલોડ કરો જેમાં લાયસન્સ પ્રકાર મુજબ ફીલ્ડ્સ વ્યાખ્યાયિત કરેલા હોય.<br>
+                    Expected columns: <strong>license_type_code, field_label, field_type, field_options, section_name, field_order, is_required</strong>
+                </p>
+                <div class="action-bar">
+                    <button class="btn btn-primary" onclick="uploadTemplate()">📂 ટેમ્પલેટ અપલોડ કરો</button>
+                    <button class="btn btn-primary btn-sm" onclick="loadTemplates()">🔄 તાજું કરો</button>
+                </div>
+                <div id="template-upload-result" style="margin-top:10px"></div>
+            </div>
+            <div class="card">
+                <h3>📋 બધા ટેમ્પલેટ / All Templates</h3>
+                <div class="filter-bar">
+                    <div>
+                        <select id="tpl-filter-type" onchange="loadTemplates()">
+                            <option value="">બધા લાયસન્સ પ્રકારો</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="templates-list">Loading...</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- SETTINGS PAGE (V4: WhatsApp settings) -->
+        <!-- ============================================================ -->
+        <div id="page-settings" class="hide">
+            <div class="card">
+                <h2>⚙️ સેટિંગ્સ / Settings</h2>
+                <h3 style="color:#1a237e;margin-bottom:10px">📋 અધિકારી માહિતી</h3>
+                <div class="form-row">
+                    <div><label>અધિકારીનું નામ</label><input id="set-name" value="Jignesh S Tanna"></div>
+                    <div><label>હોદ્દો</label><input id="set-desig" value="Superintendent"></div>
+                </div>
+                <div class="form-row">
+                    <div><label>વિભાગ</label><input id="set-dept" value="Prohibition and Excise Department, Surat"></div>
+                    <div><label>ઓફિસ સરનામું</label><input id="set-office" value="Nanpura, Surat"></div>
+                </div>
+                <div class="form-row">
+                    <div><label>સંપર્ક નંબર</label><input id="set-contact" value="9426583984"></div>
+                    <div></div>
+                </div>
+                <button class="btn btn-primary" onclick="saveGeneralSettings()">💾 સાચવો</button>
+            </div>
+            <div class="card">
+                <h2>📱 WhatsApp અલર્ટ સેટિંગ્સ</h2>
+                <div class="form-row">
+                    <div><label><input type="checkbox" id="wa-enabled"> WhatsApp અલર્ટ સક્ષમ કરો</label></div>
+                    <div><label>wacli એકાઉન્ટ</label>
+                        <select id="wa-account"><option value="personal">personal</option><option value="office">office</option></select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div><label>રીમાઇન્ડર સમય (HH:MM)</label><input type="time" id="wa-time" value="08:00"></div>
+                    <div style="display:flex;align-items:flex-end"><button class="btn btn-primary" onclick="testWhatsApp()">🔄 ટેસ્ટ કનેક્શન</button></div>
+                </div>
+                <button class="btn btn-success" onclick="saveWhatsAppSettings()">📱 WhatsApp સેટિંગ્સ સાચવો</button>
+                <div id="wa-test-result" style="margin-top:10px"></div>
+            </div>
+            <div class="card">
+                <h2>☁️ Google Drive સિંક / Sync</h2>
+                <p style="margin-bottom:10px;color:#666;font-size:13px">Save or restore your database from Google Drive.</p>
+                <div class="action-bar">
+                    <button class="btn btn-success" onclick="uploadToDrive()">📤 અપલોડ DB to Drive</button>
+                    <button class="btn btn-primary" onclick="downloadFromDrive()">📥 ડાઉનલોડ DB from Drive</button>
+                </div>
+                <div id="drive-sync-status" style="margin-top:10px;padding:10px;background:#f5f5f5;border-radius:4px;font-size:13px">
+                    <span>🔄 સ્થિતિ તપાસી રહ્યા છે...</span>
+                </div>
+                <div id="drive-sync-result" style="margin-top:10px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODALS -->
+    <!-- ============================================================ -->
+
+    <!-- View Inspection Modal -->
+    <div id="view-insp-modal" class="hide">
+        <div class="modal-overlay" onclick="closeModal('view-insp-modal')">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="modal-close" onclick="closeModal('view-insp-modal')">&times;</span>
+                <h3>📄 નિરીક્ષણ વિગત / Inspection Details</h3>
+                <div id="view-insp-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Inspection Modal -->
+    <div id="edit-insp-modal" class="hide">
+        <div class="modal-overlay" onclick="closeModal('edit-insp-modal')">
+            <div class="modal-content" onclick="event.stopPropagation()" style="max-width:800px">
+                <span class="modal-close" onclick="closeModal('edit-insp-modal')">&times;</span>
+                <h3>✏️ નિરીક્ષણ એડિટ / Edit Inspection</h3>
+                <div id="edit-insp-form"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cumulative Report Modal -->
+    <div id="cumulative-report-modal" class="hide">
+        <div class="modal-overlay" onclick="closeModal('cumulative-report-modal')">
+            <div class="modal-content" onclick="event.stopPropagation()" style="max-width:600px">
+                <span class="modal-close" onclick="closeModal('cumulative-report-modal')">&times;</span>
+                <h3>📊 ક્યુમ્યુલેટિવ રિપોર્ટ</h3>
+                <p>પસંદ કરેલ લાયસન્સી માટે નિરીક્ષણ પસંદ કરો:</p>
+                <div id="cumulative-insp-list" style="max-height:300px;overflow-y:auto;margin:10px 0"></div>
+                <button class="btn btn-success" onclick="generateCumulativeReport()">📄 રિપોર્ટ જનરેટ કરો</button>
+                <div id="cumulative-result" style="margin-top:10px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Detail Modal (Calendar) -->
+    <div id="cal-date-modal" class="hide">
+        <div class="modal-overlay" onclick="closeModal('cal-date-modal')">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="modal-close" onclick="closeModal('cal-date-modal')">&times;</span>
+                <h3 id="cal-modal-title">તારીખની વિગત</h3>
+                <div id="cal-modal-data"></div>
+                <div class="action-bar" style="margin-top:10px">
+                    <button class="btn btn-warning btn-sm" onclick="sendWhatsAppFromCalendarModal()">📱 WhatsApp મોકલો</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        const months = ['જાન્યુઆરી','ફેબ્રુઆરી','માર્ચ','એપ્રિલ','મે','જૂન','જુલાઈ','ઓગસ્ટ','સપ્ટેમ્બર','ઓક્ટોબર','નવેમ્બર','ડિસેમ્બર'];
+        const engMonths = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        let calendarMonth = new Date().getMonth() + 1;
+        let calendarYear = new Date().getFullYear();
+        let currentDateInspections = [];
+        let selectedLicenseeIds = [];
+        let bulkImportFilePath = null;
+
+        // ====================================================================
+        // NAVIGATION
+        // ====================================================================
+        function showPage(page) {
+            document.querySelectorAll('.content > div[id^="page-"]').forEach(d => d.classList.add('hide'));
+            const el = document.getElementById('page-' + page);
+            if (el) el.classList.remove('hide');
+            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            const link = Array.from(document.querySelectorAll('.sidebar a')).find(a => a.onclick && a.onclick.toString().includes(page));
+            if (link) link.classList.add('active');
+            if (page === 'dashboard') loadDashboard();
+            if (page === 'licensees') loadLicensees();
+            if (page === 'license-types') loadLicenseTypes();
+            if (page === 'inspection') loadInspectionForm();
+            if (page === 'history') { initSelectIfEmpty('hist-month'); initSelectIfEmpty('hist-year'); }
+            if (page === 'calendar') renderCalendar();
+            if (page === 'diary') { refreshDiaryList(); }
+            if (page === 'templates') loadTemplates();
+            if (page === 'settings') loadSettings();
+        }
+
+        function showLicenseeTab(tab) {
+            document.querySelectorAll('#page-licensees .tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('licensee-tab-list').classList.add('hide');
+            document.getElementById('licensee-tab-add').classList.add('hide');
+            document.getElementById('licensee-tab-bulk').classList.add('hide');
+            document.getElementById('licensee-tab-mapping').classList.add('hide');
+            if (tab === 'list') {
+                document.getElementById('licensee-tab-list').classList.remove('hide');
+                document.querySelector('#page-licensees .tab-btn:nth-child(1)').classList.add('active');
+                loadLicensees();
+            } else if (tab === 'bulk') {
+                document.getElementById('licensee-tab-bulk').classList.remove('hide');
+                document.querySelector('#page-licensees .tab-btn:nth-child(3)').classList.add('active');
+                // Reset bulk preview
+                document.getElementById('bulk-preview-area').classList.add('hide');
+                document.getElementById('bulk-result').innerHTML = '';
+                bulkImportFilePath = null;
+                loadBulkImportHistory();
+            } else if (tab === 'mapping') {
+                document.getElementById('licensee-tab-mapping').classList.remove('hide');
+                document.querySelector('#page-licensees .tab-btn:nth-child(4)').classList.add('active');
+                loadLicenseMapDropdown();
+            } else {
+                document.getElementById('licensee-tab-add').classList.remove('hide');
+                document.querySelector('#page-licensees .tab-btn:nth-child(2)').classList.add('active');
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hide');
+        }
+
+        function initSelectIfEmpty(id) {
+            const sel = document.getElementById(id);
+            if (sel.options.length === 0) {
+                for (let m = 1; m <= 12; m++) {
+                    const opt = document.createElement('option');
+                    opt.value = m;
+                    opt.text = months[m-1];
+                    if (m === new Date().getMonth() + 1) opt.selected = true;
+                    sel.appendChild(opt);
+                }
+            }
+            if (id.includes('year') && sel.options.length === 0) {
+                for (let y = 2025; y <= 2026; y++) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.text = y;
+                    if (y === new Date().getFullYear()) opt.selected = true;
+                    sel.appendChild(opt);
+                }
+            }
+        }
+
+        function initSelects() {
+            [['hist-month',1],['diary-month',1]].forEach(([id,start]) => {
+                const sel = document.getElementById(id);
+                for (let m = 1; m <= 12; m++) {
+                    const opt = document.createElement('option');
+                    opt.value = m;
+                    opt.text = months[m-1];
+                    if (m === new Date().getMonth() + 1) opt.selected = true;
+                    sel.appendChild(opt);
+                }
+            });
+            [['hist-year',2025],['diary-year',2025]].forEach(([id,start]) => {
+                const sel = document.getElementById(id);
+                for (let y = start; y <= 2026; y++) {
+                    const opt = document.createElement('option');
+                    opt.value = y;
+                    opt.text = y;
+                    if (y === new Date().getFullYear()) opt.selected = true;
+                    sel.appendChild(opt);
+                }
+            });
+        }
+
+        // ====================================================================
+        // CLOCK
+        // ====================================================================
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleDateString('gu-IN') + ' ' + now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ====================================================================
+        // DASHBOARD
+        // ====================================================================
+        async function loadDashboard() {
+            try {
+                const licensees = await ipcRenderer.invoke('get-licensees');
+                const types = await ipcRenderer.invoke('get-license-types');
+                const now = new Date();
+                const inspections = await ipcRenderer.invoke('get-inspections-by-month', now.getMonth() + 1, now.getFullYear());
+                
+                document.getElementById('stat-total-licensees').textContent = licensees.length;
+                document.getElementById('stat-license-types').textContent = types.length;
+                document.getElementById('stat-this-month').textContent = inspections.length;
+                document.getElementById('stat-priority').textContent = licensees.filter(l => l.is_priority).length;
+                
+                const tbody = document.querySelector('#dashboard-licensee-list');
+                if (licensees.length === 0) { tbody.innerHTML = 'કોઈ લાયસન્સી નથી. કૃપા કરીને નવો ઉમેરો.'; return; }
+                let html = '<table><tr><th>નામ</th><th>વિસ્તાર</th><th>સંપર્ક</th><th>⭐</th></tr>';
+                licensees.slice(0,10).forEach(l => {
+                    html += `<tr><td>${l.name}</td><td>${l.gidc_area||'-'}</td><td>${l.contact_person||'-'}</td><td>${l.is_priority ? '⭐' : ''}</td></tr>`;
+                });
+                html += '</table>';
+                tbody.innerHTML = html;
+            } catch(e) { document.getElementById('stat-total-licensees').textContent = 'Error'; }
+        }
+
+        // ====================================================================
+        // LICENSEES
+        // ====================================================================
+        async function loadLicensees() {
+            try {
+                const licensees = await ipcRenderer.invoke('get-licensees');
+                if (!licensees || !Array.isArray(licensees)) {
+                    document.querySelector('#licensee-table tbody').innerHTML = '<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">❌ ડેટા લોડ કરવામાં ભૂલ - ફરી પ્રયાસ કરો</td></tr>';
+                    return;
+                }
+                const filterText = (document.getElementById('lic-filter-text')?.value || '').toLowerCase();
+                const filterNokarnama = document.getElementById('lic-filter-nokarnama')?.value || '';
+                let filtered = licensees;
+                if (filterText) {
+                    filtered = filtered.filter(l => l.name.toLowerCase().includes(filterText) || (l.gidc_area||'').toLowerCase().includes(filterText));
+                }
+                if (filterNokarnama) {
+                    filtered = filtered.filter(l => (l.nokarnama_holder||'') === filterNokarnama);
+                }
+                const tbody = document.querySelector('#licensee-table tbody');
+                if (filtered.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">📋 કોઈ લાયસન્સી મળ્યા નથી. નવો ઉમેરો અથવા બલ્ક ઇમ્પોર્ટ કરો.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = (await Promise.all(filtered.map(async (l) => {
+                    let licCount = 0;
+                    try {
+                        const licMappings = await ipcRenderer.invoke('get-licensee-licenses', l.id);
+                        licCount = licMappings ? licMappings.length : 0;
+                    } catch(e) {}
+                    return `<tr><td>${l.id}</td><td>${l.name}</td><td>${l.gidc_area||'-'}</td><td>${l.phone||'-'}</td><td>${l.nokarnama_holder === 'Yes' ? '✅ હા' : '❌ ના'}</td><td><span class="chip">${licCount}</span></td><td>${l.is_priority ? '⭐' : ''}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editLicensee(${l.id})" title="Edit">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteLicensee(${l.id})" title="Delete">🗑️</button>
+                        </td>
+                    </tr>`;
+                }))).join('');
+            } catch(e) { 
+                console.error('loadLicensees error:', e);
+                document.querySelector('#licensee-table tbody').innerHTML = '<tr><td colspan="8" style="text-align:center;color:#999;padding:20px">❌ લાયસન્સી યાદી લોડ કરવામાં ભૂલ. ફરી પ્રયાસ કરો.</td></tr>';
+            }
+        }
+
+        function filterLicensees() {
+            loadLicensees();
+        }
+        
+        async function editLicensee(id) {
+            try {
+                const licensee = await ipcRenderer.invoke('get-licensee-by-id', id);
+                if (!licensee) { alert('લાયસન્સી મળ્યો નથી.'); return; }
+                
+                document.getElementById('lic-edit-id').value = id;
+                document.getElementById('lic-name').value = licensee.name || '';
+                document.getElementById('lic-address').value = licensee.address || '';
+                document.getElementById('lic-area').value = licensee.gidc_area || '';
+                document.getElementById('lic-phone').value = licensee.phone || '';
+                document.getElementById('lic-contact').value = licensee.contact_person || '';
+                document.getElementById('lic-nokarnama').value = licensee.nokarnama_holder || 'No';
+                document.getElementById('lic-email').value = licensee.email || '';
+                document.getElementById('lic-priority').checked = !!licensee.is_priority;
+                
+                document.getElementById('btn-save-licensee').textContent = '✏️ અપડેટ કરો';
+                document.getElementById('btn-cancel-edit').classList.remove('hide');
+                
+                showLicenseeTab('add');
+                document.getElementById('lic-name').focus();
+            } catch(e) {
+                alert('Error: ' + e.message);
+            }
+        }
+        
+        function cancelEditLicensee() {
+            document.getElementById('lic-edit-id').value = '';
+            document.getElementById('btn-save-licensee').textContent = '💾 સાચવો';
+            document.getElementById('btn-cancel-edit').classList.add('hide');
+            document.querySelector('#page-licensees .tab-btn:nth-child(2)')?.classList.remove('active');
+            showLicenseeTab('list');
+        }
+        
+        async function deleteLicensee(id) {
+            if (!confirm('🗑️ શું તમે ખરેખર આ લાયસન્સી કાઢી નાખવા માંગો છો?\n\n(Are you sure? This will also delete all related inspections and data.)')) return;
+            try {
+                const result = await ipcRenderer.invoke('delete-licensee', id);
+                if (result.success) {
+                    alert('✅ લાયસન્સી અને સંબંધિત ડેટા કાઢી નાખવામાં આવ્યા!');
+                    loadLicensees();
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch(e) {
+                alert('Error: ' + e.message);
+            }
+        }
+
+        async function saveLicensee() {
+            const editId = document.getElementById('lic-edit-id').value;
+            const data = {
+                name: document.getElementById('lic-name').value,
+                address: document.getElementById('lic-address').value,
+                gidc_area: document.getElementById('lic-area').value,
+                phone: document.getElementById('lic-phone').value,
+                contact_person: document.getElementById('lic-contact').value,
+                nokarnama_holder: document.getElementById('lic-nokarnama').value,
+                email: document.getElementById('lic-email').value,
+                is_priority: document.getElementById('lic-priority').checked
+            };
+            
+            if (editId) {
+                data.id = parseInt(editId);
+            }
+            
+            const result = await ipcRenderer.invoke('save-licensee', data);
+            if (result.success) {
+                alert('✅ લાયસન્સી સફળતાપૂર્વક સાચવાયો!');
+                // Reset form
+                document.getElementById('lic-edit-id').value = '';
+                document.getElementById('btn-save-licensee').textContent = '💾 સાચવો';
+                document.getElementById('btn-cancel-edit').classList.add('hide');
+                loadLicensees();
+                showLicenseeTab('list');
+            }
+        }
+
+        // ====================================================================
+        // LICENSE MAPPING (V4c)
+        // ====================================================================
+        async function loadLicenseMapDropdown() {
+            try {
+                const licensees = await ipcRenderer.invoke('get-licensees');
+                const sel = document.getElementById('licmap-licensee');
+                sel.innerHTML = '<option value="">-- લાયસન્સી પસંદ કરો --</option>';
+                licensees.forEach(l => {
+                    const opt = document.createElement('option');
+                    opt.value = l.id;
+                    opt.text = l.name + (l.gidc_area ? ' (' + l.gidc_area + ')' : '');
+                    sel.appendChild(opt);
+                });
+                document.getElementById('licmap-area').classList.add('hide');
+            } catch(e) { console.error(e); }
+        }
+
+        async function onLicenseeMappingSelect() {
+            const licenseeId = parseInt(document.getElementById('licmap-licensee').value);
+            const area = document.getElementById('licmap-area');
+            const cbContainer = document.getElementById('licmap-checkboxes');
+            document.getElementById('licmap-status').textContent = '';
+
+            if (!licenseeId) {
+                area.classList.add('hide');
+                return;
+            }
+
+            area.classList.remove('hide');
+            cbContainer.innerHTML = '<p>લોડ થઈ રહ્યું છે...</p>';
+
+            try {
+                const allTypes = await ipcRenderer.invoke('get-all-license-types');
+                const mappedLicenses = await ipcRenderer.invoke('get-licensee-licenses', licenseeId);
+                const mappedIds = new Set(mappedLicenses.map(m => m.license_type_id));
+
+                let html = '';
+                allTypes.forEach(t => {
+                    const checked = mappedIds.has(t.id) ? 'checked' : '';
+                    html += `<label><input type="checkbox" class="licmap-cb" value="${t.id}" ${checked}> ${t.code} - ${t.inspection_standard || ''}</label>`;
+                });
+                cbContainer.innerHTML = html;
+            } catch(e) {
+                cbContainer.innerHTML = `<div class="result-box error">Error: ${e.message}</div>`;
+            }
+        }
+
+        function selectAllLicenseTypes(select) {
+            document.querySelectorAll('.licmap-cb').forEach(cb => cb.checked = select);
+        }
+
+        async function saveLicenseeLicenses() {
+            const licenseeId = parseInt(document.getElementById('licmap-licensee').value);
+            if (!licenseeId) { alert('કૃપા કરીને લાયસન્સી પસંદ કરો.'); return; }
+
+            const selectedIds = Array.from(document.querySelectorAll('.licmap-cb:checked')).map(cb => parseInt(cb.value));
+            const statusEl = document.getElementById('licmap-status');
+            statusEl.textContent = '⏳ સાચવાઈ રહ્યું છે...';
+
+            try {
+                const result = await ipcRenderer.invoke('save-licensee-licenses', {
+                    licensee_id: licenseeId,
+                    license_type_ids: selectedIds
+                });
+                if (result.success) {
+                    statusEl.textContent = '✅ ' + result.count + ' લાયસન્સ પ્રકારો સાચવાયા!';
+                } else {
+                    statusEl.textContent = '❌ ' + (result.error || 'Error');
+                }
+            } catch(e) {
+                statusEl.textContent = '❌ ' + e.message;
+            }
+        }
+
+        // ====================================================================
+        // DISTANCE CALCULATOR (V4d - Fixed: Timeout & Better Error Handling)
+        // ====================================================================
+        async function calculateDistance() {
+            const btn = document.getElementById('btn-calc-dist');
+            const statusEl = document.getElementById('dist-status');
+            
+            // Check if insp-location field exists (it's created dynamically by onLicenseTypeChange)
+            const loc = document.getElementById('insp-location');
+            if (!loc) {
+                statusEl.textContent = '❌ કૃપા કરીને પહેલા લાયસન્સ પ્રકાર પસંદ કરો (Location field missing).';
+                alert('કૃપા કરીને પહેલા લાયસન્સ પ્રકાર પસંદ કરો, પછી સ્થળ ભરો.');
+                return;
+            }
+            
+            const address = loc.value.trim();
+            if (!address) {
+                alert("કૃપા કરીને પહેલા સ્થળ (Location) ભરો.");
+                statusEl.textContent = '';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '⏳ ગણતરી...';
+            statusEl.textContent = 'અંતર ગણવામાં આવી રહ્યું છે (max 10s)...';
+
+            try {
+                const result = await Promise.race([
+                    ipcRenderer.invoke('calculate-distance', address),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout: અંતર ગણતરીમાં ખૂબ સમય લાગે છે. ફરી પ્રયાસ કરો.')), 12000))
+                ]);
+                if (result.success) {
+                    document.getElementById('insp-distance').value = result.distance;
+                    statusEl.textContent = '✅ ' + result.text;
+                } else {
+                    statusEl.textContent = '❌ ' + (result.error || 'અંતર માપી શકાયું નથી.');
+                }
+            } catch(e) {
+                statusEl.textContent = '❌ ' + (e.message.includes('Timeout') ? e.message : 'Error: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '📍 અંતર ગણો';
+            }
+        }
+
+        // ====================================================================
+        // LICENSE TYPES
+        // ====================================================================
+        async function loadLicenseTypes() {
+            try {
+                const types = await ipcRenderer.invoke('get-license-types');
+                const wrap = document.getElementById('license-types-table-wrap');
+                let html = '<table><tr><th>Code</th><th>Kul Sankhya</th><th>Dhoran</th></tr>';
+                types.forEach(t => {
+                    html += `<tr><td>${t.code}</td><td>${t.total_count||0}</td><td>${t.inspection_standard||'-'}</td></tr>`;
+                });
+                html += '</table>';
+                wrap.innerHTML = html;
+            } catch(e) { console.error(e); }
+        }
+
+        // ====================================================================
+        // INSPECTION FORM (V4: Multi-select licensees)
+        // ====================================================================
+        async function loadInspectionForm() {
+            // Populate licensee checkboxes
+            try {
+                const licensees = await ipcRenderer.invoke('get-licensees');
+                const container = document.getElementById('insp-licensee-checkboxes');
+                let html = '';
+                licensees.forEach(l => {
+                    html += `<label><input type="checkbox" class="insp-licensee-cb" value="${l.id}" onchange="onLicenseeCheckChange()"> ${l.name} ${l.is_priority ? '⭐' : ''} <span style="color:#999;font-size:11px">${l.gidc_area||''}</span></label>`;
+                });
+                container.innerHTML = html || '<p>કોઈ લાયસન્સી નથી.</p>';
+            } catch(e) { console.error('Licensee load error:', e); }
+
+            // Populate license type dropdown
+            try {
+                const types = await ipcRenderer.invoke('get-license-types');
+                const sel = document.getElementById('insp-license-type');
+                sel.innerHTML = '<option value="">-- લાયસન્સ પ્રકાર પસંદ કરો --</option>';
+                types.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t.code;
+                    opt.text = `${t.code} - ${t.inspection_standard || ''}`;
+                    sel.appendChild(opt);
+                });
+            } catch(e) { console.error('License type load error:', e); }
+
+            document.getElementById('insp-date').value = new Date().toISOString().split('T')[0];
+            document.getElementById('btn-cumulative-report').style.display = 'none';
+            
+            // Load vehicles into datalist
+            loadVehicleList();
+        }
+        
+        // Load vehicles for the dropdown datalist
+        async function loadVehicleList() {
+            const datalist = document.getElementById('vehicle-list');
+            if (!datalist) return;
+            try {
+                const vehicles = await ipcRenderer.invoke('get-vehicles');
+                datalist.innerHTML = '';
+                vehicles.forEach(v => {
+                    const opt = document.createElement('option');
+                    opt.value = v.vehicle_number;
+                    datalist.appendChild(opt);
+                });
+            } catch(e) {
+                console.error('loadVehicleList error:', e);
+            }
+        }
+        
+        // Vehicle Manager Modal
+        async function showVehicleManager() {
+            const existing = document.getElementById('vehicle-manager-modal');
+            if (existing) {
+                existing.classList.remove('hide');
+                updateVehicleManagerList();
+                return;
+            }
+            
+            // Create modal
+            const modal = document.createElement('div');
+            modal.id = 'vehicle-manager-modal';
+            modal.innerHTML = `<div class="modal-overlay" onclick="closeVehicleManager()">
+                <div class="modal-content" onclick="event.stopPropagation()" style="max-width:500px">
+                    <span class="modal-close" onclick="closeVehicleManager()">&times;</span>
+                    <h3>🚗 વાહન મેનેજમેન્ટ / Vehicle Manager</h3>
+                    <div class="form-row">
+                        <div><label>નવું વાહન નંબર</label><input id="vm-new-number" placeholder="GJ-01-XX-XXXX"></div>
+                        <div style="display:flex;align-items:flex-end">
+                            <button class="btn btn-success" onclick="addVehicle()">+ ઉમેરો</button>
+                        </div>
+                    </div>
+                    <div id="vm-list" style="margin-top:15px;max-height:300px;overflow-y:auto">
+                        <p>લોડ થઈ રહ્યું છે...</p>
+                    </div>
+                    <div class="action-bar">
+                        <button class="btn btn-primary btn-sm" onclick="closeVehicleManager();loadVehicleList();">✔️ બંધ કરો</button>
+                    </div>
+                </div>
+            </div>`;
+            document.body.appendChild(modal);
+            updateVehicleManagerList();
+        }
+        
+        function closeVehicleManager() {
+            const modal = document.getElementById('vehicle-manager-modal');
+            if (modal) modal.classList.add('hide');
+            loadVehicleList();
+        }
+        
+        async function updateVehicleManagerList() {
+            const container = document.getElementById('vm-list');
+            if (!container) return;
+            try {
+                const vehicles = await ipcRenderer.invoke('get-vehicles');
+                if (vehicles.length === 0) {
+                    container.innerHTML = '<p>કોઈ વાહન નથી. ઉપર નવું ઉમેરો.</p>';
+                    return;
+                }
+                let html = '<table><tr><th>વાહન નંબર</th><th>ક્રિયા</th></tr>';
+                vehicles.forEach(v => {
+                    html += `<tr><td>${v.vehicle_number}</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteVehicle(${v.id})">🗑️</button></td></tr>`;
+                });
+                html += '</table>';
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = 'Error: ' + e.message;
+            }
+        }
+        
+        async function addVehicle() {
+            const input = document.getElementById('vm-new-number');
+            const number = input.value.trim().toUpperCase();
+            if (!number) {
+                alert('કૃપા કરીને વાહન નંબર દાખલ કરો.');
+                return;
+            }
+            try {
+                const result = await ipcRenderer.invoke('add-vehicle', number);
+                if (result.success) {
+                    input.value = '';
+                    updateVehicleManagerList();
+                    loadVehicleList();
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch(e) {
+                alert('Error: ' + e.message);
+            }
+        }
+        
+        async function deleteVehicle(id) {
+            if (!confirm('શું તમે આ વાહન કાઢી નાખવા માંગો છો?')) return;
+            try {
+                await ipcRenderer.invoke('delete-vehicle', id);
+                updateVehicleManagerList();
+                loadVehicleList();
+            } catch(e) {
+                alert('Error: ' + e.message);
+            }
+        }
+
+        function onLicenseeCheckChange() {
+            const cbs = document.querySelectorAll('.insp-licensee-cb:checked');
+            selectedLicenseeIds = Array.from(cbs).map(cb => parseInt(cb.value));
+            const crBtn = document.getElementById('btn-cumulative-report');
+            crBtn.style.display = selectedLicenseeIds.length > 1 ? 'inline-flex' : 'none';
+        }
+
+        function onLicenseTypeChange() {
+            const code = document.getElementById('insp-license-type').value;
+            const area = document.getElementById('insp-form-area');
+            if (!code) {
+                area.innerHTML = '<p>કૃપા કરીને લાયસન્સી અને લાયસન્સ પ્રકાર પસંદ કરો.</p>';
+                return;
+            }
+            const hasNokarnama = document.querySelector('.insp-licensee-cb:checked') ? true : false;
+            area.innerHTML = `<div class="section-header">તપાસણી ફોર્મ - ${code}</div>
+                <div class="form-row">
+                    <div><label>રિપોર્ટ નંબર</label><input id="insp-report-no" placeholder="e.g. SR/2025/001"></div>
+                    <div><label>સ્થળ (📍 પછી અંતર ગણો)</label><input id="insp-location" placeholder="તપાસણી સ્થળ" onchange="document.getElementById('dist-status').textContent=''"></div>
+                </div>
+                <div class="form-row">
+                    <div><label>ક્ષતિઓ મળી?</label><select id="insp-violations" onchange="document.getElementById('violation-notes-row').style.display=this.value==='Yes'?'':'none'"><option value="No">ના</option><option value="Yes">હા</option></select></div>
+                    <div id="violation-notes-row"><label>ક્ષતિઓની નોંધ</label><input id="insp-notes" placeholder="ક્ષતિઓ વિશે નોંધ"></div>
+                </div>
+                <div class="form-row">
+                    <div><label>લાગુ નિયમો</label><input id="insp-rules" placeholder="Applicable Rules"></div>
+                    <div><label>અધિકારી ટિપ્પણી</label><input id="insp-remarks" placeholder="Officer Remarks"></div>
+                </div>
+                <div id="insp-template-fields"></div>`;
+            document.getElementById('dist-status').textContent = '';
+            
+            // Load template fields from DB for this license type
+            loadTemplateFieldsForInspection(code);
+        }
+        
+        // Load template fields from form_templates table for the selected license type
+        async function loadTemplateFieldsForInspection(licenseTypeCode) {
+            const container = document.getElementById('insp-template-fields');
+            if (!container) return;
+            try {
+                const templates = await ipcRenderer.invoke('get-inspection-template', licenseTypeCode);
+                if (!templates || templates.length === 0) {
+                    container.innerHTML = '';
+                    return;
+                }
+                
+                // Group by section
+                const sections = {};
+                templates.forEach(t => {
+                    const sec = t.section_name || 'General';
+                    if (!sections[sec]) sections[sec] = [];
+                    sections[sec].push(t);
+                });
+                
+                let html = '';
+                Object.keys(sections).forEach(sec => {
+                    html += `<div class="section-header">📋 ${sec}</div>`;
+                    const fields = sections[sec];
+                    // Use form-row-2 for pairs, or single per row
+                    fields.forEach((f, idx) => {
+                        const fieldId = 'tpl-field-' + f.id;
+                        let fieldHtml = '';
+                        
+                        if (f.field_type === 'dropdown') {
+                            let options = [];
+                            try { options = f.field_options ? JSON.parse(f.field_options) : []; } catch(e) {}
+                            fieldHtml = `<select id="${fieldId}" class="tpl-field" data-label="${f.field_label}" data-section="${f.section_name || ''}" data-order="${f.field_order || 0}">
+                                <option value="">-- ${f.field_label} --</option>`;
+                            options.forEach(o => { fieldHtml += `<option value="${o}">${o}</option>`; });
+                            fieldHtml += '</select>';
+                        } else if (f.field_type === 'checkbox') {
+                            fieldHtml = `<label style="font-weight:normal"><input type="checkbox" id="${fieldId}" class="tpl-field" data-label="${f.field_label}" data-section="${f.section_name || ''}" data-order="${f.field_order || 0}" value="1"> ${f.field_label}</label>`;
+                        } else if (f.field_type === 'date') {
+                            fieldHtml = `<input type="date" id="${fieldId}" class="tpl-field" data-label="${f.field_label}" data-section="${f.section_name || ''}" data-order="${f.field_order || 0}" placeholder="${f.field_label}">`;
+                        } else if (f.field_type === 'textarea') {
+                            fieldHtml = `<textarea id="${fieldId}" class="tpl-field" data-label="${f.field_label}" data-section="${f.section_name || ''}" data-order="${f.field_order || 0}" placeholder="${f.field_label}" rows="3"></textarea>`;
+                        } else {
+                            fieldHtml = `<input type="text" id="${fieldId}" class="tpl-field" data-label="${f.field_label}" data-section="${f.section_name || ''}" data-order="${f.field_order || 0}" placeholder="${f.field_label}">`;
+                        }
+                        
+                        // Alternating layout: pairs if even, full width if odd
+                        if (idx % 2 === 0) {
+                            html += '<div class="form-row">';
+                        }
+                        html += `<div><label>${f.field_label}${f.is_required ? ' <span style="color:red">*</span>' : ''}</label>${fieldHtml}</div>`;
+                        if (idx % 2 === 1 || idx === fields.length - 1) {
+                            if (idx % 2 === 0 && idx === fields.length - 1) {
+                                html += '<div></div>';
+                            }
+                            html += '</div>';
+                        }
+                    });
+                });
+                container.innerHTML = html;
+            } catch(e) {
+                console.error('loadTemplateFields error:', e);
+                container.innerHTML = `<div class="result-box error">Error loading templates: ${e.message}</div>`;
+            }
+        }
+
+        // V4d: Save inspections for ALL selected licensees (with template fields)
+        async function saveInspections() {
+            const selectedCbs = document.querySelectorAll('.insp-licensee-cb:checked');
+            if (selectedCbs.length === 0) {
+                alert('કૃપા કરીને ઓછામાં ઓછું એક લાયસન્સી પસંદ કરો.');
+                return;
+            }
+            const licenseTypeCode = document.getElementById('insp-license-type').value;
+            const date = document.getElementById('insp-date').value;
+            if (!licenseTypeCode || !date) {
+                alert('કૃપા કરીને લાયસન્સ પ્રકાર અને તારીખ પસંદ કરો.');
+                return;
+            }
+
+            // Collect template fields
+            const templateFields = [];
+            document.querySelectorAll('.tpl-field').forEach(el => {
+                const label = el.dataset.label || el.id.replace('tpl-field-', '');
+                let value = '';
+                if (el.type === 'checkbox') {
+                    value = el.checked ? 'Yes' : 'No';
+                } else {
+                    value = el.value.trim();
+                }
+                templateFields.push({
+                    label: label,
+                    value: value,
+                    section: el.dataset.section || '',
+                    order: parseInt(el.dataset.order) || 0
+                });
+            });
+
+            const baseData = {
+                report_number: document.getElementById('insp-report-no')?.value || '',
+                license_type_code: licenseTypeCode,
+                date_of_inspection: date,
+                time_of_inspection: document.getElementById('insp-time').value || null,
+                vehicle_details: document.getElementById('insp-vehicle').value || '',
+                to_location: document.getElementById('insp-location')?.value || '',
+                distance_km: parseFloat(document.getElementById('insp-distance')?.value) || 0,
+                violations_found: document.getElementById('insp-violations')?.value || 'No',
+                violations_notes: document.getElementById('insp-notes')?.value || '',
+                applicable_rules: document.getElementById('insp-rules')?.value || '',
+                officer_remarks: document.getElementById('insp-remarks')?.value || '',
+                fields: templateFields
+            };
+
+            let successCount = 0;
+            for (const cb of selectedCbs) {
+                const licenseeId = parseInt(cb.value);
+                const data = { ...baseData, licensee_id: licenseeId };
+                try {
+                    const result = await ipcRenderer.invoke('save-inspection', data);
+                    if (result.success) successCount++;
+                } catch(e) {
+                    console.error('Save inspection error:', e);
+                }
+            }
+
+            if (successCount > 0) {
+                alert(`✅ ${successCount} નિરીક્ષણ સફળતાપૂર્વક સાચવાયા!`);
+                // Reset form
+                document.querySelectorAll('.insp-licensee-cb').forEach(cb => cb.checked = false);
+                document.getElementById('insp-license-type').value = '';
+                document.getElementById('insp-date').value = '';
+                document.getElementById('insp-time').value = '';
+                document.getElementById('insp-vehicle').value = '';
+                document.getElementById('insp-form-area').innerHTML = '<p>કૃપા કરીને લાયસન્સી અને લાયસન્સ પ્રકાર પસંદ કરો.</p>';
+                document.getElementById('btn-cumulative-report').style.display = 'none';
+                selectedLicenseeIds = [];
+            } else {
+                alert('❌ કોઈ નિરીક્ષણ સાચવી શકાયું નથી.');
+            }
+        }
+
+        // ====================================================================
+        // CUMULATIVE REPORT (V4)
+        // ====================================================================
+        async function showCumulativeReportModal() {
+            const modal = document.getElementById('cumulative-report-modal');
+            modal.classList.remove('hide');
+            
+            // Get selected licensee names
+            const selectedNames = [];
+            const cbs = document.querySelectorAll('.insp-licensee-cb:checked');
+            cbs.forEach(cb => {
+                selectedNames.push(cb.parentElement.textContent.trim());
+            });
+
+            const date = document.getElementById('insp-date').value;
+            const typeCode = document.getElementById('insp-license-type').value;
+            
+            // Find inspections for this date and type for the selected licensees
+            const inspections = await ipcRenderer.invoke('get-inspections-by-date', date) || [];
+            const matching = inspections.filter(i => 
+                i.license_type_code === typeCode && 
+                selectedLicenseeIds.includes(i.licensee_id)
+            );
+
+            const container = document.getElementById('cumulative-insp-list');
+            if (matching.length === 0) {
+                container.innerHTML = `<p>આ લાયસન્સી માટે આ તારીખે કોઈ નિરીક્ષણ મળ્યું નથી. પહેલા નિરીક્ષણ સાચવો.</p>`;
+                return;
+            }
+
+            let html = '<table><tr><th>પસંદ કરો</th><th>રિપોર્ટ નં.</th><th>લાયસન્સી</th><th>ક્ષતિઓ</th></tr>';
+            matching.forEach(i => {
+                const lid = i.licensee_id;
+                html += `<tr><td><input type="checkbox" class="cumul-insp-cb" value="${i.id}" checked></td>
+                    <td>${i.report_number}</td><td>${i.licensee_name||'-'}</td>
+                    <td><span class="badge ${i.violations_found==='Yes'?'badge-red':'badge-green'}">${i.violations_found||'No'}</span></td></tr>`;
+            });
+            html += '</table>';
+            container.innerHTML = html;
+            document.getElementById('cumulative-result').innerHTML = '';
+        }
+
+        async function generateCumulativeReport() {
+            const cbs = document.querySelectorAll('.cumul-insp-cb:checked');
+            if (cbs.length === 0) {
+                alert('કૃપા કરીને ઓછામાં ઓછું એક નિરીક્ષણ પસંદ કરો.');
+                return;
+            }
+            const ids = Array.from(cbs).map(cb => parseInt(cb.value));
+            const resultDiv = document.getElementById('cumulative-result');
+            resultDiv.innerHTML = '⏳ રિપોર્ટ જનરેટ થઈ રહ્યો છે...';
+            
+            try {
+                const result = await ipcRenderer.invoke('generate-cumulative-report', ids);
+                if (result.success) {
+                    resultDiv.innerHTML = `<div class="result-box success">✅ ક્યુમ્યુલેટિવ રિપોર્ટ સફળતાપૂર્વક બનાવાયો!<br>📄 ${result.filePath}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="result-box error">❌ ${result.error}</div>`;
+                }
+            } catch(e) {
+                resultDiv.innerHTML = `<div class="result-box error">❌ ${e.message}</div>`;
+            }
+        }
+
+        // ====================================================================
+        // HISTORY (V4: View/Edit/Delete)
+        // ====================================================================
+        async function loadHistory() {
+            const month = parseInt(document.getElementById('hist-month').value);
+            const year = parseInt(document.getElementById('hist-year').value);
+            const wrap = document.getElementById('history-table-wrap');
+            wrap.innerHTML = '⏳ લોડ થઈ રહ્યું છે...';
+            try {
+                const inspections = await ipcRenderer.invoke('get-inspections-by-month', month, year);
+                if (inspections.length === 0) {
+                    wrap.innerHTML = '<p>આ માસમાં કોઈ નિરીક્ષણ નથી.</p>';
+                    return;
+                }
+                let html = '<table><tr><th>તારીખ</th><th>રિપોર્ટ નં.</th><th>લાયસન્સી</th><th>પ્રકાર</th><th>ક્ષતિઓ</th><th>ક્રિયાઓ</th></tr>';
+                inspections.forEach(i => {
+                    html += `<tr>
+                        <td>${i.date_of_inspection}</td>
+                        <td>${i.report_number}</td>
+                        <td>${i.licensee_name||'-'}</td>
+                        <td>${i.license_type_code||'-'}</td>
+                        <td><span class="badge ${i.violations_found === 'Yes' ? 'badge-red' : 'badge-green'}">${i.violations_found||'No'}</span></td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="viewInspection(${i.id})" title="View">👁️</button>
+                            <button class="btn btn-warning btn-sm" onclick="editInspection(${i.id})" title="Edit">✏️</button>
+                            <button class="btn btn-success btn-sm" onclick="exportInspectionExcel(${i.id})" title="Export Excel">📥</button>
+                            <button class="btn btn-danger btn-sm" onclick="exportInspectionPdf(${i.id})" title="Export PDF">📄</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteInspection(${i.id})" title="Delete">🗑️</button>
+                        </td>
+                    </tr>`;
+                });
+                html += '</table>';
+                wrap.innerHTML = html;
+            } catch(e) { wrap.innerHTML = 'Error: ' + e.message; }
+        }
+
+        // ====================================================================
+        // V4a: Export/Open file helpers
+        // ====================================================================
+        async function openFile(filePath) {
+            const result = await ipcRenderer.invoke('open-file', filePath);
+            if (!result.success) alert('❌ ફાઇલ ખોલી શકાઈ નહી: ' + result.error);
+        }
+
+        async function exportInspectionExcel(id) {
+            const result = await ipcRenderer.invoke('export-inspection-excel', id);
+            const resultDiv = document.getElementById('history-export-result');
+            if (result.success) {
+                resultDiv.innerHTML = `<div class="result-box success">✅ Excel એક્સપોર્ટ થયો!<br>📄 ${result.filePath}<br><button class="btn btn-sm btn-primary" onclick="openFile('${result.filePath.replace(/'/g, "\\'")}')">📂 ખોલો</button></div>`;
+                openFile(result.filePath);
+            } else {
+                resultDiv.innerHTML = `<div class="result-box error">❌ ${result.error}</div>`;
+            }
+        }
+
+        async function exportInspectionPdf(id) {
+            const result = await ipcRenderer.invoke('export-inspection-pdf', id);
+            const resultDiv = document.getElementById('history-export-result');
+            if (result.success) {
+                resultDiv.innerHTML = `<div class="result-box success">✅ PDF એક્સપોર્ટ થયો!<br>📄 ${result.filePath}<br><button class="btn btn-sm btn-primary" onclick="openFile('${result.filePath.replace(/'/g, "\\'")}')">📂 ખોલો</button></div>`;
+                openFile(result.filePath);
+            } else {
+                resultDiv.innerHTML = `<div class="result-box error">❌ ${result.error}</div>`;
+            }
+        }
+
+        async function exportMonthExcel() {
+            const month = parseInt(document.getElementById('hist-month').value);
+            const year = parseInt(document.getElementById('hist-year').value);
+            const resultDiv = document.getElementById('history-export-result');
+            resultDiv.innerHTML = '⏳ એક્સપોર્ટ થઈ રહ્યું છે...';
+            const result = await ipcRenderer.invoke('export-month-excel', month, year);
+            if (result.success) {
+                resultDiv.innerHTML = `<div class="result-box success">✅ ${result.count} નિરીક્ષણ એક્સપોર્ટ થયા!<br>📄 ${result.filePath}<br><button class="btn btn-sm btn-primary" onclick="openFile('${result.filePath.replace(/'/g, "\\'")}')">📂 ખોલો</button></div>`;
+                openFile(result.filePath);
+            } else {
+                resultDiv.innerHTML = `<div class="result-box error">❌ ${result.error}</div>`;
+            }
+        }
+
+        async function exportDiaryExcel(month, year) {
+            const resultDiv = document.getElementById('diary-result');
+            resultDiv.innerHTML += '<br>⏳ Excel જનરેટ થઈ રહ્યું છે...';
+            const result = await ipcRenderer.invoke('export-diary-excel', month, year);
+            if (result.success) {
+                resultDiv.innerHTML = resultDiv.innerHTML.replace('<br>⏳ Excel જનરેટ થઈ રહ્યું છે...', '');
+                resultDiv.innerHTML += `<div class="result-box info">✅ Excel ફાઇલ તૈયાર!<br>📄 ${result.filePath}<br><button class="btn btn-sm btn-primary" onclick="openFile('${result.filePath.replace(/'/g, "\\'")}')">📂 ખોલો</button></div>`;
+                openFile(result.filePath);
+            } else {
+                resultDiv.innerHTML += `<div class="result-box error">❌ ${result.error}</div>`;
+            }
+        }
+
+        // View Inspection
+        async function viewInspection(id) {
+            const modal = document.getElementById('view-insp-modal');
+            modal.classList.remove('hide');
+            const content = document.getElementById('view-insp-content');
+            content.innerHTML = '⏳ લોડ થઈ રહ્યું છે...';
+            
+            try {
+                const result = await ipcRenderer.invoke('get-inspection-detail', id);
+                if (!result.success) { content.innerHTML = `<div class="result-box error">${result.error}</div>`; return; }
+                const i = result.inspection;
+                const lic = i.licensee || {};
+                
+                let html = `<table>
+                    <tr><td><strong>રિપોર્ટ નંબર</strong></td><td>${i.report_number}</td></tr>
+                    <tr><td><strong>તારીખ</strong></td><td>${i.date_of_inspection}</td></tr>
+                    <tr><td><strong>સમય</strong></td><td>${i.time_of_inspection||'-'}</td></tr>
+                    <tr><td><strong>લાયસન્સી</strong></td><td>${lic.name||i.licensee_id||'-'}</td></tr>
+                    <tr><td><strong>સરનામું</strong></td><td>${lic.address||'-'}</td></tr>
+                    <tr><td><strong>વિસ્તાર</strong></td><td>${lic.gidc_area||'-'}</td></tr>
+                    <tr><td><strong>લાયસન્સ પ્રકાર</strong></td><td>${i.license_type_code||'-'}</td></tr>
+                    <tr><td><strong>સ્થળ</strong></td><td>${i.to_location||'-'}</td></tr>
+                    <tr><td><strong>વાહન</strong></td><td>${i.vehicle_details||'-'}</td></tr>
+                    <tr><td><strong>અંતર (km)</strong></td><td>${i.distance_km||0}</td></tr>
+                    <tr><td><strong>નોકરનામા ધારક</strong></td><td>${lic.nokarnama_holder||'-'}</td></tr>
+                    <tr><td><strong>ક્ષતિઓ</strong></td><td><span class="badge ${i.violations_found==='Yes'?'badge-red':'badge-green'}">${i.violations_found||'No'}</span></td></tr>
+                    <tr><td><strong>નોંધ</strong></td><td>${i.violations_notes||'-'}</td></tr>`;
+
+                if (i.fields && i.fields.length > 0) {
+                    html += `<tr><td colspan="2"><strong>વિગતવાર માહિતી:</strong></td></tr>`;
+                    for (const f of i.fields) {
+                        html += `<tr><td>${f.field_label}</td><td>${f.field_value||'-'}</td></tr>`;
+                    }
+                }
+                if (i.officer_remarks) {
+                    html += `<tr><td><strong>અધિકારી ટિપ્પણી</strong></td><td>${i.officer_remarks}</td></tr>`;
+                }
+                if (i.report_content) {
+                    html += `<tr><td colspan="2"><strong>રિપોર્ટ કન્ટેન્ટ:</strong><br><pre style="white-space:pre-wrap;background:#f5f5f5;padding:10px;border-radius:4px;font-size:12px">${i.report_content}</pre></td></tr>`;
+                }
+                html += '</table>';
+                content.innerHTML = html;
+            } catch(e) {
+                content.innerHTML = `<div class="result-box error">Error: ${e.message}</div>`;
+            }
+        }
+
+        // Edit Inspection
+        async function editInspection(id) {
+            const modal = document.getElementById('edit-insp-modal');
+            modal.classList.remove('hide');
+            const form = document.getElementById('edit-insp-form');
+            form.innerHTML = '⏳ લોડ થઈ રહ્યું છે...';
+            
+            try {
+                const result = await ipcRenderer.invoke('get-inspection-detail', id);
+                if (!result.success) { form.innerHTML = `<div class="result-box error">${result.error}</div>`; return; }
+                const i = result.inspection;
+                const lic = i.licensee || {};
+
+                form.innerHTML = `
+                    <input type="hidden" id="edit-insp-id" value="${i.id}">
+                    <div class="form-row">
+                        <div><label>રિપોર્ટ નંબર</label><input id="edit-report-no" value="${i.report_number||''}"></div>
+                        <div><label>તારીખ</label><input type="date" id="edit-date" value="${i.date_of_inspection}"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>સમય</label><input type="time" id="edit-time" value="${i.time_of_inspection||''}"></div>
+                        <div><label>વાહન</label><input id="edit-vehicle" value="${i.vehicle_details||''}"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>સ્થળ</label><input id="edit-location" value="${i.to_location||''}"></div>
+                        <div><label>અંતર (km)</label><input id="edit-distance" type="number" step="0.1" value="${i.distance_km||0}"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>લાયસન્સ પ્રકાર</label><input id="edit-license-type" value="${i.license_type_code||''}" readonly style="background:#f5f5f5"></div>
+                        <div><label>લાગુ નિયમો</label><input id="edit-rules" value="${i.applicable_rules||''}"></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>લાયસન્સી</label><input value="${lic.name||'N/A'}" readonly style="background:#f5f5f5"></div>
+                        <div><label>ક્ષતિઓ મળી?</label><select id="edit-violations"><option value="No" ${i.violations_found!=='Yes'?'selected':''}>ના</option><option value="Yes" ${i.violations_found==='Yes'?'selected':''}>હા</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div><label>ક્ષતિઓની નોંધ</label><input id="edit-notes" value="${i.violations_notes||''}"></div>
+                        <div><label>અધિકારી ટિપ્પણી</label><input id="edit-remarks" value="${i.officer_remarks||''}"></div>
+                    </div>
+                    <div>
+                        <label>રિપોર્ટ કન્ટેન્ટ</label>
+                        <textarea id="edit-report-content" style="min-height:100px">${i.report_content||''}</textarea>
+                    </div>
+                    <div class="action-bar" style="margin-top:10px">
+                        <button class="btn btn-success" onclick="saveEditedInspection()">💾 સાચવો</button>
+                        <button class="btn btn-danger" onclick="closeModal('edit-insp-modal')">રદ કરો</button>
+                    </div>
+                `;
+            } catch(e) {
+                form.innerHTML = `<div class="result-box error">Error: ${e.message}</div>`;
+            }
+        }
+
+        async function saveEditedInspection() {
+            const id = parseInt(document.getElementById('edit-insp-id').value);
+            const data = {
+                id,
+                report_number: document.getElementById('edit-report-no').value,
+                date_of_inspection: document.getElementById('edit-date').value,
+                time_of_inspection: document.getElementById('edit-time').value,
+                vehicle_details: document.getElementById('edit-vehicle').value,
+                to_location: document.getElementById('edit-location').value,
+                distance_km: parseFloat(document.getElementById('edit-distance').value) || 0,
+                license_type_code: document.getElementById('edit-license-type').value,
+                applicable_rules: document.getElementById('edit-rules').value || '',
+                violations_found: document.getElementById('edit-violations').value,
+                violations_notes: document.getElementById('edit-notes').value,
+                officer_remarks: document.getElementById('edit-remarks').value,
+                report_content: document.getElementById('edit-report-content').value
+            };
+            
+            if (!data.date_of_inspection) { alert('તારીખ જરૂરી છે.'); return; }
+            
+            try {
+                const result = await ipcRenderer.invoke('update-inspection', data);
+                if (result.success) {
+                    alert('✅ નિરીક્ષણ સફળતાપૂર્વક અપડેટ થયું!');
+                    closeModal('edit-insp-modal');
+                    loadHistory();
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch(e) {
+                alert('❌ ' + e.message);
+            }
+        }
+
+        async function deleteInspection(id) {
+            if (!confirm('🗑️ શું તમે ખરેખર આ નિરીક્ષણ કાઢી નાખવા માંગો છો? (Are you sure you want to delete this inspection?)')) return;
+            try {
+                const result = await ipcRenderer.invoke('delete-inspection', id);
+                if (result.success) {
+                    alert('✅ નિરીક્ષણ કાઢી નાખવામાં આવ્યું!');
+                    loadHistory();
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch(e) {
+                alert('❌ ' + e.message);
+            }
+        }
+
+        // ====================================================================
+        // DIARY (V4: List/Edit/Delete)
+        // ====================================================================
+        async function generateDiary() {
+            const month = parseInt(document.getElementById('diary-month').value);
+            const year = parseInt(document.getElementById('diary-year').value);
+            const resultDiv = document.getElementById('diary-result');
+            resultDiv.innerHTML = '⏳ ડાયરી જનરેટ થઈ રહી છે...';
+            
+            try {
+                const result = await ipcRenderer.invoke('generate-diary', month, year);
+                if (result.success) {
+                    const month = parseInt(document.getElementById('diary-month').value);
+                    const year = parseInt(document.getElementById('diary-year').value);
+                    resultDiv.innerHTML = `
+                        <div class="result-box success">
+                            ✅ <b>ડાયરી સફળતાપૂર્વક બનાવાઈ!</b><br><br>
+                            📄 <b>ફાઇલ:</b> ${result.filePath}<br>
+                            📊 <b>દૈનિક એન્ટ્રી:</b> ${result.diary.dailyEntries.length}<br>
+                            📋 <b>એબ્સ્ટ્રેક્ટ આઇટમ્સ:</b> ${result.diary.abstract.filter(a => !a.isHeader).length}<br><br>
+                            <div class="action-bar">
+                                <button class="btn btn-primary btn-sm" onclick="openFile('${result.filePath.replace(/'/g, "\\'")}')">📂 ખોલો / Open File</button>
+                                <button class="btn btn-success btn-sm" onclick="exportDiaryExcel(${month},${year})">📥 Export as Excel</button>
+                                <button class="btn btn-warning btn-sm" onclick="generateDiary()">🔄 ફરીથી બનાવો</button>
+                            </div>
+                        </div>`;
+                    refreshDiaryList();
+                } else {
+                    resultDiv.innerHTML = `<div class="result-box error">❌ ${result.error}</div>`;
+                }
+            } catch(e) {
+                resultDiv.innerHTML = `<div class="result-box error">❌ ${e.message}</div>`;
+            }
+        }
+
+        async function refreshDiaryList() {
+            const wrap = document.getElementById('diary-list-wrap');
+            try {
+                const diaries = await ipcRenderer.invoke('get-all-diaries');
+                if (diaries.length === 0) {
+                    wrap.innerHTML = '<p>કોઈ સેવ કરેલ ડાયરી નથી.</p>';
+                    return;
+                }
+                let html = '<table><tr><th>ID</th><th>માસ</th><th>વર્ષ</th><th>રેફરન્સ</th><th>ક્રિયાઓ</th></tr>';
+                for (const d of diaries) {
+                    const monthName = months[d.month - 1] || d.month;
+                    html += `<tr>
+                        <td>${d.id}</td>
+                        <td>${monthName}</td>
+                        <td>${d.year}</td>
+                        <td>${d.reference_number||'-'}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="viewDiary(${d.id})">👁️</button>
+                            <button class="btn btn-warning btn-sm" onclick="editDiary(${d.id})">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteDiary(${d.id})">🗑️</button>
+                        </td>
+                    </tr>`;
+                }
+                html += '</table>';
+                wrap.innerHTML = html;
+            } catch(e) {
+                wrap.innerHTML = 'Error: ' + e.message;
+            }
+        }
+
+        async function viewDiary(id) {
+            try {
+                const result = await ipcRenderer.invoke('get-diary-detail', id);
+                if (!result.success) { alert(result.error); return; }
+                const d = result.diary;
+                const monthName = months[d.month - 1];
+                let msg = `📅 ડાયરી #${d.id}\n${monthName} ${d.year}\nરેફ: ${d.reference_number||'-'}\n`;
+                if (d.entries) msg += `\n📝 એન્ટ્રી: ${d.entries.length}\n`;
+                if (d.abstract) msg += `📋 એબ્સ્ટ્રેક્ટ: ${d.abstract.length}\n`;
+                alert(msg);
+            } catch(e) { alert('Error: ' + e.message); }
+        }
+
+        async function editDiary(id) {
+            try {
+                const result = await ipcRenderer.invoke('get-diary-detail', id);
+                if (!result.success) { alert(result.error); return; }
+                const d = result.diary;
+                // Simple inline edit - prompt for values
+                const newMonth = prompt('નવો માસ (1-12):', d.month);
+                if (!newMonth) return;
+                const newYear = prompt('નવું વર્ષ:', d.year);
+                if (!newYear) return;
+
+                const updateResult = await ipcRenderer.invoke('update-diary', {
+                    id: d.id,
+                    month: parseInt(newMonth),
+                    year: parseInt(newYear),
+                    entries: d.entries || [],
+                    summary: d.summary || [],
+                    abstract: d.abstract || []
+                });
+                if (updateResult.success) {
+                    alert('✅ ડાયરી અપડેટ થઈ!');
+                    refreshDiaryList();
+                } else {
+                    alert('❌ ' + updateResult.error);
+                }
+            } catch(e) { alert('Error: ' + e.message); }
+        }
+
+        async function deleteDiary(id) {
+            if (!confirm('🗑️ શું તમે ખરેખર આ ડાયરી કાઢી નાખવા માંગો છો?')) return;
+            try {
+                const result = await ipcRenderer.invoke('delete-diary', id);
+                if (result.success) {
+                    alert('✅ ડાયરી કાઢી નાખવામાં આવી!');
+                    refreshDiaryList();
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch(e) { alert('Error: ' + e.message); }
+        }
+
+        // ====================================================================
+        // CALENDAR (V4)
+        // ====================================================================
+        function calendarPrevMonth() {
+            calendarMonth--;
+            if (calendarMonth < 1) { calendarMonth = 12; calendarYear--; }
+            renderCalendar();
+        }
+
+        function calendarNextMonth() {
+            calendarMonth++;
+            if (calendarMonth > 12) { calendarMonth = 1; calendarYear++; }
+            renderCalendar();
+        }
+
+        async function renderCalendar() {
+            document.getElementById('cal-month-year').textContent = `${months[calendarMonth-1]} ${calendarYear}`;
+            const grid = document.getElementById('cal-grid');
+            
+            try {
+                const data = await ipcRenderer.invoke('get-calendar-data', calendarMonth, calendarYear);
+                const inspections = data.inspections || [];
+                const reminders = data.reminders || [];
+
+                // Build lookup: date -> list of inspections
+                const inspByDate = {};
+                for (const insp of inspections) {
+                    if (!inspByDate[insp.date_of_inspection]) inspByDate[insp.date_of_inspection] = [];
+                    inspByDate[insp.date_of_inspection].push(insp);
+                }
+                const remByDate = {};
+                for (const rem of reminders) {
+                    if (!remByDate[rem.reminder_date]) remByDate[rem.reminder_date] = [];
+                    remByDate[rem.reminder_date].push(rem);
+                }
+
+                const firstDay = new Date(calendarYear, calendarMonth - 1, 1).getDay(); // 0=Sun
+                const daysInMonth = new Date(calendarYear, calendarMonth, 0).getDate();
+                const prevMonthDays = new Date(calendarYear, calendarMonth - 1, 0).getDate();
+
+                const dayNames = ['રવિ', 'સોમ', 'મંગળ', 'બુધ', 'ગુરુ', 'શુક્ર', 'શનિ'];
+                
+                let html = '';
+                // Header row
+                dayNames.forEach(d => { html += `<div class="cal-header">${d}</div>`; });
+
+                // Previous month trailing days
+                const startOffset = firstDay;
+                for (let i = startOffset - 1; i >= 0; i--) {
+                    html += `<div class="cal-day other-month"><span class="day-num">${prevMonthDays - i}</span></div>`;
+                }
+
+                // Current month days
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateStr = `${calendarYear}-${calendarMonth.toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
+                    const today = new Date();
+                    const todayStr = today.toISOString().split('T')[0];
+                    
+                    let cls = 'cal-day';
+                    if (dateStr === todayStr) cls += ' today';
+                    
+                    const dayInspections = inspByDate[dateStr] || [];
+                    const dayReminders = remByDate[dateStr] || [];
+                    const hasViolation = dayInspections.some(i => i.violations_found === 'Yes');
+                    
+                    if (hasViolation) cls += ' has-violation';
+                    else if (dayInspections.length > 0) cls += ' has-inspection';
+                    
+                    let dotsHtml = '';
+                    if (dayInspections.length > 0) {
+                        for (let i = 0; i < Math.min(dayInspections.length, 3); i++) {
+                            dotsHtml += `<span class="cal-dot ${dayInspections[i].violations_found==='Yes'?'red':'green'}"></span>`;
+                        }
+                    }
+                    if (dayReminders.length > 0) {
+                        dotsHtml += `<span class="cal-dot blue"></span>`;
+                    }
+
+                    html += `<div class="${cls}" onclick="showCalendarDate('${dateStr}')">
+                        <span class="day-num">${d}</span><br>
+                        ${dotsHtml}
+                    </div>`;
+                }
+
+                // Next month leading days
+                const totalCells = startOffset + daysInMonth;
+                const remaining = (7 - (totalCells % 7)) % 7;
+                for (let i = 1; i <= remaining; i++) {
+                    html += `<div class="cal-day other-month"><span class="day-num">${i}</span></div>`;
+                }
+
+                grid.innerHTML = html;
+
+                // Load reminders list
+                await loadReminders();
+            } catch(e) {
+                grid.innerHTML = `<div class="loading">Error: ${e.message}</div>`;
+            }
+        }
+
+        async function showCalendarDate(dateStr) {
+            const modal = document.getElementById('cal-date-modal');
+            modal.classList.remove('hide');
+            document.getElementById('cal-modal-title').textContent = `📅 ${dateStr}`;
+            const dataDiv = document.getElementById('cal-modal-data');
+            
+            try {
+                const inspections = await ipcRenderer.invoke('get-inspections-by-date', dateStr);
+                currentDateInspections = inspections;
+                
+                if (inspections.length === 0) {
+                    dataDiv.innerHTML = '<p>આ તારીખે કોઈ નિરીક્ષણ નથી.</p>';
+                    return;
+                }
+
+                let html = '<table><tr><th>રિપોર્ટ</th><th>લાયસન્સી</th><th>પ્રકાર</th><th>ક્ષતિઓ</th><th>સ્થળ</th></tr>';
+                for (const i of inspections) {
+                    html += `<tr>
+                        <td>${i.report_number}</td>
+                        <td>${i.licensee_name||'-'}</td>
+                        <td>${i.license_type_code||'-'}</td>
+                        <td><span class="badge ${i.violations_found==='Yes'?'badge-red':'badge-green'}">${i.violations_found||'No'}</span></td>
+                        <td>${i.to_location||'-'}</td>
+                    </tr>`;
+                }
+                html += '</table>';
+                dataDiv.innerHTML = html;
+            } catch(e) {
+                dataDiv.innerHTML = 'Error: ' + e.message;
+            }
+        }
+
+        // ====================================================================
+        // REMINDERS
+        // ====================================================================
+        async function loadReminders() {
+            const container = document.getElementById('reminders-list');
+            try {
+                const data = await ipcRenderer.invoke('get-calendar-data', calendarMonth, calendarYear);
+                const reminders = data.reminders || [];
+                if (reminders.length === 0) {
+                    container.innerHTML = '<p>કોઈ રીમાઇન્ડર નથી.</p>';
+                    return;
+                }
+                let html = '<table><tr><th>તારીખ</th><th>સમય</th><th>શીર્ષક</th><th>લાયસન્સી</th><th>સ્થિતિ</th><th>ક્રિયાઓ</th></tr>';
+                for (const r of reminders) {
+                    html += `<tr>
+                        <td>${r.reminder_date}</td>
+                        <td>${r.reminder_time||'-'}</td>
+                        <td>${r.title||'-'}</td>
+                        <td>${r.licensee_name||'-'}</td>
+                        <td>${r.is_completed ? '✅ પૂર્ણ' : r.whatsapp_sent ? '📱 મોકલાયો' : '⏳ બાકી'}</td>
+                        <td>
+                            ${!r.is_completed ? `<button class="btn btn-success btn-sm" onclick="completeReminder(${r.id})">✅</button>` : ''}
+                            <button class="btn btn-danger btn-sm" onclick="deleteReminder(${r.id})">🗑️</button>
+                        </td>
+                    </tr>`;
+                }
+                html += '</table>';
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = 'Error: ' + e.message;
+            }
+        }
+
+        async function completeReminder(id) {
+            await ipcRenderer.invoke('complete-reminder', id);
+            loadReminders();
+            renderCalendar();
+        }
+
+        async function deleteReminder(id) {
+            if (!confirm('રીમાઇન્ડર કાઢી નાખો?')) return;
+            await ipcRenderer.invoke('delete-reminder', id);
+            loadReminders();
+            renderCalendar();
+        }
+
+        // ====================================================================
+        // WHATSAPP FROM CALENDAR
+        // ====================================================================
+        async function sendWhatsAppFromCalendar() {
+            if (currentDateInspections.length === 0) {
+                alert('પહેલા કેલેન્ડરમાં કોઈ તારીખ પસંદ કરો.');
+                return;
+            }
+            const date = currentDateInspections[0].date_of_inspection;
+            const ids = currentDateInspections.map(i => i.id);
+            await doSendWhatsApp(date, ids);
+        }
+
+        async function sendWhatsAppFromCalendarModal() {
+            if (currentDateInspections.length === 0) {
+                alert('કોઈ નિરીક્ષણ નથી.');
+                return;
+            }
+            const date = currentDateInspections[0].date_of_inspection;
+            const ids = currentDateInspections.map(i => i.id);
+            await doSendWhatsApp(date, ids);
+        }
+
+        async function doSendWhatsApp(date, inspectionIds) {
+            const result = await ipcRenderer.invoke('send-whatsapp-reminder', { date, inspectionIds });
+            if (result.success) {
+                if (result.simulated) {
+                    alert('📱 WhatsApp મેસેજ તૈયાર છે:\n\n' + result.text);
+                } else {
+                    alert(result.message);
+                }
+                loadReminders();
+            } else {
+                alert('❌ ' + result.error);
+            }
+        }
+
+        // ====================================================================
+        // BULK IMPORT
+        // ====================================================================
+        async function bulkImportSelectFile() {
+            const result = await ipcRenderer.invoke('bulk-import-preview');
+            if (result.canceled) return;
+            if (!result.success) {
+                alert('❌ ' + result.error);
+                return;
+            }
+
+            bulkImportFilePath = result.filePath;
+            document.getElementById('bulk-preview-area').classList.remove('hide');
+            document.getElementById('bulk-file-name').textContent = `📂 ${result.filePath}`;
+            document.getElementById('bulk-row-count').textContent = `કુલ પંક્તિઓ: ${result.preview.totalRows} (પ્રીવ્યૂમાં ${result.preview.totalPreview} બતાવેલ)`;
+
+            // Render preview table
+            const preview = result.preview;
+            let html = '<table><tr>';
+            preview.headers.forEach(h => { html += `<th>${h}</th>`; });
+            html += '</tr>';
+            preview.rows.forEach(row => {
+                html += '<tr>';
+                row.forEach(cell => { html += `<td>${cell}</td>`; });
+                html += '</tr>';
+            });
+            html += '</table>';
+            document.getElementById('bulk-preview-table').innerHTML = html;
+            document.getElementById('bulk-result').innerHTML = '';
+        }
+
+        async function bulkImportExecute() {
+            if (!bulkImportFilePath) {
+                alert('પહેલા ફાઇલ પસંદ કરો.');
+                return;
+            }
+            const resultDiv = document.getElementById('bulk-result');
+            resultDiv.innerHTML = '⏳ ઇમ્પોર્ટ થઈ રહ્યું છે...';
+            
+            try {
+                const result = await ipcRenderer.invoke('bulk-import-execute', bulkImportFilePath);
+                if (result.success) {
+                    let msg = `<div class="result-box success">✅ ઇમ્પોર્ટ સફળ!<br>📥 ઇમ્પોર્ટેડ: ${result.imported}<br>⏭️ સ્કિપ કરેલ: ${result.skipped}<br><br><button class="btn btn-primary btn-sm" onclick="afterBulkImport()">📋 લાયસન્સી યાદી જુઓ</button></div>`;
+                    if (result.errors && result.errors.length > 0) {
+                        msg += `<div class="result-box error">⚠️ ભૂલો:<br>${result.errors.slice(0,5).join('<br>')}</div>`;
+                    }
+                    resultDiv.innerHTML = msg;
+                    loadBulkImportHistory();
+                } else {
+                    resultDiv.innerHTML = `<div class="result-box error">❌ ${result.error}</div>`;
+                }
+            } catch(e) {
+                resultDiv.innerHTML = `<div class="result-box error">❌ ${e.message}</div>`;
+            }
+        }
+        
+        async function afterBulkImport() {
+            // Refresh licensee list and switch to list tab
+            console.log('afterBulkImport: refreshing licensee list...');
+            try {
+                await loadLicensees();
+                showLicenseeTab('list');
+                console.log('afterBulkImport: licensee list refreshed successfully');
+            } catch(e) {
+                console.error('afterBulkImport error:', e);
+                showLicenseeTab('list');
+            }
+        }
+
+        async function loadBulkImportHistory() {
+            try {
+                const history = await ipcRenderer.invoke('bulk-import-history');
+                const wrap = document.getElementById('bulk-import-history');
+                if (history.length === 0) {
+                    wrap.innerHTML = '<p>કોઈ ઇમ્પોર્ટ હિસ્ટરી નથી.</p>';
+                    return;
+                }
+                let html = '<table><tr><th>ફાઇલ</th><th>તારીખ</th><th>ઇમ્પોર્ટેડ</th><th>સ્થિતિ</th></tr>';
+                history.forEach(h => {
+                    html += `<tr><td>${h.filename}</td><td>${h.import_date}</td><td>${h.count_imported}</td><td><span class="badge badge-green">${h.status}</span></td></tr>`;
+                });
+                html += '</table>';
+                wrap.innerHTML = html;
+            } catch(e) {
+                document.getElementById('bulk-import-history').innerHTML = 'Error: ' + e.message;
+            }
+        }
+
+        // ====================================================================
+        // INSPECTION TEMPLATES (V4d)
+        // ====================================================================
+        async function loadTemplates() {
+            const container = document.getElementById('templates-list');
+            const filterSelect = document.getElementById('tpl-filter-type');
+            if (!container) return;
+            container.innerHTML = '⏳ લોડ થઈ રહ્યું છે...';
+            
+            try {
+                const templates = await ipcRenderer.invoke('get-all-templates');
+                
+                // Build filter dropdown
+                const codes = [...new Set(templates.map(t => t.license_type_code))];
+                if (filterSelect) {
+                    const currentVal = filterSelect.value;
+                    filterSelect.innerHTML = '<option value="">બધા લાયસન્સ પ્રકારો</option>';
+                    codes.sort().forEach(code => {
+                        const opt = document.createElement('option');
+                        opt.value = code;
+                        opt.text = code;
+                        if (code === currentVal) opt.selected = true;
+                        filterSelect.appendChild(opt);
+                    });
+                }
+                
+                const filterCode = filterSelect ? filterSelect.value : '';
+                const filtered = filterCode ? templates.filter(t => t.license_type_code === filterCode) : templates;
+                
+                if (filtered.length === 0) {
+                    container.innerHTML = '<p>કોઈ ટેમ્પલેટ નથી. ઉપર ફાઇલ અપલોડ કરો.</p>';
+                    return;
+                }
+                
+                // Group by license type
+                const groups = {};
+                filtered.forEach(t => {
+                    if (!groups[t.license_type_code]) groups[t.license_type_code] = [];
+                    groups[t.license_type_code].push(t);
+                });
+                
+                let html = '';
+                Object.keys(groups).sort().forEach(code => {
+                    const fields = groups[code];
+                    html += `<h3 style="margin-top:15px;color:#1a237e">🏷️ ${code} <span style="color:#666;font-size:13px;font-weight:normal">(${fields.length} ફીલ્ડ્સ)</span></h3>`;
+                    html += '<table><tr><th>ID</th><th>ફીલ્ડ લેબલ</th><th>પ્રકાર</th><th>વિભાગ</th><th>ક્રમ</th><th>ફરજિયાત</th><th>ક્રિયા</th></tr>';
+                    fields.forEach(f => {
+                        html += `<tr><td>${f.id}</td><td>${f.field_label}</td><td>${f.field_type}</td><td>${f.section_name||'-'}</td>
+                            <td>${f.field_order||0}</td><td>${f.is_required ? '✅' : '❌'}</td>
+                            <td><button class="btn btn-danger btn-sm" onclick="deleteTemplateField(${f.id})">🗑️</button></td></tr>`;
+                    });
+                    html += '</table>';
+                });
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = `<div class="result-box error">Error: ${e.message}</div>`;
+            }
+        }
+        
+        async function uploadTemplate() {
+            const resultDiv = document.getElementById('template-upload-result');
+            resultDiv.innerHTML = '⏳ ફાઇલ પસંદ કરી રહ્યા છે...';
+            
+            try {
+                const result = await ipcRenderer.invoke('upload-inspection-template');
+                if (result.canceled) {
+                    resultDiv.innerHTML = '';
+                    return;
+                }
+                if (result.success) {
+                    let msg = `<div class="result-box success">✅ ${result.inserted} ફીલ્ડ ઇમ્પોર્ટ થયા!`;
+                    if (result.errors && result.errors.length > 0) {
+                        msg += `<br>⚠️ ${result.errors.length} ભૂલો (પહેલી 5):<br>${result.errors.slice(0,5).join('<br>')}`;
+                    }
+                    msg += '</div>';
+                    resultDiv.innerHTML = msg;
+                    loadTemplates();
+                } else {
+                    resultDiv.innerHTML = `<div class="result-box error">❌ ${result.error}</div>`;
+                }
+            } catch(e) {
+                resultDiv.innerHTML = `<div class="result-box error">❌ ${e.message}</div>`;
+            }
+        }
+        
+        async function deleteTemplateField(id) {
+            if (!confirm('શું તમે આ ટેમ્પલેટ ફીલ્ડ કાઢી નાખવા માંગો છો?')) return;
+            try {
+                const result = await ipcRenderer.invoke('delete-template', id);
+                if (result.success) {
+                    loadTemplates();
+                } else {
+                    alert('❌ ' + result.error);
+                }
+            } catch(e) {
+                alert('Error: ' + e.message);
+            }
+        }
+
+        // ====================================================================
+        // SETTINGS
+        // ====================================================================
+        async function loadSettings() {
+            try {
+                const settings = await ipcRenderer.invoke('get-settings');
+                const s = {};
+                settings.forEach(r => { s[r.key] = r.value; });
+                // Update drive sync status on settings page load
+                updateDriveSyncStatus();
+                if (s.officer_name) document.getElementById('set-name').value = s.officer_name;
+                if (s.officer_designation) document.getElementById('set-desig').value = s.officer_designation;
+                if (s.department) document.getElementById('set-dept').value = s.department;
+                if (s.office_address) document.getElementById('set-office').value = s.office_address;
+                if (s.officer_contact) document.getElementById('set-contact').value = s.officer_contact;
+                
+                // WhatsApp settings
+                const waSettings = await ipcRenderer.invoke('get-whatsapp-settings');
+                document.getElementById('wa-enabled').checked = waSettings.enabled === 'true';
+                if (waSettings.account) document.getElementById('wa-account').value = waSettings.account;
+                if (waSettings.reminder_time) document.getElementById('wa-time').value = waSettings.reminder_time;
+            } catch(e) { console.error(e); }
+        }
+
+        async function saveGeneralSettings() {
+            const settings = {
+                officer_name: document.getElementById('set-name').value,
+                officer_designation: document.getElementById('set-desig').value,
+                department: document.getElementById('set-dept').value,
+                office_address: document.getElementById('set-office').value,
+                officer_contact: document.getElementById('set-contact').value
+            };
+            const result = await ipcRenderer.invoke('save-settings', settings);
+            if (result.success) alert('✅ સેટિંગ્સ સાચવાઈ!');
+        }
+
+        async function saveWhatsAppSettings() {
+            const settings = {
+                enabled: document.getElementById('wa-enabled').checked ? 'true' : 'false',
+                account: document.getElementById('wa-account').value,
+                reminder_time: document.getElementById('wa-time').value
+            };
+            const result = await ipcRenderer.invoke('save-whatsapp-settings', settings);
+            if (result.success) alert('📱 WhatsApp સેટિંગ્સ સાચવાઈ!');
+        }
+
+        async function testWhatsApp() {
+            const resultDiv = document.getElementById('wa-test-result');
+            const result = await ipcRenderer.invoke('test-whatsapp');
+            resultDiv.innerHTML = `<div class="result-box ${result.success ? 'info' : 'error'}">${result.message}</div>`;
+        }
+
+        // ====================================================================
+        // DRIVE SYNC FUNCTIONS
+        // ====================================================================
+        async function uploadToDrive() {
+            const statusDiv = document.getElementById('drive-sync-result');
+            statusDiv.innerHTML = '<div class="result-box info">⏳ અપલોડ થઈ રહ્યું છે...</div>';
+            try {
+                const result = await ipcRenderer.invoke('drive-upload-sync');
+                if (result.success) {
+                    statusDiv.innerHTML = '<div class="result-box success">✅ ડેટાબેસ Drive પર અપલોડ થયો!</div>';
+                } else {
+                    statusDiv.innerHTML = '<div class="result-box error">❌ ' + (result.error || 'Error') + '</div>';
+                }
+                updateDriveSyncStatus();
+            } catch(e) {
+                statusDiv.innerHTML = '<div class="result-box error">❌ ' + e.message + '</div>';
+            }
+        }
+
+        async function downloadFromDrive() {
+            if (!confirm('⚠️ Drive થી ડાઉનલોડ કરવાથી વર્તમાન ડેટા બદલાઈ જશે. ચાલુ રાખો?')) return;
+            const statusDiv = document.getElementById('drive-sync-result');
+            statusDiv.innerHTML = '<div class="result-box info">⏳ ડાઉનલોડ થઈ રહ્યું છે...</div>';
+            try {
+                const result = await ipcRenderer.invoke('drive-download-sync');
+                if (result.success) {
+                    statusDiv.innerHTML = '<div class="result-box success">✅ ડેટાબેસ Drive થી ડાઉનલોડ થયો! પેજ રિફ્રેશ થાય છે...</div>';
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    statusDiv.innerHTML = '<div class="result-box error">❌ ' + (result.error || 'Error') + '</div>';
+                }
+                updateDriveSyncStatus();
+            } catch(e) {
+                statusDiv.innerHTML = '<div class="result-box error">❌ ' + e.message + '</div>';
+            }
+        }
+
+        async function updateDriveSyncStatus() {
+            try {
+                const result = await ipcRenderer.invoke('drive-sync-status');
+                const statusDiv = document.getElementById('drive-sync-status');
+                const dashIndicator = document.getElementById('dashboard-sync-indicator');
+                
+                let html = '';
+                if (result.lastSync) {
+                    html += '<span>✅ છેલ્લું સિંક: ' + result.lastSync + '</span>';
+                    if (dashIndicator) dashIndicator.textContent = '☁️ સિંક: ' + result.lastSync;
+                } else {
+                    html += '<span>🔄 છેલ્લું સિંક: ક્યારેય નહિ</span>';
+                    if (dashIndicator) dashIndicator.textContent = '☁️ સિંક: ક્યારેય નહિ';
+                }
+                if (result.fileInfo) {
+                    const sizeKB = (result.fileInfo.size / 1024).toFixed(1);
+                    html += '<br><span style="color:#666">📁 ફાઇલ કદ: ' + sizeKB + ' KB</span>';
+                }
+                statusDiv.innerHTML = html;
+            } catch(e) {
+                console.error('Drive status error:', e);
+            }
+        }
+
+        // ====================================================================
+        // INIT
+        // ====================================================================
+        initSelects();
+        loadDashboard();
+        updateDriveSyncStatus();
+
+        // Listen for menu navigation
+        ipcRenderer.on('navigate', (event, page) => {
+            showPage(page);
+        });
+    </script>
+</body>
+</html>

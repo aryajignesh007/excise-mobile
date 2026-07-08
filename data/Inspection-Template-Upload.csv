@@ -1,0 +1,409 @@
+license_type_code,field_label,field_type,field_options,section_name,field_order,is_required
+M.A.1,Name of Licensee,text,,(1) Location of Inspection,1,0
+M.A.1,Address,text,,(1) Location of Inspection,2,0
+M.A.1,Whether Nokarnama Holder is present,dropdown,"[""Yes"",""No""]",(1) Location of Inspection,3,0
+M.A.1,Name of Authorised Person/Nokarnama Holder,text,,(1) Location of Inspection,4,0
+M.A.1,District,text,,(1) Location of Inspection,5,0
+M.A.1,List of Prohibited Item,dropdown,"[""Methanol"",""Recovered Methanol"",""Mother Liquor containing Methanol"",""Spent containing Methanol"",""SDS-Ethanol"",""ODS-Ethanol"",""Recovered Ethanol"",""Mother Liquor containing Ethanol"",""Spent containing Ethanol"",""Liquid Ammonium Chloride"",""Sodium Methoxide"",""Potassium Methoxide"",""Ammonium Chloride"",""Foreign Liquor"",""Molasses"",""Not Applicable""]",(2) Prohibited Item License Details,6,0
+M.A.1,Type of License,dropdown,"[""M.A.-1"",""M.A.-2"",""D.S.-5"",""S.A.-1"",""D.S.P.-1"",""SP-2""]",(2) Prohibited Item License Details,7,0
+M.A.1,Last Amendment done on Date,date,,(2) Prohibited Item License Details,8,0
+M.A.1,Purpose,dropdown,"[""R&D"",""Testing"",""Validation"",""Chilling Brine Solution"",""Sale of Recovered/Distilled/Spent"",""Laboratory Use"",""Analytical"",""Production of Products mentioned in the License"",""APIs"",""API Intermediates"",""Dyes"",""Dye Intermediates"",""Pigment"",""Ink Medium"",""Retarder"",""Diagnostic Reagents"",""Perfume/Deodorant/Sanitizer"",""Other""]",(2) Prohibited Item License Details,9,0
+M.A.1,"Other Purposes, if any",text,,(2) Prohibited Item License Details,10,0
+M.A.1,Whether used for any other Purpose?,text,,(2) Prohibited Item License Details,11,0
+M.A.1,Validity,date,,(2) Prohibited Item License Details,12,0
+M.A.1,Possession Limit,text,,(2) Prohibited Item License Details,13,0
+M.A.1,Consumption Limit,text,,(2) Prohibited Item License Details,14,0
+M.A.1,Whether Possession Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,15,0
+M.A.1,If Yes then details (Possession),text,,(2) Prohibited Item License Details,16,0
+M.A.1,Whether Consumption Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,17,0
+M.A.1,If Yes then details (Consumption),text,,(2) Prohibited Item License Details,18,0
+M.A.1,Storage Area Approved or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,19,0
+M.A.1,Prohibited Item stored in?,checkbox,"[""Tank"",""Drums"",""in Bags/Containers"",""Both Tank and Drums"",""Drum/Tank""]",(3) Storage Details,20,0
+M.A.1,Storage Area cordoned and Locked or Not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,21,0
+M.A.1,Whether Cautionary Signs and Boards used for Prohibited Items?,dropdown,"[""Yes"",""No""]",(3) Storage Details,22,0
+M.A.1,Calibration of Storage Tank done or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,23,0
+M.A.1,Recovery Done or Not?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(4) Recovery Details,24,0
+M.A.1,"If yes, then details (Recovery)",text,,(4) Recovery Details,25,0
+M.A.1,Further details regarding recovery,text,,(4) Recovery Details,26,0
+M.A.1,No. of Products approved as per GPCB,text,,(5) Product Details,27,0
+M.A.1,No.of Products as per License and other details,text,,(5) Product Details,28,0
+M.A.1,Stage Wise Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,29,0
+M.A.1,Continuous Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,30,0
+M.A.1,Formulae and Flow Chart of each product approved or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,31,0
+M.A.1,Product wise Issue Slip with due signatures prepared or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,32,0
+M.A.1,Whether Quota and Limit for each product in last 3 Years adhered or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,33,0
+M.A.1,Whether any other product produced other than the approved ones?,dropdown,"[""Yes"",""No""]",(5) Product Details,34,0
+M.A.1,Whether Register is maintained in the due Format or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,35,0
+M.A.1,Stock Details as per register,text,,(6) Upkeep of Register and Stock Details,36,0
+M.A.1,Stock Details (Actual Level/No. of Bags/ CMs/No. of Barrels etc.),text,,(6) Upkeep of Register and Stock Details,37,0
+M.A.1,Stock Details (actual),text,,(6) Upkeep of Register and Stock Details,38,0
+M.A.1,Stock recorded as per Weigh Slip or Not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,39,0
+M.A.1,Excess/Shortage etc. if any,text,,(6) Upkeep of Register and Stock Details,40,0
+M.A.1,Whether reported by the Licensee or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,41,0
+M.A.1,PESO,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,42,0
+M.A.1,Poison,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,43,0
+M.A.1,FireNOC,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,44,0
+M.A.1,GPCB,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,45,0
+M.A.1,Factory License,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,46,0
+M.A.1,APP,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,47,0
+M.A.1,FDCA Approval,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,48,0
+M.A.1,Director List/Partner List,dropdown,"[""Updated"",""Not Updated"",""Not Applicable""]",(7) Regulatory Permission Details,49,0
+M.A.1,Challan Required for Purchase or Sale or Not?,dropdown,"[""Yes"",""No""]",(8) Other Details,50,0
+M.A.1,Stamped Challan used for Purchase of Methanol?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(8) Other Details,51,0
+M.A.1,Supervision/Escort Required or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,52,0
+M.A.1,Supervision Charges paid in Advance or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,53,0
+M.A.1,Difference paid by the Licensee or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,54,0
+M.A.1,Any other dues to be levied from the Licensees?,text,,(8) Other Details,55,0
+M.A.1,Is there any Prima Facie short levy of Charges/Fee?,dropdown,"[""Yes"",""No""]",(8) Other Details,56,0
+M.A.1,Violations found or not?,dropdown,"[""Yes"",""No""]",(9) Details of Violations by the Licensee,57,0
+M.A.1,If Yes then under Which rules?,text,,(9) Details of Violations by the Licensee,58,0
+M.A.1,Name of Relevant Authority/rules etc.,text,,(9) Details of Violations by the Licensee,59,0
+M.A.1,"Other Remarks, if any",textarea,,(9) Details of Violations by the Licensee,60,0
+M.A.1,Name of other Subordinates present during the inspection,text,,(9) Details of Violations by the Licensee,61,0
+M.A.1,Violations noted and statement taken of the authorised person,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,62,0
+M.A.1,Production/Usage/Purchase stopped to prevent further violation,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,63,0
+M.A.1,Sealing/Confiscation of Prohibited Article Required with Panchnama,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,64,0
+M.A.1,Licensee given time of fortnight to submit records,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,65,0
+M.A.1,Violations noted and instructions given for correction,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,66,0
+M.A.1,Officer's Signature,text,,(9) Details of Violations by the Licensee,67,0
+M.A.1,Date,date,,(9) Details of Violations by the Licensee,68,0
+M.A.2,Name of Licensee,text,,(1) Location of Inspection,1,0
+M.A.2,Address,text,,(1) Location of Inspection,2,0
+M.A.2,Whether Nokarnama Holder is present,dropdown,"[""Yes"",""No""]",(1) Location of Inspection,3,0
+M.A.2,Name of Authorised Person/Nokarnama Holder,text,,(1) Location of Inspection,4,0
+M.A.2,District,text,,(1) Location of Inspection,5,0
+M.A.2,List of Prohibited Item,dropdown,"[""Methanol"",""Recovered Methanol"",""Mother Liquor containing Methanol"",""Spent containing Methanol"",""SDS-Ethanol"",""ODS-Ethanol"",""Recovered Ethanol"",""Mother Liquor containing Ethanol"",""Spent containing Ethanol"",""Liquid Ammonium Chloride"",""Sodium Methoxide"",""Potassium Methoxide"",""Ammonium Chloride"",""Foreign Liquor"",""Molasses"",""Not Applicable""]",(2) Prohibited Item License Details,6,0
+M.A.2,Type of License,dropdown,"[""M.A.-1"",""M.A.-2"",""D.S.-5"",""S.A.-1"",""D.S.P.-1"",""SP-2""]",(2) Prohibited Item License Details,7,0
+M.A.2,Last Amendment done on Date,date,,(2) Prohibited Item License Details,8,0
+M.A.2,Purpose,dropdown,"[""R&D"",""Testing"",""Validation"",""Chilling Brine Solution"",""Sale of Recovered/Distilled/Spent"",""Laboratory Use"",""Analytical"",""Production of Products mentioned in the License"",""APIs"",""API Intermediates"",""Dyes"",""Dye Intermediates"",""Pigment"",""Ink Medium"",""Retarder"",""Diagnostic Reagents"",""Perfume/Deodorant/Sanitizer"",""Other""]",(2) Prohibited Item License Details,9,0
+M.A.2,"Other Purposes, if any",text,,(2) Prohibited Item License Details,10,0
+M.A.2,Whether used for any other Purpose?,text,,(2) Prohibited Item License Details,11,0
+M.A.2,Validity,date,,(2) Prohibited Item License Details,12,0
+M.A.2,Possession Limit,text,,(2) Prohibited Item License Details,13,0
+M.A.2,Consumption Limit,text,,(2) Prohibited Item License Details,14,0
+M.A.2,Whether Possession Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,15,0
+M.A.2,If Yes then details (Possession),text,,(2) Prohibited Item License Details,16,0
+M.A.2,Whether Consumption Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,17,0
+M.A.2,If Yes then details (Consumption),text,,(2) Prohibited Item License Details,18,0
+M.A.2,Storage Area Approved or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,19,0
+M.A.2,Prohibited Item stored in?,checkbox,"[""Tank"",""Drums"",""in Bags/Containers"",""Both Tank and Drums"",""Drum/Tank""]",(3) Storage Details,20,0
+M.A.2,Storage Area cordoned and Locked or Not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,21,0
+M.A.2,Whether Cautionary Signs and Boards used for Prohibited Items?,dropdown,"[""Yes"",""No""]",(3) Storage Details,22,0
+M.A.2,Calibration of Storage Tank done or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,23,0
+M.A.2,Recovery Done or Not?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(4) Recovery Details,24,0
+M.A.2,"If yes, then details (Recovery)",text,,(4) Recovery Details,25,0
+M.A.2,Further details regarding recovery,text,,(4) Recovery Details,26,0
+M.A.2,No. of Products approved as per GPCB,text,,(5) Product Details,27,0
+M.A.2,No.of Products as per License and other details,text,,(5) Product Details,28,0
+M.A.2,Stage Wise Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,29,0
+M.A.2,Continuous Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,30,0
+M.A.2,Formulae and Flow Chart of each product approved or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,31,0
+M.A.2,Product wise Issue Slip with due signatures prepared or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,32,0
+M.A.2,Whether Quota and Limit for each product in last 3 Years adhered or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,33,0
+M.A.2,Whether any other product produced other than the approved ones?,dropdown,"[""Yes"",""No""]",(5) Product Details,34,0
+M.A.2,Whether Register is maintained in the due Format or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,35,0
+M.A.2,Stock Details as per register,text,,(6) Upkeep of Register and Stock Details,36,0
+M.A.2,Stock Details (Actual Level/No. of Bags/ CMs/No. of Barrels etc.),text,,(6) Upkeep of Register and Stock Details,37,0
+M.A.2,Stock Details (actual),text,,(6) Upkeep of Register and Stock Details,38,0
+M.A.2,Stock recorded as per Weigh Slip or Not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,39,0
+M.A.2,Excess/Shortage etc. if any,text,,(6) Upkeep of Register and Stock Details,40,0
+M.A.2,Whether reported by the Licensee or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,41,0
+M.A.2,PESO,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,42,0
+M.A.2,Poison,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,43,0
+M.A.2,FireNOC,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,44,0
+M.A.2,GPCB,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,45,0
+M.A.2,Factory License,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,46,0
+M.A.2,APP,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,47,0
+M.A.2,FDCA Approval,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,48,0
+M.A.2,Director List/Partner List,dropdown,"[""Updated"",""Not Updated"",""Not Applicable""]",(7) Regulatory Permission Details,49,0
+M.A.2,Challan Required for Purchase or Sale or Not?,dropdown,"[""Yes"",""No""]",(8) Other Details,50,0
+M.A.2,Stamped Challan used for Purchase of Methanol?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(8) Other Details,51,0
+M.A.2,Supervision/Escort Required or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,52,0
+M.A.2,Supervision Charges paid in Advance or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,53,0
+M.A.2,Difference paid by the Licensee or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,54,0
+M.A.2,Any other dues to be levied from the Licensees?,text,,(8) Other Details,55,0
+M.A.2,Is there any Prima Facie short levy of Charges/Fee?,dropdown,"[""Yes"",""No""]",(8) Other Details,56,0
+M.A.2,Violations found or not?,dropdown,"[""Yes"",""No""]",(9) Details of Violations by the Licensee,57,0
+M.A.2,If Yes then under Which rules?,text,,(9) Details of Violations by the Licensee,58,0
+M.A.2,Name of Relevant Authority/rules etc.,text,,(9) Details of Violations by the Licensee,59,0
+M.A.2,"Other Remarks, if any",textarea,,(9) Details of Violations by the Licensee,60,0
+M.A.2,Name of other Subordinates present during the inspection,text,,(9) Details of Violations by the Licensee,61,0
+M.A.2,Violations noted and statement taken of the authorised person,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,62,0
+M.A.2,Production/Usage/Purchase stopped to prevent further violation,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,63,0
+M.A.2,Sealing/Confiscation of Prohibited Article Required with Panchnama,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,64,0
+M.A.2,Licensee given time of fortnight to submit records,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,65,0
+M.A.2,Violations noted and instructions given for correction,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,66,0
+M.A.2,Officer's Signature,text,,(9) Details of Violations by the Licensee,67,0
+M.A.2,Date,date,,(9) Details of Violations by the Licensee,68,0
+D.S.-5,Name of Licensee,text,,(1) Location of Inspection,1,0
+D.S.-5,Address,text,,(1) Location of Inspection,2,0
+D.S.-5,Whether Nokarnama Holder is present,dropdown,"[""Yes"",""No""]",(1) Location of Inspection,3,0
+D.S.-5,Name of Authorised Person/Nokarnama Holder,text,,(1) Location of Inspection,4,0
+D.S.-5,District,text,,(1) Location of Inspection,5,0
+D.S.-5,List of Prohibited Item,dropdown,"[""Methanol"",""Recovered Methanol"",""Mother Liquor containing Methanol"",""Spent containing Methanol"",""SDS-Ethanol"",""ODS-Ethanol"",""Recovered Ethanol"",""Mother Liquor containing Ethanol"",""Spent containing Ethanol"",""Liquid Ammonium Chloride"",""Sodium Methoxide"",""Potassium Methoxide"",""Ammonium Chloride"",""Foreign Liquor"",""Molasses"",""Not Applicable""]",(2) Prohibited Item License Details,6,0
+D.S.-5,Type of License,dropdown,"[""M.A.-1"",""M.A.-2"",""D.S.-5"",""S.A.-1"",""D.S.P.-1"",""SP-2""]",(2) Prohibited Item License Details,7,0
+D.S.-5,Last Amendment done on Date,date,,(2) Prohibited Item License Details,8,0
+D.S.-5,Purpose,dropdown,"[""R&D"",""Testing"",""Validation"",""Chilling Brine Solution"",""Sale of Recovered/Distilled/Spent"",""Laboratory Use"",""Analytical"",""Production of Products mentioned in the License"",""APIs"",""API Intermediates"",""Dyes"",""Dye Intermediates"",""Pigment"",""Ink Medium"",""Retarder"",""Diagnostic Reagents"",""Perfume/Deodorant/Sanitizer"",""Other""]",(2) Prohibited Item License Details,9,0
+D.S.-5,"Other Purposes, if any",text,,(2) Prohibited Item License Details,10,0
+D.S.-5,Whether used for any other Purpose?,text,,(2) Prohibited Item License Details,11,0
+D.S.-5,Validity,date,,(2) Prohibited Item License Details,12,0
+D.S.-5,Possession Limit,text,,(2) Prohibited Item License Details,13,0
+D.S.-5,Consumption Limit,text,,(2) Prohibited Item License Details,14,0
+D.S.-5,Whether Possession Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,15,0
+D.S.-5,If Yes then details (Possession),text,,(2) Prohibited Item License Details,16,0
+D.S.-5,Whether Consumption Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,17,0
+D.S.-5,If Yes then details (Consumption),text,,(2) Prohibited Item License Details,18,0
+D.S.-5,Storage Area Approved or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,19,0
+D.S.-5,Prohibited Item stored in?,checkbox,"[""Tank"",""Drums"",""in Bags/Containers"",""Both Tank and Drums"",""Drum/Tank""]",(3) Storage Details,20,0
+D.S.-5,Storage Area cordoned and Locked or Not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,21,0
+D.S.-5,Whether Cautionary Signs and Boards used for Prohibited Items?,dropdown,"[""Yes"",""No""]",(3) Storage Details,22,0
+D.S.-5,Calibration of Storage Tank done or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,23,0
+D.S.-5,Recovery Done or Not?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(4) Recovery Details,24,0
+D.S.-5,"If yes, then details (Recovery)",text,,(4) Recovery Details,25,0
+D.S.-5,Further details regarding recovery,text,,(4) Recovery Details,26,0
+D.S.-5,No. of Products approved as per GPCB,text,,(5) Product Details,27,0
+D.S.-5,No.of Products as per License and other details,text,,(5) Product Details,28,0
+D.S.-5,Stage Wise Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,29,0
+D.S.-5,Continuous Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,30,0
+D.S.-5,Formulae and Flow Chart of each product approved or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,31,0
+D.S.-5,Product wise Issue Slip with due signatures prepared or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,32,0
+D.S.-5,Whether Quota and Limit for each product in last 3 Years adhered or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,33,0
+D.S.-5,Whether any other product produced other than the approved ones?,dropdown,"[""Yes"",""No""]",(5) Product Details,34,0
+D.S.-5,Whether Register is maintained in the due Format or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,35,0
+D.S.-5,Stock Details as per register,text,,(6) Upkeep of Register and Stock Details,36,0
+D.S.-5,Stock Details (Actual Level/No. of Bags/ CMs/No. of Barrels etc.),text,,(6) Upkeep of Register and Stock Details,37,0
+D.S.-5,Stock Details (actual),text,,(6) Upkeep of Register and Stock Details,38,0
+D.S.-5,Stock recorded as per Weigh Slip or Not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,39,0
+D.S.-5,Excess/Shortage etc. if any,text,,(6) Upkeep of Register and Stock Details,40,0
+D.S.-5,Whether reported by the Licensee or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,41,0
+D.S.-5,PESO,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,42,0
+D.S.-5,Poison,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,43,0
+D.S.-5,FireNOC,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,44,0
+D.S.-5,GPCB,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,45,0
+D.S.-5,Factory License,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,46,0
+D.S.-5,APP,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,47,0
+D.S.-5,FDCA Approval,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,48,0
+D.S.-5,Director List/Partner List,dropdown,"[""Updated"",""Not Updated"",""Not Applicable""]",(7) Regulatory Permission Details,49,0
+D.S.-5,Challan Required for Purchase or Sale or Not?,dropdown,"[""Yes"",""No""]",(8) Other Details,50,0
+D.S.-5,Stamped Challan used for Purchase of Methanol?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(8) Other Details,51,0
+D.S.-5,Supervision/Escort Required or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,52,0
+D.S.-5,Supervision Charges paid in Advance or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,53,0
+D.S.-5,Difference paid by the Licensee or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,54,0
+D.S.-5,Any other dues to be levied from the Licensees?,text,,(8) Other Details,55,0
+D.S.-5,Is there any Prima Facie short levy of Charges/Fee?,dropdown,"[""Yes"",""No""]",(8) Other Details,56,0
+D.S.-5,Violations found or not?,dropdown,"[""Yes"",""No""]",(9) Details of Violations by the Licensee,57,0
+D.S.-5,If Yes then under Which rules?,text,,(9) Details of Violations by the Licensee,58,0
+D.S.-5,Name of Relevant Authority/rules etc.,text,,(9) Details of Violations by the Licensee,59,0
+D.S.-5,"Other Remarks, if any",textarea,,(9) Details of Violations by the Licensee,60,0
+D.S.-5,Name of other Subordinates present during the inspection,text,,(9) Details of Violations by the Licensee,61,0
+D.S.-5,Violations noted and statement taken of the authorised person,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,62,0
+D.S.-5,Production/Usage/Purchase stopped to prevent further violation,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,63,0
+D.S.-5,Sealing/Confiscation of Prohibited Article Required with Panchnama,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,64,0
+D.S.-5,Licensee given time of fortnight to submit records,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,65,0
+D.S.-5,Violations noted and instructions given for correction,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,66,0
+D.S.-5,Officer's Signature,text,,(9) Details of Violations by the Licensee,67,0
+D.S.-5,Date,date,,(9) Details of Violations by the Licensee,68,0
+S.A.-1,Name of Licensee,text,,(1) Location of Inspection,1,0
+S.A.-1,Address,text,,(1) Location of Inspection,2,0
+S.A.-1,Whether Nokarnama Holder is present,dropdown,"[""Yes"",""No""]",(1) Location of Inspection,3,0
+S.A.-1,Name of Authorised Person/Nokarnama Holder,text,,(1) Location of Inspection,4,0
+S.A.-1,District,text,,(1) Location of Inspection,5,0
+S.A.-1,List of Prohibited Item,dropdown,"[""Methanol"",""Recovered Methanol"",""Mother Liquor containing Methanol"",""Spent containing Methanol"",""SDS-Ethanol"",""ODS-Ethanol"",""Recovered Ethanol"",""Mother Liquor containing Ethanol"",""Spent containing Ethanol"",""Liquid Ammonium Chloride"",""Sodium Methoxide"",""Potassium Methoxide"",""Ammonium Chloride"",""Foreign Liquor"",""Molasses"",""Not Applicable""]",(2) Prohibited Item License Details,6,0
+S.A.-1,Type of License,dropdown,"[""M.A.-1"",""M.A.-2"",""D.S.-5"",""S.A.-1"",""D.S.P.-1"",""SP-2""]",(2) Prohibited Item License Details,7,0
+S.A.-1,Last Amendment done on Date,date,,(2) Prohibited Item License Details,8,0
+S.A.-1,Purpose,dropdown,"[""R&D"",""Testing"",""Validation"",""Chilling Brine Solution"",""Sale of Recovered/Distilled/Spent"",""Laboratory Use"",""Analytical"",""Production of Products mentioned in the License"",""APIs"",""API Intermediates"",""Dyes"",""Dye Intermediates"",""Pigment"",""Ink Medium"",""Retarder"",""Diagnostic Reagents"",""Perfume/Deodorant/Sanitizer"",""Other""]",(2) Prohibited Item License Details,9,0
+S.A.-1,"Other Purposes, if any",text,,(2) Prohibited Item License Details,10,0
+S.A.-1,Whether used for any other Purpose?,text,,(2) Prohibited Item License Details,11,0
+S.A.-1,Validity,date,,(2) Prohibited Item License Details,12,0
+S.A.-1,Possession Limit,text,,(2) Prohibited Item License Details,13,0
+S.A.-1,Consumption Limit,text,,(2) Prohibited Item License Details,14,0
+S.A.-1,Whether Possession Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,15,0
+S.A.-1,If Yes then details (Possession),text,,(2) Prohibited Item License Details,16,0
+S.A.-1,Whether Consumption Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,17,0
+S.A.-1,If Yes then details (Consumption),text,,(2) Prohibited Item License Details,18,0
+S.A.-1,Storage Area Approved or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,19,0
+S.A.-1,Prohibited Item stored in?,checkbox,"[""Tank"",""Drums"",""in Bags/Containers"",""Both Tank and Drums"",""Drum/Tank""]",(3) Storage Details,20,0
+S.A.-1,Storage Area cordoned and Locked or Not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,21,0
+S.A.-1,Whether Cautionary Signs and Boards used for Prohibited Items?,dropdown,"[""Yes"",""No""]",(3) Storage Details,22,0
+S.A.-1,Calibration of Storage Tank done or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,23,0
+S.A.-1,Recovery Done or Not?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(4) Recovery Details,24,0
+S.A.-1,"If yes, then details (Recovery)",text,,(4) Recovery Details,25,0
+S.A.-1,Further details regarding recovery,text,,(4) Recovery Details,26,0
+S.A.-1,No. of Products approved as per GPCB,text,,(5) Product Details,27,0
+S.A.-1,No.of Products as per License and other details,text,,(5) Product Details,28,0
+S.A.-1,Stage Wise Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,29,0
+S.A.-1,Continuous Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,30,0
+S.A.-1,Formulae and Flow Chart of each product approved or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,31,0
+S.A.-1,Product wise Issue Slip with due signatures prepared or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,32,0
+S.A.-1,Whether Quota and Limit for each product in last 3 Years adhered or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,33,0
+S.A.-1,Whether any other product produced other than the approved ones?,dropdown,"[""Yes"",""No""]",(5) Product Details,34,0
+S.A.-1,Whether Register is maintained in the due Format or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,35,0
+S.A.-1,Stock Details as per register,text,,(6) Upkeep of Register and Stock Details,36,0
+S.A.-1,Stock Details (Actual Level/No. of Bags/ CMs/No. of Barrels etc.),text,,(6) Upkeep of Register and Stock Details,37,0
+S.A.-1,Stock Details (actual),text,,(6) Upkeep of Register and Stock Details,38,0
+S.A.-1,Stock recorded as per Weigh Slip or Not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,39,0
+S.A.-1,Excess/Shortage etc. if any,text,,(6) Upkeep of Register and Stock Details,40,0
+S.A.-1,Whether reported by the Licensee or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,41,0
+S.A.-1,PESO,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,42,0
+S.A.-1,Poison,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,43,0
+S.A.-1,FireNOC,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,44,0
+S.A.-1,GPCB,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,45,0
+S.A.-1,Factory License,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,46,0
+S.A.-1,APP,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,47,0
+S.A.-1,FDCA Approval,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,48,0
+S.A.-1,Director List/Partner List,dropdown,"[""Updated"",""Not Updated"",""Not Applicable""]",(7) Regulatory Permission Details,49,0
+S.A.-1,Challan Required for Purchase or Sale or Not?,dropdown,"[""Yes"",""No""]",(8) Other Details,50,0
+S.A.-1,Stamped Challan used for Purchase of Methanol?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(8) Other Details,51,0
+S.A.-1,Supervision/Escort Required or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,52,0
+S.A.-1,Supervision Charges paid in Advance or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,53,0
+S.A.-1,Difference paid by the Licensee or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,54,0
+S.A.-1,Any other dues to be levied from the Licensees?,text,,(8) Other Details,55,0
+S.A.-1,Is there any Prima Facie short levy of Charges/Fee?,dropdown,"[""Yes"",""No""]",(8) Other Details,56,0
+S.A.-1,Violations found or not?,dropdown,"[""Yes"",""No""]",(9) Details of Violations by the Licensee,57,0
+S.A.-1,If Yes then under Which rules?,text,,(9) Details of Violations by the Licensee,58,0
+S.A.-1,Name of Relevant Authority/rules etc.,text,,(9) Details of Violations by the Licensee,59,0
+S.A.-1,"Other Remarks, if any",textarea,,(9) Details of Violations by the Licensee,60,0
+S.A.-1,Name of other Subordinates present during the inspection,text,,(9) Details of Violations by the Licensee,61,0
+S.A.-1,Violations noted and statement taken of the authorised person,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,62,0
+S.A.-1,Production/Usage/Purchase stopped to prevent further violation,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,63,0
+S.A.-1,Sealing/Confiscation of Prohibited Article Required with Panchnama,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,64,0
+S.A.-1,Licensee given time of fortnight to submit records,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,65,0
+S.A.-1,Violations noted and instructions given for correction,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,66,0
+S.A.-1,Officer's Signature,text,,(9) Details of Violations by the Licensee,67,0
+S.A.-1,Date,date,,(9) Details of Violations by the Licensee,68,0
+D.S.P.-1,Name of Licensee,text,,(1) Location of Inspection,1,0
+D.S.P.-1,Address,text,,(1) Location of Inspection,2,0
+D.S.P.-1,Whether Nokarnama Holder is present,dropdown,"[""Yes"",""No""]",(1) Location of Inspection,3,0
+D.S.P.-1,Name of Authorised Person/Nokarnama Holder,text,,(1) Location of Inspection,4,0
+D.S.P.-1,District,text,,(1) Location of Inspection,5,0
+D.S.P.-1,List of Prohibited Item,dropdown,"[""Methanol"",""Recovered Methanol"",""Mother Liquor containing Methanol"",""Spent containing Methanol"",""SDS-Ethanol"",""ODS-Ethanol"",""Recovered Ethanol"",""Mother Liquor containing Ethanol"",""Spent containing Ethanol"",""Liquid Ammonium Chloride"",""Sodium Methoxide"",""Potassium Methoxide"",""Ammonium Chloride"",""Foreign Liquor"",""Molasses"",""Not Applicable""]",(2) Prohibited Item License Details,6,0
+D.S.P.-1,Type of License,dropdown,"[""M.A.-1"",""M.A.-2"",""D.S.-5"",""S.A.-1"",""D.S.P.-1"",""SP-2""]",(2) Prohibited Item License Details,7,0
+D.S.P.-1,Last Amendment done on Date,date,,(2) Prohibited Item License Details,8,0
+D.S.P.-1,Purpose,dropdown,"[""R&D"",""Testing"",""Validation"",""Chilling Brine Solution"",""Sale of Recovered/Distilled/Spent"",""Laboratory Use"",""Analytical"",""Production of Products mentioned in the License"",""APIs"",""API Intermediates"",""Dyes"",""Dye Intermediates"",""Pigment"",""Ink Medium"",""Retarder"",""Diagnostic Reagents"",""Perfume/Deodorant/Sanitizer"",""Other""]",(2) Prohibited Item License Details,9,0
+D.S.P.-1,"Other Purposes, if any",text,,(2) Prohibited Item License Details,10,0
+D.S.P.-1,Whether used for any other Purpose?,text,,(2) Prohibited Item License Details,11,0
+D.S.P.-1,Validity,date,,(2) Prohibited Item License Details,12,0
+D.S.P.-1,Possession Limit,text,,(2) Prohibited Item License Details,13,0
+D.S.P.-1,Consumption Limit,text,,(2) Prohibited Item License Details,14,0
+D.S.P.-1,Whether Possession Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,15,0
+D.S.P.-1,If Yes then details (Possession),text,,(2) Prohibited Item License Details,16,0
+D.S.P.-1,Whether Consumption Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,17,0
+D.S.P.-1,If Yes then details (Consumption),text,,(2) Prohibited Item License Details,18,0
+D.S.P.-1,Storage Area Approved or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,19,0
+D.S.P.-1,Prohibited Item stored in?,checkbox,"[""Tank"",""Drums"",""in Bags/Containers"",""Both Tank and Drums"",""Drum/Tank""]",(3) Storage Details,20,0
+D.S.P.-1,Storage Area cordoned and Locked or Not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,21,0
+D.S.P.-1,Whether Cautionary Signs and Boards used for Prohibited Items?,dropdown,"[""Yes"",""No""]",(3) Storage Details,22,0
+D.S.P.-1,Calibration of Storage Tank done or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,23,0
+D.S.P.-1,Recovery Done or Not?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(4) Recovery Details,24,0
+D.S.P.-1,"If yes, then details (Recovery)",text,,(4) Recovery Details,25,0
+D.S.P.-1,Further details regarding recovery,text,,(4) Recovery Details,26,0
+D.S.P.-1,No. of Products approved as per GPCB,text,,(5) Product Details,27,0
+D.S.P.-1,No.of Products as per License and other details,text,,(5) Product Details,28,0
+D.S.P.-1,Stage Wise Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,29,0
+D.S.P.-1,Continuous Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,30,0
+D.S.P.-1,Formulae and Flow Chart of each product approved or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,31,0
+D.S.P.-1,Product wise Issue Slip with due signatures prepared or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,32,0
+D.S.P.-1,Whether Quota and Limit for each product in last 3 Years adhered or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,33,0
+D.S.P.-1,Whether any other product produced other than the approved ones?,dropdown,"[""Yes"",""No""]",(5) Product Details,34,0
+D.S.P.-1,Whether Register is maintained in the due Format or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,35,0
+D.S.P.-1,Stock Details as per register,text,,(6) Upkeep of Register and Stock Details,36,0
+D.S.P.-1,Stock Details (Actual Level/No. of Bags/ CMs/No. of Barrels etc.),text,,(6) Upkeep of Register and Stock Details,37,0
+D.S.P.-1,Stock Details (actual),text,,(6) Upkeep of Register and Stock Details,38,0
+D.S.P.-1,Stock recorded as per Weigh Slip or Not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,39,0
+D.S.P.-1,Excess/Shortage etc. if any,text,,(6) Upkeep of Register and Stock Details,40,0
+D.S.P.-1,Whether reported by the Licensee or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,41,0
+D.S.P.-1,PESO,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,42,0
+D.S.P.-1,Poison,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,43,0
+D.S.P.-1,FireNOC,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,44,0
+D.S.P.-1,GPCB,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,45,0
+D.S.P.-1,Factory License,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,46,0
+D.S.P.-1,APP,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,47,0
+D.S.P.-1,FDCA Approval,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,48,0
+D.S.P.-1,Director List/Partner List,dropdown,"[""Updated"",""Not Updated"",""Not Applicable""]",(7) Regulatory Permission Details,49,0
+D.S.P.-1,Challan Required for Purchase or Sale or Not?,dropdown,"[""Yes"",""No""]",(8) Other Details,50,0
+D.S.P.-1,Stamped Challan used for Purchase of Methanol?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(8) Other Details,51,0
+D.S.P.-1,Supervision/Escort Required or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,52,0
+D.S.P.-1,Supervision Charges paid in Advance or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,53,0
+D.S.P.-1,Difference paid by the Licensee or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,54,0
+D.S.P.-1,Any other dues to be levied from the Licensees?,text,,(8) Other Details,55,0
+D.S.P.-1,Is there any Prima Facie short levy of Charges/Fee?,dropdown,"[""Yes"",""No""]",(8) Other Details,56,0
+D.S.P.-1,Violations found or not?,dropdown,"[""Yes"",""No""]",(9) Details of Violations by the Licensee,57,0
+D.S.P.-1,If Yes then under Which rules?,text,,(9) Details of Violations by the Licensee,58,0
+D.S.P.-1,Name of Relevant Authority/rules etc.,text,,(9) Details of Violations by the Licensee,59,0
+D.S.P.-1,"Other Remarks, if any",textarea,,(9) Details of Violations by the Licensee,60,0
+D.S.P.-1,Name of other Subordinates present during the inspection,text,,(9) Details of Violations by the Licensee,61,0
+D.S.P.-1,Violations noted and statement taken of the authorised person,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,62,0
+D.S.P.-1,Production/Usage/Purchase stopped to prevent further violation,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,63,0
+D.S.P.-1,Sealing/Confiscation of Prohibited Article Required with Panchnama,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,64,0
+D.S.P.-1,Licensee given time of fortnight to submit records,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,65,0
+D.S.P.-1,Violations noted and instructions given for correction,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,66,0
+D.S.P.-1,Officer's Signature,text,,(9) Details of Violations by the Licensee,67,0
+D.S.P.-1,Date,date,,(9) Details of Violations by the Licensee,68,0
+SP-2,Name of Licensee,text,,(1) Location of Inspection,1,0
+SP-2,Address,text,,(1) Location of Inspection,2,0
+SP-2,Whether Nokarnama Holder is present,dropdown,"[""Yes"",""No""]",(1) Location of Inspection,3,0
+SP-2,Name of Authorised Person/Nokarnama Holder,text,,(1) Location of Inspection,4,0
+SP-2,District,text,,(1) Location of Inspection,5,0
+SP-2,List of Prohibited Item,dropdown,"[""Methanol"",""Recovered Methanol"",""Mother Liquor containing Methanol"",""Spent containing Methanol"",""SDS-Ethanol"",""ODS-Ethanol"",""Recovered Ethanol"",""Mother Liquor containing Ethanol"",""Spent containing Ethanol"",""Liquid Ammonium Chloride"",""Sodium Methoxide"",""Potassium Methoxide"",""Ammonium Chloride"",""Foreign Liquor"",""Molasses"",""Not Applicable""]",(2) Prohibited Item License Details,6,0
+SP-2,Type of License,dropdown,"[""M.A.-1"",""M.A.-2"",""D.S.-5"",""S.A.-1"",""D.S.P.-1"",""SP-2""]",(2) Prohibited Item License Details,7,0
+SP-2,Last Amendment done on Date,date,,(2) Prohibited Item License Details,8,0
+SP-2,Purpose,dropdown,"[""R&D"",""Testing"",""Validation"",""Chilling Brine Solution"",""Sale of Recovered/Distilled/Spent"",""Laboratory Use"",""Analytical"",""Production of Products mentioned in the License"",""APIs"",""API Intermediates"",""Dyes"",""Dye Intermediates"",""Pigment"",""Ink Medium"",""Retarder"",""Diagnostic Reagents"",""Perfume/Deodorant/Sanitizer"",""Other""]",(2) Prohibited Item License Details,9,0
+SP-2,"Other Purposes, if any",text,,(2) Prohibited Item License Details,10,0
+SP-2,Whether used for any other Purpose?,text,,(2) Prohibited Item License Details,11,0
+SP-2,Validity,date,,(2) Prohibited Item License Details,12,0
+SP-2,Possession Limit,text,,(2) Prohibited Item License Details,13,0
+SP-2,Consumption Limit,text,,(2) Prohibited Item License Details,14,0
+SP-2,Whether Possession Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,15,0
+SP-2,If Yes then details (Possession),text,,(2) Prohibited Item License Details,16,0
+SP-2,Whether Consumption Limit crossed in Last 3 Years?,dropdown,"[""Yes"",""No""]",(2) Prohibited Item License Details,17,0
+SP-2,If Yes then details (Consumption),text,,(2) Prohibited Item License Details,18,0
+SP-2,Storage Area Approved or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,19,0
+SP-2,Prohibited Item stored in?,checkbox,"[""Tank"",""Drums"",""in Bags/Containers"",""Both Tank and Drums"",""Drum/Tank""]",(3) Storage Details,20,0
+SP-2,Storage Area cordoned and Locked or Not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,21,0
+SP-2,Whether Cautionary Signs and Boards used for Prohibited Items?,dropdown,"[""Yes"",""No""]",(3) Storage Details,22,0
+SP-2,Calibration of Storage Tank done or not?,dropdown,"[""Yes"",""No""]",(3) Storage Details,23,0
+SP-2,Recovery Done or Not?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(4) Recovery Details,24,0
+SP-2,"If yes, then details (Recovery)",text,,(4) Recovery Details,25,0
+SP-2,Further details regarding recovery,text,,(4) Recovery Details,26,0
+SP-2,No. of Products approved as per GPCB,text,,(5) Product Details,27,0
+SP-2,No.of Products as per License and other details,text,,(5) Product Details,28,0
+SP-2,Stage Wise Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,29,0
+SP-2,Continuous Production or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,30,0
+SP-2,Formulae and Flow Chart of each product approved or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,31,0
+SP-2,Product wise Issue Slip with due signatures prepared or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,32,0
+SP-2,Whether Quota and Limit for each product in last 3 Years adhered or not?,dropdown,"[""Yes"",""No""]",(5) Product Details,33,0
+SP-2,Whether any other product produced other than the approved ones?,dropdown,"[""Yes"",""No""]",(5) Product Details,34,0
+SP-2,Whether Register is maintained in the due Format or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,35,0
+SP-2,Stock Details as per register,text,,(6) Upkeep of Register and Stock Details,36,0
+SP-2,Stock Details (Actual Level/No. of Bags/ CMs/No. of Barrels etc.),text,,(6) Upkeep of Register and Stock Details,37,0
+SP-2,Stock Details (actual),text,,(6) Upkeep of Register and Stock Details,38,0
+SP-2,Stock recorded as per Weigh Slip or Not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,39,0
+SP-2,Excess/Shortage etc. if any,text,,(6) Upkeep of Register and Stock Details,40,0
+SP-2,Whether reported by the Licensee or not?,dropdown,"[""Yes"",""No""]",(6) Upkeep of Register and Stock Details,41,0
+SP-2,PESO,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,42,0
+SP-2,Poison,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,43,0
+SP-2,FireNOC,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,44,0
+SP-2,GPCB,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,45,0
+SP-2,Factory License,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,46,0
+SP-2,APP,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,47,0
+SP-2,FDCA Approval,dropdown,"[""Yes"",""No"",""Not Applicable""]",(7) Regulatory Permission Details,48,0
+SP-2,Director List/Partner List,dropdown,"[""Updated"",""Not Updated"",""Not Applicable""]",(7) Regulatory Permission Details,49,0
+SP-2,Challan Required for Purchase or Sale or Not?,dropdown,"[""Yes"",""No""]",(8) Other Details,50,0
+SP-2,Stamped Challan used for Purchase of Methanol?,dropdown,"[""Yes"",""No"",""Not Applicable""]",(8) Other Details,51,0
+SP-2,Supervision/Escort Required or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,52,0
+SP-2,Supervision Charges paid in Advance or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,53,0
+SP-2,Difference paid by the Licensee or not?,dropdown,"[""Yes"",""No""]",(8) Other Details,54,0
+SP-2,Any other dues to be levied from the Licensees?,text,,(8) Other Details,55,0
+SP-2,Is there any Prima Facie short levy of Charges/Fee?,dropdown,"[""Yes"",""No""]",(8) Other Details,56,0
+SP-2,Violations found or not?,dropdown,"[""Yes"",""No""]",(9) Details of Violations by the Licensee,57,0
+SP-2,If Yes then under Which rules?,text,,(9) Details of Violations by the Licensee,58,0
+SP-2,Name of Relevant Authority/rules etc.,text,,(9) Details of Violations by the Licensee,59,0
+SP-2,"Other Remarks, if any",textarea,,(9) Details of Violations by the Licensee,60,0
+SP-2,Name of other Subordinates present during the inspection,text,,(9) Details of Violations by the Licensee,61,0
+SP-2,Violations noted and statement taken of the authorised person,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,62,0
+SP-2,Production/Usage/Purchase stopped to prevent further violation,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,63,0
+SP-2,Sealing/Confiscation of Prohibited Article Required with Panchnama,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,64,0
+SP-2,Licensee given time of fortnight to submit records,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,65,0
+SP-2,Violations noted and instructions given for correction,checkbox,"[""Yes""]",(9) Details of Violations by the Licensee,66,0
+SP-2,Officer's Signature,text,,(9) Details of Violations by the Licensee,67,0
+SP-2,Date,date,,(9) Details of Violations by the Licensee,68,0

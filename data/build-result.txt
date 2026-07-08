@@ -1,0 +1,6 @@
+Excise Inspection Manager-win32-x64
+Excise-Desktop-v4d-clean.zip
+Excise-Desktop-v4d-final.zip
+Excise-Desktop-v4d.zip
+Excise-Inspection-Manager-v4d-fixed.zip
+Excise-Mobile-PWA-fixed.zip

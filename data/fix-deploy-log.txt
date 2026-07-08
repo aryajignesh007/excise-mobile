@@ -1,0 +1,57 @@
+=== Excise Desktop v4d Fix & Feature Deployment Log ===
+Date: 2026-07-07 14:59 IST
+
+Changes Made:
+-----------
+1. Bug Fix 1 - Bulk Import Not Updating Licensee List:
+   - Made afterBulkImport() async
+   - Added await loadLicensees() with try/catch
+   - Added console logging for debugging
+   - Fixed filterLicensees() and error states in loadLicensees()
+
+2. Bug Fix 2 - Distance Calculator Not Working:
+   - Added field existence check for dynamically created insp-location
+   - Added 12-second timeout with Promise.race() for OSRM API calls
+   - Better error messages in Gujarati + English
+   - Shows specific error when location field doesn't exist (license type not yet selected)
+
+3. Feature 3 - Inspection Templates Per License Type:
+   - Added IPC handlers: upload-inspection-template, get-inspection-template, 
+     get-all-templates, delete-template, save-inspection-fields, get-inspection-fields
+   - New Templates page with upload Excel/CSV and list/delete templates
+   - onLicenseTypeChange() now calls loadTemplateFieldsForInspection() to load
+     custom fields from form_templates table dynamically
+   - Template fields support types: text, dropdown, checkbox, date, textarea
+   - saveInspections() collects all .tpl-field values and saves as inspection_fields
+   - Templates page linked in sidebar: 📋 ટેમ્પલેટ મેનેજર
+
+4. Feature 4 - Vehicle Number Dropdown:
+   - New vehicle_master table in schema.sql
+   - IPC handlers added: get-vehicles, add-vehicle, delete-vehicle
+   - Changed insp-vehicle from <input> to <input list="vehicle-list"> with <datalist>
+   - Vehicle Manager modal (showVehicleManager) with add/delete functions
+   - Settings gear button next to vehicle field to open vehicle manager
+   - loadVehicleList() called on inspection form load
+   - Vehicles can be managed from settings modal
+
+5. General Improvements:
+   - Proper sync of all source files to dist/win-unpacked
+   - Robust error handling throughout
+
+Files Modified:
+--------------
+- src/database/schema.sql (added vehicle_master table)
+- main.js (added 8 new IPC handlers for vehicles and templates)
+- renderer/index.html (major updates: bugs fixed, templates page, vehicle mgr)
+
+Files Synced to Dist:
+---------------------
+- dist/win-unpacked/resources/app/main.js
+- dist/win-unpacked/resources/app/renderer/index.html
+- dist/win-unpacked/resources/app/src/database/schema.sql
+- dist/win-unpacked/resources/app/src/database/init.js
+- dist/win-unpacked/resources/app/src/modules/distance-calculator.js
+- dist/win-unpacked/resources/app/src/modules/bulk-import.js
+- dist/win-unpacked/resources/app/src/modules/inspection-manager.js
+
+ZIP: Excise-Desktop-v4d-fixed.zip created from dist/win-unpacked

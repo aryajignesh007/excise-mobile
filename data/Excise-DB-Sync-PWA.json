@@ -1,0 +1,740 @@
+{
+  "version": 2,
+  "exportedAt": "2026-07-06T18:15:50.229Z",
+  "data": {
+    "licensees": [
+      {
+        "id": 1,
+        "name": "Acutaas Chemicals Limited",
+        "address": "Sachin GIDC",
+        "gidc_area": "Sachin GIDC",
+        "city": "Surat",
+        "district": "Surat District",
+        "phone": "",
+        "email": "",
+        "contact_person": "Milan Dobaria",
+        "nokarnama_holder": "Yes",
+        "latitude": null,
+        "longitude": null,
+        "is_priority": 1,
+        "notes": "",
+        "created_at": "2026-07-05 19:56:05",
+        "updated_at": "2026-07-05 19:56:05"
+      },
+      {
+        "id": 2,
+        "name": "CTX Lifescience Private Limited",
+        "address": "Sachin GIDC",
+        "gidc_area": "Sachin GIDC",
+        "city": "Surat",
+        "district": "Surat District",
+        "phone": "",
+        "email": "",
+        "contact_person": "Pankaj Gandhi",
+        "nokarnama_holder": "Yes",
+        "latitude": null,
+        "longitude": null,
+        "is_priority": 1,
+        "notes": "",
+        "created_at": "2026-07-05 19:56:13",
+        "updated_at": "2026-07-05 19:56:13"
+      },
+      {
+        "id": 3,
+        "name": "Spectrum Dyes and Chemicals",
+        "address": "Palsana",
+        "gidc_area": "Palsana",
+        "city": "Surat",
+        "district": "Surat District",
+        "phone": "",
+        "email": "",
+        "contact_person": "Balbir Singh Pilania",
+        "nokarnama_holder": "Yes",
+        "latitude": null,
+        "longitude": null,
+        "is_priority": 1,
+        "notes": "",
+        "created_at": "2026-07-05 19:56:13",
+        "updated_at": "2026-07-05 19:56:13"
+      }
+    ],
+    "inspections": [
+      {
+        "id": 1,
+        "report_number": "IR/SPE/2025/Test/Jul/01",
+        "date_of_inspection": "2025-07-01",
+        "time_of_inspection": null,
+        "licensee_id": 1,
+        "from_location": "Nanpura, Surat",
+        "to_location": "Sachin GIDC",
+        "vehicle_details": null,
+        "distance_km": 0,
+        "license_type_code": "MA1",
+        "consolidated_report": 0,
+        "violations_found": "No",
+        "violations_notes": null,
+        "applicable_rules": null,
+        "officer_remarks": null,
+        "subordinate_staff": null,
+        "photos_json": null,
+        "created_at": "2026-07-05 19:56:23",
+        "report_content": null
+      },
+      {
+        "id": 2,
+        "report_number": "IR/SPE/2025/Test/Jul/02",
+        "date_of_inspection": "2025-07-03",
+        "time_of_inspection": null,
+        "licensee_id": 2,
+        "from_location": "Nanpura, Surat",
+        "to_location": "Sachin GIDC",
+        "vehicle_details": null,
+        "distance_km": 0,
+        "license_type_code": "AC2",
+        "consolidated_report": 0,
+        "violations_found": "No",
+        "violations_notes": null,
+        "applicable_rules": null,
+        "officer_remarks": null,
+        "subordinate_staff": null,
+        "photos_json": null,
+        "created_at": "2026-07-05 19:56:23",
+        "report_content": null
+      },
+      {
+        "id": 3,
+        "report_number": "IR/SPE/2025/Test/Jul/03",
+        "date_of_inspection": "2025-07-05",
+        "time_of_inspection": null,
+        "licensee_id": 3,
+        "from_location": "Nanpura, Surat",
+        "to_location": "Palsana",
+        "vehicle_details": null,
+        "distance_km": 0,
+        "license_type_code": "MA1",
+        "consolidated_report": 0,
+        "violations_found": "Yes",
+        "violations_notes": null,
+        "applicable_rules": null,
+        "officer_remarks": null,
+        "subordinate_staff": null,
+        "photos_json": null,
+        "created_at": "2026-07-05 19:56:23",
+        "report_content": null
+      }
+    ],
+    "diaries": [
+      {
+        "id": 1,
+        "month": 7,
+        "year": 2025,
+        "reference_number": "કપવ/૧-૨/૨૦૨૫/જુલાઈ-2025",
+        "date_text": null,
+        "month_name": "જુલાઈ-2025",
+        "created_at": "2026-07-05 19:56:31"
+      }
+    ],
+    "settings": [
+      {
+        "key": "office_address",
+        "value": "Nanpura, Surat"
+      },
+      {
+        "key": "officer_name",
+        "value": "Jignesh S Tanna"
+      },
+      {
+        "key": "officer_designation",
+        "value": "Superintendent"
+      },
+      {
+        "key": "department",
+        "value": "Prohibition and Excise Department, Surat"
+      },
+      {
+        "key": "officer_contact",
+        "value": "9426583984"
+      },
+      {
+        "key": "district",
+        "value": "Surat District"
+      },
+      {
+        "key": "office_latitude",
+        "value": "21.1811"
+      },
+      {
+        "key": "office_longitude",
+        "value": "72.8075"
+      },
+      {
+        "key": "diary_reference_prefix",
+        "value": "કપવ/૧-૨/૨૦૨૫/"
+      },
+      {
+        "key": "whatsapp_reminder_time",
+        "value": "08:00"
+      },
+      {
+        "key": "whatsapp_enabled",
+        "value": "false"
+      },
+      {
+        "key": "whatsapp_account",
+        "value": "personal"
+      }
+    ],
+    "license_types": [
+      {
+        "id": 1,
+        "code": "AC1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર બે માસે",
+        "total_count": 3,
+        "template_id": null
+      },
+      {
+        "id": 2,
+        "code": "AC2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર છ માસે",
+        "total_count": 22,
+        "template_id": null
+      },
+      {
+        "id": 3,
+        "code": "B1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 2,
+        "template_id": null
+      },
+      {
+        "id": 4,
+        "code": "B2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 5,
+        "code": "B2A",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 1,
+        "template_id": null
+      },
+      {
+        "id": 6,
+        "code": "BWIA1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 7,
+        "code": "DD1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 13,
+        "template_id": null
+      },
+      {
+        "id": 8,
+        "code": "DD2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર છ માસે",
+        "total_count": 108,
+        "template_id": null
+      },
+      {
+        "id": 9,
+        "code": "DD3",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 10,
+        "code": "DISTL",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 8,
+        "template_id": null
+      },
+      {
+        "id": 11,
+        "code": "DS1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 8,
+        "template_id": null
+      },
+      {
+        "id": 12,
+        "code": "DS2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "વર્ષે એક વખત",
+        "total_count": 1,
+        "template_id": null
+      },
+      {
+        "id": 13,
+        "code": "DS3",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "વર્ષે એક વખત",
+        "total_count": 404,
+        "template_id": null
+      },
+      {
+        "id": 14,
+        "code": "DS4",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "વર્ષે એક વખત",
+        "total_count": 900,
+        "template_id": null
+      },
+      {
+        "id": 15,
+        "code": "DS5",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 30,
+        "template_id": null
+      },
+      {
+        "id": 16,
+        "code": "DS6",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 4,
+        "template_id": null
+      },
+      {
+        "id": 17,
+        "code": "DS7",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર બે માસે",
+        "total_count": 5,
+        "template_id": null
+      },
+      {
+        "id": 18,
+        "code": "DSP1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 9,
+        "template_id": null
+      },
+      {
+        "id": 19,
+        "code": "DSP2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 1,
+        "template_id": null
+      },
+      {
+        "id": 20,
+        "code": "DSP3",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "વર્ષે એક વખત",
+        "total_count": 60,
+        "template_id": null
+      },
+      {
+        "id": 21,
+        "code": "DSP4",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર બે માસે",
+        "total_count": 31,
+        "template_id": null
+      },
+      {
+        "id": 22,
+        "code": "FL1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 5,
+        "template_id": null
+      },
+      {
+        "id": 23,
+        "code": "FL2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 6,
+        "template_id": null
+      },
+      {
+        "id": 24,
+        "code": "FL3",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 25,
+        "code": "FORM B",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 1,
+        "template_id": null
+      },
+      {
+        "id": 26,
+        "code": "M1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 6,
+        "template_id": null
+      },
+      {
+        "id": 27,
+        "code": "M2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર છ માસે",
+        "total_count": 55,
+        "template_id": null
+      },
+      {
+        "id": 28,
+        "code": "M3",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 29,
+        "code": "MA1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર ત્રણ માસે",
+        "total_count": 40,
+        "template_id": null
+      },
+      {
+        "id": 30,
+        "code": "MA2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર બે માસે",
+        "total_count": 33,
+        "template_id": null
+      },
+      {
+        "id": 31,
+        "code": "MF1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર છ માસે",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 32,
+        "code": "MF2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર છ માસે",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 33,
+        "code": "N1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 34,
+        "code": "N2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 1,
+        "template_id": null
+      },
+      {
+        "id": 35,
+        "code": "N3",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર ત્રણ માસે",
+        "total_count": 169,
+        "template_id": null
+      },
+      {
+        "id": 36,
+        "code": "N4",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર ત્રણ માસે",
+        "total_count": 3,
+        "template_id": null
+      },
+      {
+        "id": 37,
+        "code": "NDP",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 38,
+        "code": "NDRL",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 39,
+        "code": "NDWL",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 40,
+        "code": "NP",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 41,
+        "code": "OP1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 42,
+        "code": "OP2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 1,
+        "template_id": null
+      },
+      {
+        "id": 43,
+        "code": "OP2A",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 7,
+        "template_id": null
+      },
+      {
+        "id": 44,
+        "code": "POPPY–1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 45,
+        "code": "RG1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર બે માસે",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 46,
+        "code": "RG2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 47,
+        "code": "RS1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર ચાર માસે",
+        "total_count": 1,
+        "template_id": null
+      },
+      {
+        "id": 48,
+        "code": "RS2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર ચાર માસે",
+        "total_count": 63,
+        "template_id": null
+      },
+      {
+        "id": 49,
+        "code": "RS6",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર માસે",
+        "total_count": 1,
+        "template_id": null
+      },
+      {
+        "id": 50,
+        "code": "SA1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર બે માસે",
+        "total_count": 2,
+        "template_id": null
+      },
+      {
+        "id": 51,
+        "code": "SA2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "દર બે માસે",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 52,
+        "code": "SP1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 53,
+        "code": "SP2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      },
+      {
+        "id": 54,
+        "code": "SW1",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 16,
+        "template_id": null
+      },
+      {
+        "id": 55,
+        "code": "SW2",
+        "name_guj": null,
+        "description": null,
+        "category": null,
+        "inspection_standard": "",
+        "total_count": 0,
+        "template_id": null
+      }
+    ]
+  }
+}

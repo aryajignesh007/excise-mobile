@@ -1,0 +1,63 @@
+license_type_code,field_label,field_type,field_options,section_name,field_order,is_required
+M.A.2,Name of Licensee,text,,Location of Inspection,1,0
+M.A.2,Address,text,,Location of Inspection,2,0
+M.A.2,Whether Nokarnama Holder is present,text,,Location of Inspection,3,0
+M.A.2,Name of Authorised Person/Nokarnama Holder,text,,Location of Inspection,4,0
+M.A.2,District,text,,Location of Inspection,5,0
+M.A.2,List of Prohibited Item,dropdown,"[""Yes"",""No"",""Not Applicable""]",Prohibitited Item License Details,6,0
+M.A.2,Type of License,text,,Prohibitited Item License Details,7,0
+M.A.2,Last Amendment done on Date,date,,Prohibitited Item License Details,8,0
+M.A.2,Purpose,text,,Prohibitited Item License Details,9,0
+M.A.2,"Other Purposes, if any",text,,Prohibitited Item License Details,10,0
+M.A.2,Whether used for any other Purpose?,text,,Prohibitited Item License Details,11,0
+M.A.2,Validity,date,,Prohibitited Item License Details,12,0
+M.A.2,Possession Limit,text,,Prohibitited Item License Details,13,0
+M.A.2,Consumption Limit,text,,Prohibitited Item License Details,14,0
+M.A.2,Whether Possession Limit crossed in Last 3 Years?,text,,Prohibitited Item License Details,15,0
+M.A.2,If Yes then details,text,,Prohibitited Item License Details,16,0
+M.A.2,Whether Consumption Limit crossed in Last 3 Years?,text,,Prohibitited Item License Details,17,0
+M.A.2,If Yes then details,text,,Prohibitited Item License Details,18,0
+M.A.2,Storage Area Approved or not?,text,,Storage Details,19,0
+M.A.2,Prohibited Item stored in?,text,,Storage Details,20,0
+M.A.2,Storage Area cordoned and Locked or Not?,text,,Storage Details,21,0
+M.A.2,Whether Cautionary Signs and Boards used for Prohibited Items?,text,,Storage Details,22,0
+M.A.2,Calibration of Storage Tank done or not?,text,,Storage Details,23,0
+M.A.2,Recovery Done or Not?,text,,Recovery Details,24,0
+M.A.2,"If yes, then details",text,,Recovery Details,25,0
+M.A.2,Further details regarding recovery,text,,Recovery Details,26,0
+M.A.2,No. of Products approved as per GPCB,text,,Product Details,27,0
+M.A.2,Stage Wise Production or not?,text,,Product Details,28,0
+M.A.2,Continuous Production or not?,text,,Product Details,29,0
+M.A.2,No.of Products as per License and other details,text,,Product Details,30,0
+M.A.2,Formulae and Flow Chart of each product approved or not?,text,,Product Details,31,0
+M.A.2,Product wise Issue Slip with due signatures prepared or not?,text,,Product Details,32,0
+M.A.2,Whether Quota and Limit for each product in last 3 Years adhered or not?,text,,Product Details,33,0
+M.A.2,Whether any other product produced other than the approved ones?,text,,Product Details,34,0
+M.A.2,Whether Register is maintained in the due Format or not?,text,,Upkeep of Register and Stock Details,35,0
+M.A.2,Stock Details as per register,text,,Upkeep of Register and Stock Details,36,0
+M.A.2,Stock Details (Actual Level/No. of Bags/ CMs/No. of Barrels etc.),text,,Upkeep of Register and Stock Details,37,0
+M.A.2,Stock Details (actual),text,,Upkeep of Register and Stock Details,38,0
+M.A.2,Stock recorded as per Weigh Slip or Not?,text,,Upkeep of Register and Stock Details,39,0
+M.A.2,Excess/Shortage etc. if any,text,,Upkeep of Register and Stock Details,40,0
+M.A.2,Whether reported by the Licensee or not?,text,,Upkeep of Register and Stock Details,41,0
+M.A.2,PESO,text,,Regulatory Permission Details,42,0
+M.A.2,Poison,text,,Regulatory Permission Details,43,0
+M.A.2,FireNOC,text,,Regulatory Permission Details,44,0
+M.A.2,GPCB,text,,Regulatory Permission Details,45,0
+M.A.2,Factory License,text,,Regulatory Permission Details,46,0
+M.A.2,APP,text,,Regulatory Permission Details,47,0
+M.A.2,FDCA Approval,text,,Regulatory Permission Details,48,0
+M.A.2,Director List/Partner List,text,,Regulatory Permission Details,49,0
+M.A.2,Stamped Challan used for Purchase for Purchase or Sale of Methanol?,text,,Other Details,50,0
+M.A.2,Supervision Charges paid in Advance or not?,text,,Other Details,51,0
+M.A.2,Difference paid by the Licensee or not?,text,,Other Details,52,0
+M.A.2,Any other dues to be levied from the Licensees?,text,,Other Details,53,0
+M.A.2,Violations found or not?,text,,Details of Violations by the Licensee,54,0
+M.A.2,If Yes then under Which rules?,text,,Details of Violations by the Licensee,55,0
+M.A.2,Name of Relevant Authorit/rules etc.,text,,Details of Violations by the Licensee,56,0
+M.A.2,"Other Remarks, if any",text,,Details of Violations by the Licensee,57,0
+M.A.2,Name of other Subordinates present during the inspection and Part of the Team,text,,Details of Violations by the Licensee,58,0
+M.A.2,Undertaking by the authorised person of the Licensee with respect to the details mentioned here in the adjoining box after reading and understanding the content on Dt._______________ at SURAT.,text,,Details of Violations by the Licensee,59,0
+M.A.2,"I, ________________, hereby declare on behalf of the Licensee i.e. ______________________________, Surat that:                                                                                                                                                                                                                                                               *WE HAVE FULLY DISCLOSED ALL THE DETAILS AFFECTING THE SAFETY AND USAGE AND/OR PURCHASE AND/OR SALE AND/OR SRORAGE OF THE PROHIBITED ITEM UNDER THE LICENSE AS MENTIONED IN THE ABOVE DETAILS AND NO MATERIAL INFORMATION IS UNDISCLOSED IN THIS VISIT WHETHER SOUGHT OR NOT BY THE PROHIBITION OFFICER; and *WE DO NOT HAVE ANY DUES TO BE PAID TO THE GOVERNMENT UNDER THIS LICENSE AS ON TODAY, BUT IF ANY AMOUNT HAS ACCRUED TO BE LEVIED FROM US AFTER THIS VISIT, WE ASSURANCE TO PAY THE SAME; and *IF ANY LAPSE/S AND/OR VIOLATION/S OF RULE/S IS/ARE FOUND IN THE ABOVE INSPECTION, WE ABIDE OURSELVES TO PAY THE PENALTY AS DECIDED BY THE COMPETENT AUTHORTY IF SUCH PENALTY IS IN LIEU OF CANCELLATION OR SUSPENSION OF THE LICENSE.",text,,Details of Violations by the Licensee,60,0
+M.A.2,Officer's Signature,text,,Details of Violations by the Licensee,61,0
+M.A.2,Date,date,,Details of Violations by the Licensee,62,0

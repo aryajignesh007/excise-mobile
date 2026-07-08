@@ -1,0 +1,57 @@
+BUILD & DEPLOY LOG - Excise Inspection Manager v4d-fixed
+================================================================
+Date: 2026-07-07
+
+Step 1: Verify source fix
+  Time: 13:43:21
+  Result: ✅ PASS - source fixed. function onLicenseTypeChange() at line 910 has single
+  closing brace at line 932, correctly separated from // V4: Save inspections at line 934.
+
+Step 2: Copy fixed files to dist
+  Time: 13:44:23
+  Path: dist\win-unpacked\resources\app\renderer\index.html
+  Result: ✅ Copy succeeded.
+  Note: The task mentioned dist\Excise Inspection Manager-win32-x64\resources\app\ but
+  the actual unpacked structure is at dist\win-unpacked\resources\app\. The win32-x64
+  folder is a portable-flat build without app subdirectory.
+
+Step 3: Test the dist version
+  Time: 13:44:27 (launched) → killed at 13:45:10
+  Process instances: 4 (multi-instance Electron behavior)
+  All processes reporting Responding=True.
+  Result: ✅ App launched successfully and responded.
+
+Step 4: Create fresh ZIP
+  Time: 13:45:30 to 13:46:03
+  7za: node_modules\7zip-bin\win\x64\7za.exe
+  Source: dist\win-unpacked\*
+  Dest: C:\Users\hp\.openclaw\workspace\Excise-Desktop-v4d-fixed.zip
+  144 folders, 799 files, 414593763 bytes (396 MiB)
+  Archive size: 156618570 bytes (150 MiB)
+  Result: ✅ ZIP created successfully.
+
+Step 5: Upload to Drive
+  Time: 13:46:06 to 13:46:33
+  Account: aryajignesh@gmail.com
+  File: Excise-Desktop-v4d-fixed.zip
+  File ID: 1CEKgah7a1_z07ageTli7SCll7LoL1--4
+  Link: https://drive.google.com/file/d/1CEKgah7a1_z07ageTli7SCll7LoL1--4/view?usp=drivesdk
+  Result: ✅ Upload complete (149.4 MB at 100%).
+
+Step 6: Delete old ZIPs from Drive
+  Time: 13:46:41
+  Found old: Excise-Desktop-v4d.zip (id: 1l5N03BtaxhF-DmkADP-6OAv3upoM-5Cd)
+  Action: Trashed (--force)
+  Result: ✅ Old broken ZIP removed. Only v4d-fixed remains.
+
+Step 7: Write Drive link ID
+  Time: 13:46:50
+  Path: data\drive-link.txt
+  Content: 1CEKgah7a1_z07ageTli7SCll7LoL1--4
+  Result: ✅ Written.
+
+================================================================
+SUMMARY: All 7 steps completed successfully.
+Drive File ID: 1CEKgah7a1_z07ageTli7SCll7LoL1--4
+Final artifact: Excise-Desktop-v4d-fixed.zip (150 MB)
+================================================================
